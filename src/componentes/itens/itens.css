@@ -1,0 +1,49 @@
+#linha-1 {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    font-family: 'Sarabun';   
+    align-items: center; /* Adicionando alinhamento vertical */
+}
+
+#linha-1 > p:nth-child(2) {
+    color: red;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0; /* Remover margem inferior padrão */
+}
+
+#linha-1 > p:nth-child(1) {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+#item-geral {
+    display: flex;
+    flex-direction: column;
+    list-style: circle;
+    align-items: flex-start;
+}
+
+#desc-item {
+   font-family: 'Sarabun';
+   width: 50%; 
+}
+
+#item-img {
+    margin-top: 10px;
+    display: flex;
+}
+
+#item-img > div {
+    color: white;
+    font-family: 'Sarabun';
+    background-color: #FEE14A;
+    height: 25px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Adicionando alinhamento vertical */
+    margin: 0 10px;
+    border-radius: 5px;
+}
