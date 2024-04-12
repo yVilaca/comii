@@ -9,8 +9,8 @@ function App() {
       <NavBar />
       <Banner />
       <div id='categorias-juntas'>
-        <Categoria img="./imgs/recomendados.svg" titulo="Recomendados" />
-        <Categoria img="./imgs/categoria.svg" titulo="Categorias" />
+        <Categoria img="./imgs/recomendados.svg" titulo="Recomendados" href="#recomendados"/>
+        <Categoria img="./imgs/categoria.svg" titulo="Categorias" href="#categoria"/>
       </div>
       <hr></hr>
     </div>

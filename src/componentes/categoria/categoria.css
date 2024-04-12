@@ -12,7 +12,9 @@
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.288);
     transition: 0.5s;
 }
-#fundo-categoria>p{
+#fundo-categoria>a{
+    text-decoration: none;
+    color: black;
     font-family: 'Sarabun';
     font-weight: 500;
 }

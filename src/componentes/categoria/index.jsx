@@ -3,7 +3,7 @@ function Categoria(props){
     return <div >
         <section id='fundo-categoria'>
             <img src={props.img} alt="" />
-            <p>{props.titulo}</p>
+            <a href={props.href}>{props.titulo}</a>
         </section>
     </div>
 }
