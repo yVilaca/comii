@@ -29,3 +29,7 @@
 #logo{
     width: 80px;
 }
+#topbar{
+    position: sticky;
+    top: 0;
+}

@@ -1,0 +1,8 @@
+#categorias-juntas {
+    display: flex;
+    justify-content: space-around;
+}
+hr{
+    margin: 0px 50px;
+    background-color: #838383;
+}
