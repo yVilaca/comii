@@ -14,17 +14,19 @@
 #ajuda-fundo a{
     font-family: 'Noto Serif';
     font-weight: 300;
-    font-size: 15px;
+    font-size: 3.5vw;
     text-decoration: none;
     color: white;
 }
 #ajuda-fundo{
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 2vw;
+    width: 15%;
     background-color: rgba(255, 255, 255, 17%);
     border-radius: 10px;
-    padding: 1px 20px;
+    height: 5vh;
+    padding: 0 1.25rem;
 }
 #logo{
     width: 80px;
@@ -32,4 +34,8 @@
 #topbar{
     position: sticky;
     top: 0;
+}
+#seta-ajuda{
+    width: auto;
+    height: auto;
 }

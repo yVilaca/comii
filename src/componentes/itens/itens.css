@@ -1,13 +1,13 @@
 #linha-1 {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 2%; /* Usando porcentagem para espaço entre os elementos */
     font-family: 'Sarabun';   
-    align-items: center; /* Adicionando alinhamento vertical */
+    align-items: center;
 }
 
 #linha-1 > p:nth-child(2) {
-    font-size: 12px;
+    font-size: 0.8em; /* Usando unidades relativas para o tamanho da fonte */
     color: red;
     display: flex;
     align-items: center;
@@ -16,9 +16,10 @@
 
 #linha-1 > p:nth-child(1) {
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.2em; /* Usando unidades relativas para o tamanho da fonte */
 }
 
+/* Estilos para #item-geral */
 #item-geral {
     display: flex;
     flex-direction: column;
@@ -27,25 +28,26 @@
 }
 
 #desc-item {
-    font-size: 12px;
-   font-family: 'Sarabun';
-   width: 90%; 
+    font-size: 0.8em; /* Usando unidades relativas para o tamanho da fonte */
+    font-family: 'Sarabun';
+    width: 90%; 
 }
 
 #item-img {
     margin-top: 10px;
     display: flex;
+    flex-wrap: wrap; /* Permite que os itens sejam flexíveis em várias linhas */
 }
 
 #item-img > div {
     color: white;
     font-family: 'Sarabun';
     background-color: #FEE14A;
-    height: 25px;
-    width: 50px;
+    height: 1.4em; /* Usando unidades relativas para altura */
+    min-width: 3.3em; /* Usando unidades relativas para largura mínima */
     display: flex;
     justify-content: center;
-    align-items: center; /* Adicionando alinhamento vertical */
-    margin: 0 0 0 10px;
+    align-items: center;
+    margin: 0 0 0 0.5em; /* Adapte as margens conforme necessário */
     border-radius: 5px;
 }
