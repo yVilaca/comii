@@ -1,6 +1,6 @@
 .categorias-juntas {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
 hr{
     margin: 0px 50px;
