@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
 .categorias-juntas {
     display: flex;
     justify-content: space-around;
