@@ -46,6 +46,6 @@
     display: flex;
     justify-content: center;
     align-items: center; /* Adicionando alinhamento vertical */
-    margin: 0 10px;
+    margin: 0 0 0 10px;
     border-radius: 5px;
 }
