@@ -10,13 +10,13 @@ function App() {
       <NavBar />
       <Banner />
       <div class='categorias-juntas'>
-        <Categoria img="./imgs/recomendados.svg" titulo="Recomendados" href="#recomendados"/>
-        <Categoria img="./imgs/categoria.svg" titulo="Categorias" href="#categoria"/>
+        <Categoria img="./imgs/recomendados.svg" titulo="Recomendados" href="#recomendados" />
+        <Categoria img="./imgs/categoria.svg" titulo="Categorias" href="#categoria" />
       </div>
       <hr></hr>
       <div class='categorias-juntas2'>
-        <Itens href="#"/>
-        <Itens/>
+        <a href="#item"><Itens /></a>
+        <Itens />
       </div>
     </div>
   );
