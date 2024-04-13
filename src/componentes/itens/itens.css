@@ -7,6 +7,7 @@
 }
 
 #linha-1 > p:nth-child(2) {
+    font-size: 12px;
     color: red;
     display: flex;
     align-items: center;
@@ -21,13 +22,14 @@
 #item-geral {
     display: flex;
     flex-direction: column;
-    list-style: circle;
+    list-style: none;
     align-items: flex-start;
 }
 
 #desc-item {
+    font-size: 12px;
    font-family: 'Sarabun';
-   width: 50%; 
+   width: 90%; 
 }
 
 #item-img {

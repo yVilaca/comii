@@ -6,3 +6,9 @@ hr{
     margin: 0px 50px;
     background-color: #838383;
 }
+.categorias-juntas2{
+    margin: 10px 30px;
+    display: flex;
+    justify-content: space-around;
+    gap: 5%;
+}

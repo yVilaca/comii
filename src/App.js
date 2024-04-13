@@ -14,7 +14,8 @@ function App() {
         <Categoria img="./imgs/categoria.svg" titulo="Categorias" href="#categoria"/>
       </div>
       <hr></hr>
-      <div class='categorias-juntas'>
+      <div class='categorias-juntas2'>
+        <Itens/>
         <Itens/>
       </div>
     </div>
