@@ -16,8 +16,9 @@ function App() {
       <hr></hr>
       <div class='categorias-juntas2'>
         <a href="#item"><Itens /></a>
-        <Itens />
+        <Itens/>
       </div>
+      
     </div>
   );
 }

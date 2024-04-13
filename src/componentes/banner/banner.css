@@ -1,7 +1,7 @@
 #fundo-banner{
     background-image: url("../../../public/imgs/banner1.svg");
     background-repeat: no-repeat;
-    background-clip: border-box;
+    background-size: 100vw auto;
     padding: 0 20px;
     height: 200px;
     display: flex;
