@@ -15,7 +15,7 @@ function App() {
       </div>
       <hr></hr>
       <div class='categorias-juntas2'>
-        <Itens/>
+        <Itens href="#"/>
         <Itens/>
       </div>
     </div>
