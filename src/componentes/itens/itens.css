@@ -1,7 +1,6 @@
 #linha-1 {
     display: flex;
-    justify-content: center;
-    gap: 2%; /* Usando porcentagem para espaço entre os elementos */
+    gap: 0% 60%; /* Usando porcentagem para espaço entre os elementos */
     font-family: 'Sarabun';   
     align-items: center;
 }

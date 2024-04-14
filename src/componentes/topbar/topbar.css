@@ -4,6 +4,7 @@
     padding: 0;
 }
 #lista-fundo{
+    align-items: center;
     padding: 10px 30px;
     list-style: none;
     background-color: #85120B;

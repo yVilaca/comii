@@ -2,7 +2,7 @@
     background-image: url("../../../public/imgs/banner1.svg");
     background-repeat: no-repeat;
     background-size: 100vw auto;
-    padding: 7% 7%;
+    padding: 3vh 3vh;
     display: flex;
     flex-direction: column;
     justify-content: center
