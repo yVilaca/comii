@@ -10,7 +10,6 @@
     background-color: #85120B;
     display: flex;
     justify-content: space-between;
-    gap: 45%;
 }
 #ajuda-fundo a{
     font-family: 'Noto Serif';

@@ -50,3 +50,11 @@
     margin: 0 0 0 0.5em; /* Adapte as margens conforme necessário */
     border-radius: 5px;
 }
+@media (max-width: 371px){
+#item-img>div{
+    display: none;
+}
+#linha-1{
+    display: block;
+}
+}
