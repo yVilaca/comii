@@ -24,16 +24,16 @@
     flex-direction: column;
     list-style: none;
     align-items: flex-start;
+    width: 10.625rem;
 }
 
 #desc-item {
     font-size: 0.8em; /* Usando unidades relativas para o tamanho da fonte */
     font-family: 'Sarabun';
-    width: 90%; 
 }
 
 #item-img {
-    margin-top: 10px;
+    margin-top: 1.5vh;
     display: flex;
     flex-wrap: wrap; /* Permite que os itens sejam flexíveis em várias linhas */
 }
