@@ -1,6 +1,20 @@
 import './itens.css';
+import { useState } from 'react';
 
 function Itens() {
+    const [count, setCount] = useState(0);
+
+    const incrementCount = () => {
+        setCount(count + 1);
+    };
+
+    const decrementCount = () => {
+        if (count>0){
+            setCount(count - 1);
+        }
+        
+    };
+
     return <div>
         <ul id='item-img'>
             <img src="./imgs/item1.svg" alt="" />
@@ -13,6 +27,11 @@ function Itens() {
             <li id='linha-1'><p>Comida</p> <p>R$5,00</p></li>
             <li id='desc-item'>Burrito do chefe com queijos especiais e temperos italianos selecionados.</li>
         </ul>
+        <div className="counter">
+            <button onClick={incrementCount}>+</button>
+            <p>{count}</p>
+            <button onClick={decrementCount}>-</button>
+        </div>
     </div>
 }
 export default Itens;

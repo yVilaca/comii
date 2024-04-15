@@ -4,7 +4,10 @@ import NavBar from "./componentes/topbar";
 import './app.css'
 import Itens from "./componentes/itens";
 
+
+
 function App() {
+
   return (
     <div className="App">
       <NavBar />
@@ -18,8 +21,9 @@ function App() {
         <a href="#item"><Itens /></a>
         <a href="#item"><Itens /></a>
       </div>
-      
     </div>
+
+
   );
 }
 
