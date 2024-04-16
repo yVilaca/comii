@@ -18,8 +18,8 @@ function App() {
       </div>
       <hr></hr>
       <div class='categorias-juntas2'>
-        <a href="#item"><Itens /></a>
-        <a href="#item"><Itens /></a>
+        <a href="#item"><Itens nome="Burrito" preco="19,80"/></a>
+        <a href="#item"><Itens nome="Sambuei" preco="13,99"/></a>
       </div>
     </div>
 

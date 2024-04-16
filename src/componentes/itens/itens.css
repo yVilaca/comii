@@ -1,22 +1,3 @@
-.counter{
-    width: 60px;
-    margin-top: 1vh;
-    display: flex;
-    justify-content: left;
-    gap: 5%;
-}
-.counter>button{
-    font-family: 'Sarabun';
-    text-align: center;
-    align-items: center;
-    vertical-align: middle;
-    font-weight: 600;
-    font-size: 13px;
-    width: 20px;
-    border: none;
-    border-radius: 6px;
-    background-color: #FEE14A;
-}
 #linha-1 {
     display: flex;
     gap: 0% 60%; /* Usando porcentagem para espaço entre os elementos */
@@ -24,12 +5,13 @@
     align-items: center;
 }
 
-#linha-1 > p:nth-child(2) {
+#preco{
+    font-family: 'Poppins';
+    font-weight: 500;
     font-size: 0.8em; /* Usando unidades relativas para o tamanho da fonte */
-    color: red;
+    color: #85120B;
     display: flex;
     align-items: center;
-    margin-bottom: 0; /* Remover margem inferior padrão */
 }
 
 #linha-1 > p:nth-child(1) {
@@ -43,37 +25,29 @@
     flex-direction: column;
     list-style: none;
     align-items: flex-start;
-    width: 10.625rem;
+    width: 35vw;
 }
 
 #desc-item {
-    font-size: 0.8em; /* Usando unidades relativas para o tamanho da fonte */
+    font-size: 0.68em; /* Usando unidades relativas para o tamanho da fonte */
     font-family: 'Sarabun';
 }
-
-#item-img {
-    margin-top: 1.5vh;
-    display: flex;
-    flex-wrap: wrap; /* Permite que os itens sejam flexíveis em várias linhas */
-}
-
-#item-img > div {
-    color: white;
-    font-family: 'Sarabun';
-    background-color: #FEE14A;
-    height: 1.4em; /* Usando unidades relativas para altura */
-    min-width: 3.3em; /* Usando unidades relativas para largura mínima */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 0 0 0.5em; /* Adapte as margens conforme necessário */
+#item-geral>img{
+    width: 100%;
+    height: 15vh;
+    object-fit: cover;
     border-radius: 5px;
 }
-@media (max-width: 371px){
-#item-img>div{
-    display: none;
+#item-geral>button{
+    margin-top: 0.5vh;
+    border: none;
+    background-color: #FEE14A;
+    border-radius: 5px;
+    width: 100%;
+    padding: 3% 5%;
 }
-#linha-1{
-    display: block;
-}
+
+.alert-success{
+    font-family: 'Poppins';
+    position: absolute;
 }

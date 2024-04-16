@@ -11,19 +11,11 @@ hr{
 }
 .categorias-juntas2{
     margin: 0;
-    gap: 5%;
+    margin-top: 1.5vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 .categorias-juntas2>a{
     color: black;
     text-decoration: none;
-}
-
-@media (max-width: 241px){
-    .categorias-juntas2{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-    }
 }
