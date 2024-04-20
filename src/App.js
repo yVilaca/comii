@@ -21,6 +21,7 @@ function App() {
         <a href="#item"><Itens nome="Burrito" preco="19,80"/></a>
         <a href="#item"><Itens nome="Sambuei" preco="13,99"/></a>
       </div>
+      Toreto cria de favela
     </div>
 
 
