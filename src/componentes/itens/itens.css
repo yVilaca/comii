@@ -25,7 +25,8 @@
     flex-direction: column;
     list-style: none;
     align-items: flex-start;
-    width: 35vw;
+    width: 40vw;
+    flex-wrap: wrap;
 }
 
 #desc-item {
@@ -34,7 +35,7 @@
 }
 #item-geral>img{
     width: 100%;
-    height: 15vh;
+    height: 12.5vh;
     object-fit: cover;
     border-radius: 5px;
 }
