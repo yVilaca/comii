@@ -4,6 +4,7 @@ import NavBar from "./componentes/topbar";
 import './app.css'
 import Itens from "./componentes/itens";
 import Item_d from "./componentes/item-deitado";
+import Rodape from "./componentes/rodape";
 
 
 
@@ -26,6 +27,8 @@ function App() {
       <Item_d id="2" nome="X-Bacon" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed faucibus odio. Quisque leo ligula, lobortis nec est a, mattis iaculis massa."/>
       <Item_d id="3" nome="X-Tudo" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed faucibus odio. Quisque leo ligula, lobortis nec est a, mattis iaculis massa."/>
       <Item_d id="4" nome="X-Vegetariano" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed faucibus odio. Quisque leo ligula, lobortis nec est a, mattis iaculis massa."/>
+
+      <Rodape/>
     </div>
 
 

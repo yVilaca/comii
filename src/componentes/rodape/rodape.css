@@ -1,0 +1,10 @@
+footer{
+    position: sticky;
+    bottom: 10;
+    margin: 0 10px;
+    background-color: #85120B;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    border-radius: 5px;
+}
