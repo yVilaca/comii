@@ -1,10 +1,22 @@
 footer{
-    position: sticky;
+    position: fixed;
     bottom: 10;
-    margin: 0 10px;
+    width: 95%;
+    margin: 0 2.5%;
     background-color: #85120B;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    align-items: center;
     height: 40px;
+    border-radius: 5px;
+}
+.aba{
+    text-decoration: none;
+    color: white;
+    font-family: 'Sarabun';
+}
+.selected {
+    background-color: #9a3a34;
+    padding: 1.4%;
     border-radius: 5px;
 }

@@ -21,7 +21,7 @@ function Itens(props) {
                 <button onClick={() => Adicionar(props.nome)}>Incluir ao carrinho</button>
             </ul>
             
-                {mensagem && <div class="alert alert-success" role="alert"> <p className="mensagem">{mensagem}</p> </div>}
+                {mensagem && <div className="alert alert-success" role="alert"> <p className="mensagem">{mensagem}</p> </div>}
         </div>
     );
 }
