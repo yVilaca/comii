@@ -29,8 +29,19 @@
 }
 
 .slide-item{
-    width: 100%;
+    width: 90%;
     height: 20vh;
     object-fit: cover;
     align-items: center;
+    border-radius: 8px;
+    margin-bottom: 1px;
+}
+.slide-img{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+.swiper-pagination-bullet-active{
+    background-color: #fff;
 }
