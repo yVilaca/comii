@@ -11,7 +11,7 @@ function Carrossel() {
 
     return(
         <div>
-             <h3 id='maisPedidos'>Produtos</h3>
+             <h3 id='maisPedidos'>PRODUTOS</h3>
             <div className='container'>
                 <Swiper
                 slidesPerView={1}>

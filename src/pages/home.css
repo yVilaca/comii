@@ -1,0 +1,22 @@
+.recomendados-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+#recomendados{
+    padding: 0 10px;
+    font-family: "Sarabun";
+    font-weight: 400;
+    color: #85120B;
+    font-size: 4vw;
+}
+
+.recomendados-line{
+    color: #888;
+    letter-spacing: -2;
+      -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
