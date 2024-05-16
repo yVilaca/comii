@@ -1,0 +1,21 @@
+.categorias-juntas4{
+    margin: 1.5vh;
+    display: flex;
+    justify-content: space-evenly;
+    color: #85120b;
+    width: 20%;
+}
+.categorias-juntas4>a{
+    color: black;
+    text-decoration: none;
+}
+
+body {
+    overflow-x: hidden;
+}
+#categoria-junta {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#categorias {width: 25%;}
