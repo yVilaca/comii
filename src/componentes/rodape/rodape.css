@@ -1,7 +1,8 @@
 footer{
+    padding: 0 2.5%;
     position: fixed;
     bottom: 10;
-    width: 95%;
+    width: 90%;
     margin: 0 2.5%;
     background-color: #85120B;
     display: flex;
@@ -11,18 +12,34 @@ footer{
     border-radius: 5px;
 }
 .aba{
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+    align-items: center;
+    flex: 1;
+    text-align: center;
     text-decoration: none;
     color: white;
     font-family: 'Sarabun';
 }
 .selected {
     background-color: #9a3a34;
-    padding: 1.4%;
     border-radius: 5px;
+}
+.abanome{
+    display: none;
 }
 .active {
     background-color: #9A3A34;
-    padding: 5px;
+    padding: 2px 0;
     border-radius: 5px;
     /* Outros estilos que você deseja aplicar quando o link estiver ativo */
 }
+.active .abanome{
+    display: block;
+}
+
+.aba>img{
+    height: 25px;
+}
+

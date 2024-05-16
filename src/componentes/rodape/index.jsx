@@ -17,19 +17,19 @@ function Rodape() {
                     to="/home"
                     className={`aba home ${activeLink === "/home" ? "active" : ""}`}
                 >
-                    <img src="./imgs/help-arrow.svg" alt="imagem" /> Home
+                    <img src="./imgs/home.svg" alt="imagem" /> <p className="abanome">Home</p>
                 </Link>
                 <Link
                     to="/carrinho"
                     className={`aba cart ${activeLink === "/carrinho" ? "active" : ""}`}
                 >
-                    Carrinho
+                    <img src="./imgs/shopping-cart.svg" alt="imagem" /> <p className="abanome">Carrinho</p>
                 </Link>
                 <Link
                     to="/produtos"
                     className={`aba products ${activeLink === "/produtos" ? "active" : ""}`}
                 >
-                    Produtos
+                    <img src="./imgs/shopping-bag.svg" alt="imagem" /><p className="abanome">Produtos</p> 
                 </Link>
             </footer>
             <Outlet />
