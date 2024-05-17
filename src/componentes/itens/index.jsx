@@ -14,7 +14,7 @@ function Itens(props) {
     return (
         <div>
             <ul id='item-geral'>
-                <img src="./imgs/item1.svg" alt="" />
+                <img src="/imgs/item1.svg" alt="" />
                 <li id='linha-1'><p>{props.nome}</p></li>
                 <li id='desc-item'>Burrito do chefe com queijos especiais e temperos italianos selecionados.</li>
                 <li id='preco'>R$ {props.preco}</li>

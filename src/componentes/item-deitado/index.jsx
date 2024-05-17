@@ -26,7 +26,7 @@ function ItemD(props) {
             </ul>
             {mensagem && (
                 <div className="mensagem-alerta">
-                <img src="./imgs/check.svg" alt='check' width={"20px"}  style={{paddingRight:"1vh"}}/>{mensagem}</div>
+                <img src="/imgs/check.svg" alt='check' width={"20px"}  style={{paddingRight:"1vh"}}/>{mensagem}</div>
             )}
         </div>
     );

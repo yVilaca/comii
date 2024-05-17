@@ -18,9 +18,9 @@ function Carrossel() {
                 pagination={{clickable:true}}>
                     {data.map( (item) => (
                     <SwiperSlide key={item.id} className='slide-img'>
-                        <img src="./imgs/597575.jpg" alt='' className='slide-item'/>
-                        <img src="./imgs/597575.jpg" alt='' className='slide-item item2'/>
-                        <img src="./imgs/597575.jpg" alt='' className='slide-item'/>
+                        <img src="/imgs/597575.jpg" alt='' className='slide-item'/>
+                        <img src="/imgs/597575.jpg" alt='' className='slide-item item2'/>
+                        <img src="/imgs/597575.jpg" alt='' className='slide-item'/>
                     </SwiperSlide>
                     ))}
                 </Swiper>
