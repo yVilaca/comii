@@ -29,7 +29,7 @@ function Rodape() {
                     to="/produtos"
                     className={`aba products ${activeLink === "/produtos" ? "active" : ""}`}
                 >
-                    <img src="./imgs/shopping-bag.svg" alt="imagem" /><p className="abanome">Produtos</p> 
+                    <img src="./imgs/shopping-bag.svg" alt="imagem" /><p className="abanome">Produtos</p>
                 </Link>
             </footer>
             <Outlet />

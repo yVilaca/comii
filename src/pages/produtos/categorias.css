@@ -1,0 +1,19 @@
+.categorias-geral{
+    margin: 2vh 0;
+    display: flex;
+    justify-content: space-around;
+}
+.categorias{
+    text-decoration: none;
+    color: #85120B;
+    font-family: 'Sarabun';
+    background-color: rgb(250, 250, 250);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.363);
+    border-radius: 5px;
+    padding: 3px 15px;
+    display: flex;
+    align-items: center;
+}
+.active2{
+    border: solid 2px #FED725;
+}
