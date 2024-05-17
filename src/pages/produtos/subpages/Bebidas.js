@@ -14,7 +14,7 @@ function Bebidas() {
         <li><img src="/imgs/agua.svg" alt="" /></li>
         <li className='imfo-deitado'>
           <p className="nomeItem">Água</p>
-          <p className="descItem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed faucibus odio. Quisque leo ligula, lobortis nec est a, mattis iaculis massa.</p>
+          <p className="descItem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sed faucibus odio. Quisque leo ligula, lobortis nec est a, mattis iaculis massa..</p>
 
           <div id='flex-preco'>
             <p>R$ 100,00</p>
