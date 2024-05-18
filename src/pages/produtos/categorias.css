@@ -13,7 +13,9 @@
     padding: 3px 15px;
     display: flex;
     align-items: center;
+    margin: 2px;
 }
 .active2{
+    margin: 0px;
     border: solid 2px #FED725;
 }
