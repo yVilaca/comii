@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './deitado.css';
+import { CartContext } from '../../pages/CartContext';
 
 function ItemD(props) {
+    const { addToCart } = useContext(CartContext);
     const [mensagem, setMensagem] = useState('');
 
-    function Adicionar(nome) {
-        setMensagem(`${nome} foi incluído ao carrinho!`);
+    function Adicionar(item) {
+        addToCart(item);
+        setMensagem(`${item.nome} foi incluído ao carrinho!`);
         setTimeout(() => {
             setMensagem('');
         }, 3000);
@@ -19,14 +22,14 @@ function ItemD(props) {
                     <p id='nome-item2'>{props.nome}</p>
                     <p id='desc-item2'>{props.desc}</p>
                     <div id='flex-preco'>
-                        <p>R$ 100,00</p>
-                        <button onClick={() => Adicionar(props.nome)}>Incluir ao carrinho</button>
+                        <p>R$ {props.preco}</p>
+                        <button onClick={() => Adicionar({ id: props.id, nome: props.nome, desc: props.desc, preco: props.preco} )}>Incluir ao carrinho</button>
                     </div>
                 </li>
             </ul>
             {mensagem && (
                 <div className="mensagem-alerta">
-                <img src="/imgs/check.svg" alt='check' width={"20px"}  style={{paddingRight:"1vh"}}/>{mensagem}</div>
+                    <img src="/imgs/check.svg" alt='check' width={"20px"} style={{ paddingRight: "1vh" }} />{mensagem}</div>
             )}
         </div>
     );
