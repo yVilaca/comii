@@ -1,4 +1,3 @@
-// Carrinho.js
 import React, { useContext } from 'react';
 import { CartContext } from './CartContext';
 
@@ -11,9 +10,10 @@ const Carrinho = () => {
   };
 
   const total = cart.reduce((sum, item) => {
-    if (item && item.preco) {
+    if (item && item.preco && !isNaN(item.preco) && !isNaN(item.quantidade)) {
       return sum + item.preco * item.quantidade;
     }
+    console.error('Item com preço ou quantidade inválidos:', item);
     return sum;
   }, 0);
 
@@ -33,7 +33,7 @@ const Carrinho = () => {
                     <div id='flex-preco'>
                       <p>R$ {item.preco.toFixed(2)}</p>
                       <select
-                        value={item.quantidade}
+                        value={String(item.quantidade)}
                         onChange={(event) => handleQuantityChange(index, event)}
                       >
                         {[...Array(10).keys()].map((number) => (

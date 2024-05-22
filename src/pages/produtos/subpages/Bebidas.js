@@ -4,7 +4,11 @@ import ItemDBebidas from "../../../componentes/item-deitado-produto";
 
 const Bebidas = () => {
   return (
-    <ItemDBebidas nome="Água" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={9.99}/>
+    <div>
+      <ItemDBebidas id="1" nome="Água" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={9.99} />
+      <ItemDBebidas id="2" nome="Cerveja" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={10.80} />
+    </div>
+
   )
 }
 
