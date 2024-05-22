@@ -15,11 +15,6 @@ function ItemDBebidas(props) {
     }
 
     return <div>
-        <section className="recomendados-text">
-            <p className="recomendados-line">------------------------------------------</p>
-            <h1 id="recomendados">BEBIDAS</h1>
-            <p className="recomendados-line">------------------------------------------</p>
-        </section>
 
         <div className='deitado'>
             <ul className='list-deitado'>
