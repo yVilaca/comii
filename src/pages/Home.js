@@ -27,7 +27,7 @@ const Home = () => {
 
             <div className='categorias-juntas2'>
                 <a href="#item"><Itens id={5} nome="Burrito" preco={19.80} desc="Burrito do chefe com queijos especiais e temperos italianos selecionados." /></a>
-                <a href="#item"><Itens id={6} nome="Sambuei" preco={13.99} desc="Sambuei delicioso com ingredientes frescos." /></a>
+                <a href="#item"><Itens id={6} nome="Sambuei" preco={13.99} desc="Burrito do chefe com queijos especiais e temperos italianos selecionados." /></a>
             </div>
 
             <div className="itens" style={{ marginBottom: "15%" }}>
