@@ -65,6 +65,7 @@
     font-family: 'Sarabun';
     border-radius: 5px;
     animation: slideInFadeOut 3s ease forwards; 
+    z-index: 2025;
 }
 
 @keyframes slideInFadeOut {
