@@ -1,11 +1,21 @@
 import React, { useContext } from 'react';
-import { CartContext } from './CartContext'; // Ajuste o caminho conforme necessário
+import { CartContext } from './CartContext';
 
 const Carrinho = () => {
-  const { cart, clearCart } = useContext(CartContext);
+  const { cart, updateQuantity, clearCart } = useContext(CartContext);
 
-  // Calculando o valor total
-  const total = cart.reduce((acc, item) => acc + item.preco, 0);
+  const handleQuantityChange = (index, event) => {
+    const quantity = parseInt(event.target.value);
+    updateQuantity(index, quantity);
+  };
+
+  const total = cart.reduce((sum, item) => {
+    if (item && item.preco && !isNaN(item.preco) && !isNaN(item.quantidade)) {
+      return sum + item.preco * item.quantidade;
+    }
+    console.error('Item com preço ou quantidade inválidos:', item);
+    return sum;
+  }, 0);
 
   return (
     <div>
@@ -13,7 +23,30 @@ const Carrinho = () => {
       <ul>
         {cart.map((item, index) => (
           <li key={index}>
-            {item.nome} - R$ {item.preco.toFixed(2)}
+            {item && item.preco && (
+              <div id='div-item2'>
+                <ul id='deitado-flex'>
+                  <li><img src="./imgs/item2.png" alt="Item" /></li>
+                  <li id='info-item2'>
+                    <p id='nome-item2'>{item.nome}</p>
+                    <p id='desc-item2'>{item.desc}</p>
+                    <div id='flex-preco'>
+                      <p>R$ {item.preco.toFixed(2)}</p>
+                      <select
+                        value={String(item.quantidade)}
+                        onChange={(event) => handleQuantityChange(index, event)}
+                      >
+                        {[...Array(10).keys()].map((number) => (
+                          <option key={number + 1} value={number + 1}>
+                            {number + 1}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            )}
           </li>
         ))}
       </ul>

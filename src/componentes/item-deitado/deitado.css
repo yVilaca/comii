@@ -10,6 +10,7 @@
     justify-content: center;
     gap: 4%;
     font-family: 'Sarabun';
+    flex: 1;
 }
 #flex-preco{
     display: flex;

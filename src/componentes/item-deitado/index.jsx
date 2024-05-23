@@ -1,13 +1,23 @@
+// ItemD.jsx
 import React, { useState, useContext } from 'react';
 import './deitado.css';
 import { CartContext } from '../../pages/CartContext';
 
 function ItemD(props) {
-    const { addToCart } = useContext(CartContext);
+    const { cart, addToCart } = useContext(CartContext);
     const [mensagem, setMensagem] = useState('');
 
     function Adicionar(item) {
-        addToCart(item);
+        const existingItemIndex = cart.findIndex((cartItem) => cartItem.id === item.id);
+        if (existingItemIndex !== -1) {
+            // Item already exists in the cart, update its quantity
+            const updatedCart = [...cart];
+            updatedCart[existingItemIndex].quantidade++;
+            addToCart(updatedCart);
+        } else {
+            // Item is not in the cart, add it with quantity 1
+            addToCart({ ...item, quantidade: 1 });
+        }
         setMensagem(`${item.nome} foi incluído ao carrinho!`);
         setTimeout(() => {
             setMensagem('');
@@ -23,7 +33,7 @@ function ItemD(props) {
                     <p id='desc-item2'>{props.desc}</p>
                     <div id='flex-preco'>
                         <p>R$ {props.preco}</p>
-                        <button onClick={() => Adicionar({ id: props.id, nome: props.nome, desc: props.desc, preco: props.preco} )}>Incluir ao carrinho</button>
+                        <button onClick={() => Adicionar({ id: props.id, nome: props.nome, desc: props.desc, preco: props.preco })}>Incluir ao carrinho</button>
                     </div>
                 </li>
             </ul>
