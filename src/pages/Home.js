@@ -14,6 +14,11 @@ const Home = () => {
         { id: 4, nome: "X-Vegetariano", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 15.00 }
     ];
 
+    const categoriasJuntasItems = [
+        { id: 5, nome: "Burrito", preco: 19.80, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." },
+        { id: 6, nome: "Macarrão", preco: 13.99, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." }
+    ];
+
     return (
         <div>
             <NavBar />
@@ -26,14 +31,17 @@ const Home = () => {
             </section>
 
             <div className='categorias-juntas2'>
-                <a href="#item"><Itens id={5} nome="Burrito" preco={19.80} desc="Burrito do chefe com queijos especiais e temperos italianos selecionados." /></a>
-                <a href="#item"><Itens id={6} nome="Sambuei" preco={13.99} desc="Burrito do chefe com queijos especiais e temperos italianos selecionados." /></a>
+                {categoriasJuntasItems.map(item => (
+                    <a href="#item" key={item.id}>
+                        <Itens id={item.id} nome={item.nome} preco={item.preco} desc={item.desc} img={"/imgs/" + item.nome + ".png"} />
+                    </a>
+                ))}
             </div>
 
             <div className="itens" style={{ marginBottom: "15%" }}>
                 {items.map(item => (
                     <div key={item.id} style={{ marginBottom: '15px' }}>
-                        <ItemD id={item.id} nome={item.nome} desc={item.desc} preco={item.preco} />
+                        <ItemD id={item.id} nome={item.nome} desc={item.desc} preco={item.preco} img={"/imgs/" + item.nome + ".png"} />
                     </div>
                 ))}
             </div>

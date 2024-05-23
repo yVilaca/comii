@@ -7,20 +7,12 @@ function ItemDBebidas(props) {
     const [mensagem, setMensagem] = useState('');
 
     function Adicionar(item) {
-        const itemToAdd = {
-            id: item.id,
-            nome: item.nome,
-            desc: item.desc,
-            preco: item.preco,
-            quantidade: 1  // Definindo a quantidade inicial como 1
-        };
-        addToCart(itemToAdd);
+        addToCart(item);
         setMensagem(`${item.nome} foi incluído ao carrinho!`);
         setTimeout(() => {
             setMensagem('');
         }, 3000);
     }
-    
 
     return (
         <div>
@@ -32,19 +24,16 @@ function ItemDBebidas(props) {
 
             <div className='deitado'>
                 <ul className='list-deitado'>
-                    <li className="imgProduto"><img src="/imgs/agua.svg" alt="" /></li>
+                    <li className="imgProduto"><img src={props.img} alt={props.nome} /></li>
                     <li className='info-deitado'>
                         <p className="nomeItem">{props.nome}</p>
                         <p className="descItem">{props.desc}</p>
 
                         <div id='flex-preco'>
-                            <p>R$ {props.preco}</p>
+                            <p>R$ {props.preco.toFixed(2)}</p>
                         </div>
                     </li>
-                    {/* Adicione o ID como propriedade */}
-                    <button onClick={() => Adicionar({ id: props.id, nome: props.nome, desc: props.desc, preco: props.preco })} id="mais">
-                        <img src="/imgs/mais.svg" alt="" />
-                    </button>
+                    <button onClick={() => Adicionar({ id: props.id, nome: props.nome, desc: props.desc, preco: props.preco, img: props.img })} id="mais"><img src="/imgs/mais.svg" alt="Adicionar" /></button>
                 </ul>
                 {mensagem && (
                     <div className="mensagem-alerta">

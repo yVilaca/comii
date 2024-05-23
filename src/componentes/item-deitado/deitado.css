@@ -12,6 +12,10 @@
     font-family: 'Sarabun';
     flex: 1;
 }
+#deitado-flex>li>img{
+    width: 120px;
+    height: 120px;
+}
 #flex-preco{
     display: flex;
     justify-content: space-between;
