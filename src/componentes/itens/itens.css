@@ -54,6 +54,7 @@
 }
 
 .mensagem-alerta {
+    z-index: 2025;
     position: fixed;
     top: 20px;
     right: 20px;
