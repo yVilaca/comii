@@ -1,5 +1,5 @@
 import './categoria.css';
-function Categoria(props){
+function Categoria(props) {
     return <div >
         <section id='fundo-categoria'>
             <img src={props.img} alt="" />

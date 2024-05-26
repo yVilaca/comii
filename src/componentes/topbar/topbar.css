@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
-*{
+
+* {
     margin: 0;
     padding: 0;
 }
-#lista-fundo{
+
+#lista-fundo {
     align-items: center;
     padding: 10px 30px;
     list-style: none;
@@ -11,14 +13,16 @@
     display: flex;
     justify-content: space-between;
 }
-#ajuda-fundo a{
+
+#ajuda-fundo a {
     font-family: 'Noto Serif';
     font-weight: 300;
     font-size: 3.5vw;
     text-decoration: none;
     color: white;
 }
-#ajuda-fundo{
+
+#ajuda-fundo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,14 +33,17 @@
     height: 5vh;
     padding: 0 1.25rem;
 }
-#logo{
+
+#logo {
     width: 80px;
 }
-#topbar{
+
+#topbar {
     position: sticky;
     top: 0;
     z-index: 2024;
 }
-#seta-ajuda{
+
+#seta-ajuda {
     height: 30%;
 }

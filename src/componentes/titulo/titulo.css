@@ -8,6 +8,7 @@
 .recomendados-line {
     color: #888;
     letter-spacing: -2;
+    font-size: 1.6vh;
     -webkit-user-select: none;
     user-select: none;
 }

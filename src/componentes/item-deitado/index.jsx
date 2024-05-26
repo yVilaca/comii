@@ -5,13 +5,14 @@ import { CartContext } from '../../pages/CartContext';
 
 function ItemD(props) {
     const { addToCart } = useContext(CartContext);
-    const [mensagem, setMensagem] = useState('');
+    const [mensagens, setMensagens] = useState([]);
 
     function Adicionar(item) {
         addToCart({ ...item, quantidade: 1 });
-        setMensagem(`${item.nome} foi incluído ao carrinho!`);
+        const novaMensagem = `${item.nome} foi incluído ao carrinho!`;
+        setMensagens((prevMensagens) => [...prevMensagens, novaMensagem]);
         setTimeout(() => {
-            setMensagem('');
+            setMensagens((prevMensagens) => prevMensagens.filter(msg => msg !== novaMensagem));
         }, 3000);
     }
 
@@ -30,11 +31,13 @@ function ItemD(props) {
                     </div>
                 </li>
             </ul>
-            {mensagem && (
-                <div className="mensagem-alerta">
-                    <img src="/imgs/check.svg" alt='check' width={"20px"} style={{ paddingRight: "1vh" }} />{mensagem}
-                </div>
-            )}
+            <div className="mensagens-alerta">
+                {mensagens.map((mensagem, index) => (
+                    <div key={index} className="mensagem-alerta">
+                        <img src="/imgs/check.svg" alt='check' width={"20px"} style={{ paddingRight: "1vh" }} />{mensagem}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }

@@ -1,4 +1,5 @@
-.deitado{margin:  2.5vh;
+.deitado {
+    margin: 2.5vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,28 +7,33 @@
     font-family: "Sarabun";
 }
 
-.list-deitado{list-style: none;
+.list-deitado {
+    list-style: none;
     display: flex;
     justify-content: center;
     gap: 4%;
     font-family: 'Sarabun';
 }
 
-.nomeItem{display: flex;
+.nomeItem {
+    display: flex;
     font-size: 130%;
 }
 
-.descItem{display: flex;
+.descItem {
+    display: flex;
     padding: 5px 0;
     font-size: 70%;
 }
 
-#flex-preco{font-family: "Sarabun";
+#flex-preco {
+    font-family: "Sarabun";
     color: #85120B;
     display: flex;
     justify-content: space-between;
 }
 
-#mais{background-color: #fff;
+#mais {
+    background-color: #fff;
     border: 0 transparent;
 }

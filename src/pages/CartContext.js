@@ -1,3 +1,4 @@
+// CartContext.js
 import React, { createContext, useState, useEffect } from 'react';
 
 export const CartContext = createContext();
@@ -5,7 +6,15 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    try {
+      const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+      // Validate each item in the cart
+      return parsedCart.every(item => item.id && item.nome && item.preco && item.quantidade)
+        ? parsedCart
+        : [];
+    } catch (e) {
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -35,7 +44,6 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = (id) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
-
 
   return (
     <CartContext.Provider value={{ cart, addToCart, updateQuantity, removeFromCart }}>

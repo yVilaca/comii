@@ -1,11 +1,11 @@
-.recomendados-text{
+.recomendados-text {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 3vh 0;
 }
 
-#recomendados{
+#recomendados {
     padding: 0 10px;
     font-family: "Sarabun";
     font-weight: 400;
@@ -13,10 +13,13 @@
     font-size: 4vw;
 }
 
-.recomendados-line{
+.recomendados-line {
     color: #888;
     letter-spacing: -2;
-      -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
 }

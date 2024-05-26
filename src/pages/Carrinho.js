@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { CartContext } from './CartContext';
 import NavBar from '../componentes/topbar';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { Transition, TransitionGroup } from 'react-transition-group';
 import './Carrinho.css';
 import Titulo from '../componentes/titulo';
 
@@ -35,12 +35,25 @@ const Carrinho = () => {
       <ul style={{ listStyle: "none" }}>
         <TransitionGroup component={null}>
           {cart.map((item, index) => (
-            <CSSTransition
+            <Transition
               key={item.id}
               timeout={500}
-              classNames="item"
+              onEnter={(node) => {
+                node.style.opacity = 0;
+                node.style.transform = 'scale(0.5)';
+                requestAnimationFrame(() => {
+                  node.style.transition = 'opacity 500ms, transform 500ms';
+                  node.style.opacity = 1;
+                  node.style.transform = 'scale(1)';
+                });
+              }}
+              onExit={(node) => {
+                node.style.transition = 'opacity 500ms, transform 500ms';
+                node.style.opacity = 0;
+                node.style.transform = 'scale(0.5)';
+              }}
             >
-              <li key={index}>
+              <li>
                 {item && item.preco && (
                   <div id='div-item2'>
                     <ul id='deitado-flex'>
@@ -72,13 +85,13 @@ const Carrinho = () => {
                   </div>
                 )}
               </li>
-            </CSSTransition>
+            </Transition>
           ))}
         </TransitionGroup>
       </ul>
 
       <div style={{ position: "fixed", bottom: "0", width: "100%", paddingBottom: "8vh", backgroundColor:"white",boxShadow:"0px -2px 10px rgba(0,0,0,0.1)"}}>
-        <Titulo titulo="SUBTOTAL" />
+        <Titulo titulo="SUBTOTAL" linha="---------------------------------------"/>
         <div style={{ display: "flex", justifyContent: "space-between", padding: "0 40px" }}>
           <h2 style={{ fontFamily: "Sarabun", fontWeight: "500" }}>R$ {total.toFixed(2)}</h2>
 

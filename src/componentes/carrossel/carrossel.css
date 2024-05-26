@@ -1,4 +1,5 @@
-#maisPedidos{font-family: 'Sarabun';
+#maisPedidos {
+    font-family: 'Sarabun';
     color: #85120B;
     align-items: center;
     text-align: center;
@@ -6,7 +7,9 @@
     font-weight: normal;
 }
 
-.container{margin-top: 15px;}
+.container {
+    margin-top: 15px;
+}
 
 .swiper-wrapper {
     position: relative;
@@ -28,7 +31,7 @@
     display: block;
 }
 
-.slide-item{
+.slide-item {
     width: 90%;
     height: 20vh;
     object-fit: cover;
@@ -36,19 +39,18 @@
     border-radius: 8px;
     margin-bottom: 1px;
 }
-.slide-img{
+
+.slide-img {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
 }
-.swiper-pagination-bullet-active{
+
+.swiper-pagination-bullet-active {
     background-color: #fff;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 1a83c2b0f3651478190e2535da1f59a885202cb5
 .swiper {
     margin-left: auto;
     margin-right: auto;

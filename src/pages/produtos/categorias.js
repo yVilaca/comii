@@ -1,22 +1,28 @@
 // Categorias.js
 import "./categorias.css";
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Categorias() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("");
 
-  useEffect(() => {
-    setActiveLink(location.pathname);
-  }, [location.pathname]);
-
-  // Verifica se a localização atual corresponde à rota de bebidas e define a classe 'active2' se sim
+  // Define o link ativo baseado na localização atual
   useEffect(() => {
     if (location.pathname === "/produtos" || location.pathname === "/produtos/bebidas") {
       setActiveLink("/produtos/bebidas");
+    } else {
+      setActiveLink(location.pathname);
     }
   }, [location.pathname]);
+
+  // Redireciona para a rota de bebidas se estiver na rota de produtos
+  useEffect(() => {
+    if (location.pathname === "/produtos") {
+      navigate("/produtos/bebidas", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <div>

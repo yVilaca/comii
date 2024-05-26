@@ -4,9 +4,9 @@ import ItemDBebidas from "../../../componentes/item-deitado-produto";
 import Titulo from "../../../componentes/titulo";
 
 function Entradas() {
-  return(
-  <div style={{marginBottom:"8vh"}}>
-      <Titulo titulo="ENTRADAS"/>
+  return (
+    <div style={{ marginBottom: "8vh" }}>
+      <Titulo titulo="ENTRADAS" linha="----------------------------------------"/>
       <ItemDBebidas img="/imgs/bruschettas2.svg" id="5" nome="Bruschettas" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={29.99} />
       <ItemDBebidas img="/imgs/carpaccio2.svg" id="6" nome="Carpaccio" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={19.99} />
       <ItemDBebidas img="/imgs/espetinho2.svg" id="7" nome="Espetinho caprese ao molho pesto" desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit." preco={14.80} />
