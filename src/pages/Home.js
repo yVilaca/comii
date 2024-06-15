@@ -14,7 +14,7 @@ const Home = () => {
     ];
     const categoriasJuntasItems = [
         { id: 17, nome: "Burrito", preco: 19.80, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." },
-        { id: 18, nome: "Macarrão", preco: 13.99, desc: "Macarrão com queijos especiais e temperos italianos selecionados." }
+        { id: 18, nome: "Macarrão", preco: 13.99, desc: "Macarrão com queijos especiais e temperos italianos selecionados." } 
     ];
 
     return (

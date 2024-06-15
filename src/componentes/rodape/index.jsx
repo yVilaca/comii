@@ -21,6 +21,12 @@ function Rodape() {
   }, [location.pathname, location.search]);
 
   const isActiveLink = (link) => {
+    if (link === "/home") {
+      return activeLink === link || activeLink === "/";
+    }
+    if (link === "/produtos") {
+      return activeLink.startsWith(link);
+    }
     if (link === "/carrinho") {
       return activeLink === link || activeLink.startsWith("/carrinho/");
     }
@@ -31,7 +37,7 @@ function Rodape() {
     <>
       <footer>
         <Link
-          to="/home"
+          to={`/home${mesaParam ? `?mesa=${mesaParam}` : ""}`}
           className={`aba home ${isActiveLink("/home") ? "active" : ""}`}
         >
           <img src="/imgs/home.svg" alt="imagem" /> <p className="abanome">Home</p>
@@ -43,7 +49,7 @@ function Rodape() {
           <img src="/imgs/shopping-cart.svg" alt="imagem" /> <p className="abanome">Carrinho</p>
         </Link>
         <Link
-          to="/produtos"
+          to={`/produtos${mesaParam ? `?mesa=${mesaParam}` : ""}`}
           className={`aba products ${isActiveLink("/produtos") ? "active" : ""}`}
         >
           <img src="/imgs/shopping-bag.svg" alt="imagem" /><p className="abanome">Produtos</p>
