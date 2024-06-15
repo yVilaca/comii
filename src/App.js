@@ -10,6 +10,7 @@ import Bebidas from './pages/produtos/subpages/Bebidas';
 import Sobremesas from './pages/produtos/subpages/Sobremesas';
 import Entradas from './pages/produtos/subpages/Entradas';
 import Rodape from './componentes/rodape';
+import Ajuda from './pages/Ajuda';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/ajuda" element={<Ajuda />} />
               <Route path="/carrinho/:mesa" element={<Carrinho />} /> {/* Rota corrigida */}
               <Route path="/produtos" element={<Produtos />}>
                 <Route path="bebidas" element={<Bebidas />} />

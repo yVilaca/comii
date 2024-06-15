@@ -11,7 +11,13 @@ function Rodape() {
     setActiveLink(location.pathname);
     const searchParams = new URLSearchParams(location.search);
     const mesa = searchParams.get("mesa");
-    setMesaParam(mesa ? mesa : "");
+    if (mesa) {
+      localStorage.setItem("mesa", mesa);
+      setMesaParam(mesa);
+    } else {
+      const storedMesa = localStorage.getItem("mesa");
+      setMesaParam(storedMesa ? storedMesa : "");
+    }
   }, [location.pathname, location.search]);
 
   const isActiveLink = (link) => {
@@ -31,7 +37,7 @@ function Rodape() {
           <img src="/imgs/home.svg" alt="imagem" /> <p className="abanome">Home</p>
         </Link>
         <Link
-          to={`/carrinho/${mesaParam}`}
+          to={`/carrinho${mesaParam ? `/${mesaParam}` : ""}`}
           className={`aba cart ${isActiveLink("/carrinho") ? "active" : ""}`}
         >
           <img src="/imgs/shopping-cart.svg" alt="imagem" /> <p className="abanome">Carrinho</p>
