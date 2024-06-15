@@ -1,22 +1,20 @@
-// Home.js
 import React from 'react';
-import Banner from "../componentes/banner";
-import ItemD from "../componentes/item-deitado";
-import Itens from "../componentes/itens";
-import NavBar from "../componentes/topbar";
-import "./home.css";
+import Banner from '../componentes/banner';
+import ItemD from '../componentes/item-deitado';
+import Itens from '../componentes/itens';
+import NavBar from '../componentes/topbar';
+import './home.css';
 
 const Home = () => {
     const items = [
-        { id: 1, nome: "Cheese Burguer", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 19.80 },
-        { id: 2, nome: "X-Bacon", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 13.99 },
-        { id: 3, nome: "X-Tudo", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 17.50 },
-        { id: 4, nome: "X-Vegetariano", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 15.00 }
+        { id: 13, nome: "Cheese Burguer", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 19.80 },
+        { id: 14, nome: "X-Bacon", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 13.99 },
+        { id: 15, nome: "X-Tudo", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 17.50 },
+        { id: 16, nome: "X-Vegetariano", desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", preco: 15.00 }
     ];
-
     const categoriasJuntasItems = [
-        { id: 5, nome: "Burrito", preco: 19.80, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." },
-        { id: 6, nome: "Macarrão", preco: 13.99, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." }
+        { id: 17, nome: "Burrito", preco: 19.80, desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados." },
+        { id: 18, nome: "Macarrão", preco: 13.99, desc: "Macarrão com queijos especiais e temperos italianos selecionados." }
     ];
 
     return (

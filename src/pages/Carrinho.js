@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { CartContext } from './CartContext';
 import NavBar from '../componentes/topbar';
 import { Transition, TransitionGroup } from 'react-transition-group';
@@ -6,20 +7,62 @@ import './Carrinho.css';
 import Titulo from '../componentes/titulo';
 
 const Carrinho = () => {
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+  const { mesa } = useParams(); // Obtém o parâmetro 'mesa' da URL
+  const { cart, updateQuantity, removeFromCart, clearCart } = useContext(CartContext);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    const calculateTotal = () => {
+      const total = cart.reduce((sum, item) => {
+        if (item && item.preco && !isNaN(item.preco) && !isNaN(item.quantidade)) {
+          return sum + item.preco * item.quantidade;
+        }
+        console.error('Item com preço ou quantidade inválidos:', item.nome);
+        return sum;
+      }, 0);
+      setTotal(total);
+    };
+
+    calculateTotal();
+  }, [cart]);
 
   const handleQuantityChange = (index, event) => {
     const quantity = parseInt(event.target.value);
     updateQuantity(index, quantity);
   };
 
-  const total = cart.reduce((sum, item) => {
-    if (item && item.preco && !isNaN(item.preco) && !isNaN(item.quantidade)) {
-      return sum + item.preco * item.quantidade;
+  const finalizarPedido = async () => {
+    const pedido = {
+      produtos: cart.map(item => ({ id: item.id, quantidade: item.quantidade })),
+      total: total.toFixed(2),
+      mesa: mesa || ''  // Inclui o número da mesa obtido de useParams ou string vazia se não houver mesa definida
+    };
+
+    console.log('Dados do pedido a serem enviados:', pedido);
+
+    try {
+      const response = await fetch('http://localhost/salvar_pedido.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(pedido)
+      });
+
+      const data = await response.json();
+      console.log('Resposta do servidor:', data);
+
+      if (data.status === 'success') {
+        alert('Pedido realizado com sucesso!');
+        clearCart();  // Limpar o carrinho após finalizar o pedido
+      } else {
+        alert('Erro ao finalizar pedido. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao finalizar pedido:', error);
+      alert('Erro ao finalizar pedido. Tente novamente.');
     }
-    console.error('Item com preço ou quantidade inválidos:', item);
-    return sum;
-  }, 0);
+  };
 
   return (
     <div style={{ marginBottom: "25vh" }}>
@@ -67,7 +110,6 @@ const Carrinho = () => {
 
                         <p id='desc-item2'>{item.desc}</p>
                         <div id='flex-preco'>
-
                           <select
                             value={String(item.quantidade)}
                             onChange={(event) => handleQuantityChange(index, event)}
@@ -90,14 +132,13 @@ const Carrinho = () => {
         </TransitionGroup>
       </ul>
 
-      <div style={{ position: "fixed", bottom: "0", width: "100%", paddingBottom: "8vh", backgroundColor:"white",boxShadow:"0px -2px 10px rgba(0,0,0,0.1)"}}>
-        <Titulo titulo="SUBTOTAL" linha="---------------------------------------"/>
+      <div style={{ position: "fixed", bottom: "0", width: "100%", paddingBottom: "8vh", backgroundColor: "white", boxShadow: "0px -2px 10px rgba(0,0,0,0.1)" }}>
+        <Titulo titulo="SUBTOTAL" linha="---------------------------------------" />
         <div style={{ display: "flex", justifyContent: "space-between", padding: "0 40px" }}>
           <h2 style={{ fontFamily: "Sarabun", fontWeight: "500" }}>R$ {total.toFixed(2)}</h2>
 
-          <button className='finapedido'>Finalizar Pedido</button>
+          <button className='finapedido' onClick={finalizarPedido}>Finalizar Pedido</button>
         </div>
-
       </div>
     </div>
   );

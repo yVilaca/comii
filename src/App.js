@@ -1,15 +1,15 @@
-// App.js
+import React from 'react';
 import './app.css';
-import Rodape from "./componentes/rodape";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './pages/CartContext';
 
 import Home from './pages/Home';
-import Carrinho from './pages/Carrinho';
+import Carrinho from './pages/Carrinho'; // Certifique-se de importar o componente Carrinho corretamente
 import Produtos from './pages/Produtos';
 import Bebidas from './pages/produtos/subpages/Bebidas';
 import Sobremesas from './pages/produtos/subpages/Sobremesas';
 import Entradas from './pages/produtos/subpages/Entradas';
+import Rodape from './componentes/rodape';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
-              <Route path="/carrinho" element={<Carrinho />} />
+              <Route path="/carrinho/:mesa" element={<Carrinho />} /> {/* Rota corrigida */}
               <Route path="/produtos" element={<Produtos />}>
                 <Route path="bebidas" element={<Bebidas />} />
                 <Route path="sobremesas" element={<Sobremesas />} />
@@ -33,11 +33,10 @@ function App() {
       </div>
 
       <span className='msgmaxwidth' style={{ margin: "0 auto" }}>
-        PAGINA INDISPONÍVEL PARA SEU DISPOSITIVO <br/>
-        [Por favor, utilize disposivos móveis]
+        PAGINA INDISPONÍVEL PARA SEU DISPOSITIVO <br />
+        [Por favor, utilize dispositivos móveis]
       </span>
     </div>
-
   );
 }
 
