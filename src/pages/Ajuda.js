@@ -21,7 +21,7 @@ const Ajuda = () => {
                 <p className="recomendados-line">-----------------------------------</p>
             </section>
 
-            <div><img src='/imgs/tela-inicial.png' alt='' id='imagem-inicio'/></div>
+            <div><img src='/imgs/tela-inicial3.png' alt='' id='imagem-inicio'/></div>
             <div className='desc-ajuda'> Aqui está uma parte da nossa tela inicial, conhecida como 'Home', onde apresentamos algumas de nossas recomendações. Ao clicar no botão “Incluir ao Carrinho', o item será automaticamente incluído em sua lista de compras. </div>
             
             <div className='barra-pequena'></div>
@@ -35,7 +35,7 @@ const Ajuda = () => {
                 <p className="recomendados-line">-----------------------------------</p>
             </section>
 
-            <div><img src='/imgs/produtos-ajuda.png' alt=''id='imagem-produtos'/></div>
+            <div><img src='/imgs/produtos-ajuda2.png' alt=''id='imagem-produtos'/></div>
             <div className='desc-ajuda'>Essa é a tela de produtos, onde você pode navegar por algumas categorias de produtos como: Bebidas, entradas e sobremesas. E escolher quais deles deseja inserir no seu carrinho.</div>
 
             <section className="recomendados-text">
@@ -45,7 +45,7 @@ const Ajuda = () => {
             </section>
             
             <div id='ajuste'><img src='/imgs/carrinho-ajuda.png' alt='' id='imagem-carrinho'/></div>
-            <div className='desc-ajuda'>Essa é a tela de produtos, onde você pode navegar por algumas categorias de produtos como: Bebidas, entradas e sobremesas. E escolher quais deles deseja inserir no seu carrinho.</div>
+            <div className='desc-ajuda'>Falando no carrinho de compras... Aqui está ele! Nele você pode visualizar os produtos que foram adicionados anteriormente, além de aumentar, diminuir ou simplesmente retirar o produto do carrinho.</div>
             <div className='desc-ajuda'>Restou alguma dúvida? Pressione o botão abaixo para chamar um garçom até sua mesa.</div>
 
             <ChamarGarcom />
