@@ -43,12 +43,14 @@ const Carrinho = () => {
     try {
       const response = await fetch('https://comii-ba34ddb6b031.herokuapp.com/salvar_pedido.php', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer seu-token-de-autorizacao'
         },
         body: JSON.stringify(pedido)
       });
+      
 
       if (!response.ok) {
         throw new Error('Erro ao finalizar pedido.');
