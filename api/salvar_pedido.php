@@ -4,10 +4,10 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
-$servername = getenv('DB_HOST'); // Recupera o host do banco de dados do ambiente
-$username = getenv('DB_USER'); // Recupera o usuário do banco de dados do ambiente
-$password = getenv('DB_PASS'); // Recupera a senha do banco de dados do ambiente
-$dbname = getenv('DB_NAME'); // Recupera o nome do banco de dados do ambiente
+$servername = getenv('DB_HOST');
+$username = getenv('DB_USER');
+$password = getenv('DB_PASS');
+$dbname = getenv('DB_NAME');
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
