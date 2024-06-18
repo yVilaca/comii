@@ -1,0 +1,16 @@
+{
+    "routes": [
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": "/api/salvar_pedido.php",
+        "dest": "/api/salvar_pedido.php"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/"
+      }
+    ]
+  }
+  

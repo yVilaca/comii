@@ -41,7 +41,7 @@ const Carrinho = () => {
     console.log('Dados do pedido a serem enviados:', pedido);
 
     try {
-      const response = await fetch('https://comiiphp.herokuapp.com/salvar_pedido.php', {
+      const response = await fetch('https://comii.vercel.app', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
