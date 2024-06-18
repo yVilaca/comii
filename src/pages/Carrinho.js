@@ -37,30 +37,24 @@ const Carrinho = () => {
       total: total.toFixed(2),
       mesa: mesa || ''
     };
-
-    console.log('Dados do pedido a serem enviados:', pedido);
-
+  
     try {
-      const response = await fetch('https://comii.vercel.app', {
+      const response = await fetch('https://comii.vercel.app/api/salvar_pedido.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer seu-token-de-autorizacao'
         },
         body: JSON.stringify(pedido)
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Resposta do servidor:', data);
-        })
-        .catch(error => {
-          console.error('Erro ao finalizar pedido:', error);
-        });
-
-
+      });
+  
+      if (!response.ok) {
+        throw new Error('Erro ao finalizar pedido.');
+      }
+  
       const data = await response.json();
       console.log('Resposta do servidor:', data);
-
+  
       if (data.status === 'success') {
         alert('Pedido realizado com sucesso!');
         clearCart();  // Limpar o carrinho após finalizar o pedido
@@ -72,6 +66,7 @@ const Carrinho = () => {
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
   };
+  
 
 
   return (
