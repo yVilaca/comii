@@ -32,14 +32,8 @@ const Carrinho = () => {
   };
 
   const finalizarPedido = async () => {
-    const pedido = {
-      produtos: cart.map(item => ({ id: item.id, quantidade: item.quantidade })),
-      total: total.toFixed(2),
-      mesa: mesa || ''
-    };
-  
     try {
-      const response = await fetch('https://comii.vercel.app/api/salvar_pedido.php', {
+      const response = await fetch('/api/salvar_pedido.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +60,7 @@ const Carrinho = () => {
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
   };
+  
   
 
 
