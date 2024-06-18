@@ -1,0 +1,61 @@
+#ajuda{text-align: center;
+    margin-top: 30px;
+    color: #85120B;
+    font-family: 'Sarabun';
+    font-size: 6vw;
+}
+
+.recomendados-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+#recomendados {
+    padding: 0 10px;
+    font-family: "Sarabun";
+    font-weight: 400;
+    color: #85120B;
+    font-size: 4vw;
+}
+
+.recomendados-line {
+    color: #888;
+    letter-spacing: -2;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
+    /* Standard syntax */
+}
+
+.desc-ajuda{text-align: center;
+    font-family: 'Sarabun';
+    font-size: 3.5vw;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.barra-pequena{
+    background-color: #BABABA;
+    width: 6%;
+    height: 0.2vh;
+    margin-top: 5%;
+    margin-left: 47%;
+    border-radius: 10px;
+}
+
+#imagens-ajuda{max-width: 100%;}
+#imagem-inicio{max-width: 100%;}
+#imagem-rodape{max-width: 100%;}
+#imagem-produtos{max-width: 100%;}
+#imagem-carrinho{max-width: 100%;
+    min-width: 100%;
+}
+
+#roda{margin-top: 5%;}
+
+#ajuste{align-items: center;}

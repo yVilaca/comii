@@ -1,0 +1,14 @@
+#chamar{background-color: #FEE14A;
+    color: black;
+    font-family: "Sarabun";
+    width: 90%;
+    height: 40px;
+    padding: 0 2.5%;
+    margin: 0 2.5%;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
