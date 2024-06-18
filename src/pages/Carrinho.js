@@ -7,7 +7,7 @@ import './Carrinho.css';
 import Titulo from '../componentes/titulo';
 
 const Carrinho = () => {
-  const { mesa } = useParams(); // Obtém o parâmetro 'mesa' da URL
+  const { mesa } = useParams();
   const { cart, updateQuantity, removeFromCart, clearCart } = useContext(CartContext);
   const [total, setTotal] = useState(0);
 
@@ -32,9 +32,16 @@ const Carrinho = () => {
   };
 
   const finalizarPedido = async () => {
+    const pedido = {
+      produtos: cart.map(item => ({ id: item.id, quantidade: item.quantidade })),
+      total: total.toFixed(2),
+      mesa: mesa || ''
+    };
+
+    console.log('Dados do pedido a serem enviados:', pedido);
+
     try {
-      const response = await fetch('/api/salvar_pedido.php', {
-        
+      const response = await fetch('https://comii.vercel.app/api/salvar_pedido.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,17 +49,17 @@ const Carrinho = () => {
         },
         body: JSON.stringify(pedido)
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao finalizar pedido.');
       }
-  
+
       const data = await response.json();
       console.log('Resposta do servidor:', data);
-  
+
       if (data.status === 'success') {
         alert('Pedido realizado com sucesso!');
-        clearCart();  // Limpar o carrinho após finalizar o pedido
+        clearCart();
       } else {
         alert('Erro ao finalizar pedido. Tente novamente.');
       }
@@ -61,9 +68,6 @@ const Carrinho = () => {
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
   };
-  
-  
-
 
   return (
     <div style={{ marginBottom: "25vh" }}>
