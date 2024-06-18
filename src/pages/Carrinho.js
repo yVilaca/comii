@@ -34,6 +34,7 @@ const Carrinho = () => {
   const finalizarPedido = async () => {
     try {
       const response = await fetch('/api/salvar_pedido.php', {
+        
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
