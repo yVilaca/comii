@@ -35,23 +35,23 @@ const Carrinho = () => {
     const pedido = {
       produtos: cart.map(item => ({ id: item.id, quantidade: item.quantidade })),
       total: total.toFixed(2),
-      mesa: mesa || ''  // Inclui o número da mesa obtido de useParams ou string vazia se não houver mesa definida
+      mesa: mesa || ''
     };
-
+  
     console.log('Dados do pedido a serem enviados:', pedido);
-
+  
     try {
-      const response = await fetch('http://localhost/salvar_pedido.php', {
+      const response = await fetch('https://comii.herokuapp.com/salvar_pedido.php', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(pedido)
-      });
-
+        body: JSON.stringify(pedido),
+      });      
+  
       const data = await response.json();
       console.log('Resposta do servidor:', data);
-
+  
       if (data.status === 'success') {
         alert('Pedido realizado com sucesso!');
         clearCart();  // Limpar o carrinho após finalizar o pedido
@@ -63,6 +63,7 @@ const Carrinho = () => {
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
   };
+  
 
   return (
     <div style={{ marginBottom: "25vh" }}>
