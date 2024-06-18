@@ -41,7 +41,7 @@ const Carrinho = () => {
     console.log('Dados do pedido a serem enviados:', pedido);
 
     try {
-      const response = await fetch('https://comii.vercel.app/api/salvar_pedido.php', {
+      const response = await fetch('/api/salvar_pedido.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
