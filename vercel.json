@@ -1,8 +1,15 @@
 {
-  "version": 2,
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/api/salvar_pedido.php", "dest": "/api/salvar_pedido.php" },
-    { "src": "/(.*)", "dest": "/src/componentes/pages/home.js" }
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/api/salvar_pedido.php",
+      "dest": "/api/salvar_pedido.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
   ]
 }
