@@ -1,15 +1,26 @@
 {
-  "routes": [
+  "version": 2,
+  "builds": [
     {
-      "handle": "filesystem"
+      "src": "api/salvar_pedido.php",
+      "use": "@vercel/php"
     },
     {
-      "src": "/api/salvar_pedido.php",
-      "dest": "/api/salvar_pedido.php"
+      "src": "src/**/*",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/index.html"
     }
   ]
 }

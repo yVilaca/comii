@@ -37,9 +37,9 @@ const Carrinho = () => {
       total: total.toFixed(2),
       mesa: mesa || ''
     };
-
+  
     console.log('Dados do pedido a serem enviados:', pedido);
-
+  
     try {
       const response = await fetch('/api/salvar_pedido.php', {
         method: 'POST',
@@ -49,14 +49,14 @@ const Carrinho = () => {
         },
         body: JSON.stringify(pedido)
       });
-
+  
       if (!response.ok) {
         throw new Error('Erro ao finalizar pedido.');
       }
-
+  
       const data = await response.json();
       console.log('Resposta do servidor:', data);
-
+  
       if (data.status === 'success') {
         alert('Pedido realizado com sucesso!');
         clearCart();
