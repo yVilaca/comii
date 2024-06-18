@@ -1,9 +1,27 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "api/salvar_pedido.php",
+      "use": "@vercel/php"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "src/index.js",
+      "use": "@vercel/node"
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/public/static/$1"
     },
     {
       "src": "/(.*)",
