@@ -37,11 +37,11 @@ const Carrinho = () => {
       total: total.toFixed(2),
       mesa: mesa || ''
     };
-  
+
     console.log('Dados do pedido a serem enviados:', pedido);
-  
+
     try {
-      const response = await fetch('https://comii-ba34ddb6b031.herokuapp.com/api/salvar_pedido.php', { // Substitua com seu URL do Heroku
+      const response = await fetch('https://comii-ba34ddb6b031.herokuapp.com/salvar_pedido.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,14 +49,14 @@ const Carrinho = () => {
         },
         body: JSON.stringify(pedido)
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao finalizar pedido.');
       }
-  
+
       const data = await response.json();
       console.log('Resposta do servidor:', data);
-  
+
       if (data.status === 'success') {
         alert('Pedido realizado com sucesso!');
         clearCart();
@@ -67,8 +67,9 @@ const Carrinho = () => {
       console.error('Erro ao finalizar pedido:', error);
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
-  };  
-  
+  };
+
+
 
   return (
     <div style={{ marginBottom: "25vh" }}>
