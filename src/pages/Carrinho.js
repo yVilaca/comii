@@ -41,7 +41,7 @@ const Carrinho = () => {
     console.log('Dados do pedido a serem enviados:', pedido);
   
     try {
-      const response = await fetch('/api/salvar_pedido.php', {
+      const response = await fetch('https://comii-ba34ddb6b031.herokuapp.com/api/salvar_pedido.php', { // Substitua com seu URL do Heroku
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const Carrinho = () => {
       console.error('Erro ao finalizar pedido:', error);
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
-  };
+  };  
   
 
   return (
