@@ -4,11 +4,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './pages/CartContext';
 
 import Home from './pages/Home';
-import Carrinho from './pages/Carrinho'; // Certifique-se de importar o componente Carrinho corretamente
+import Carrinho from './pages/Carrinho';
 import Produtos from './pages/Produtos';
 import Bebidas from './pages/produtos/subpages/Bebidas';
 import Sobremesas from './pages/produtos/subpages/Sobremesas';
 import Entradas from './pages/produtos/subpages/Entradas';
+import Pedidos from './pages/Pedidos'; // Importe o componente Pedidos.js aqui
 import Rodape from './componentes/rodape';
 import Ajuda from './pages/Ajuda';
 
@@ -22,7 +23,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
               <Route path="/ajuda" element={<Ajuda />} />
-              <Route path="/carrinho/:mesa" element={<Carrinho />} /> {/* Rota corrigida */}
+              <Route path="/carrinho/:mesa" element={<Carrinho />} />
+              <Route path="/pedidos" element={<Pedidos />} /> {/* Rota para Pedidos.js */}
               <Route path="/produtos" element={<Produtos />}>
                 <Route path="bebidas" element={<Bebidas />} />
                 <Route path="sobremesas" element={<Sobremesas />} />

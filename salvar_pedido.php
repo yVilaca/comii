@@ -1,20 +1,29 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *"); // Permitir acesso de qualquer origem
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Access-Control-Allow-Credentials: true");
 
-$servername = getenv('DB_HOST');
-$username = getenv('DB_USER');
-$password = getenv('DB_PASS');
-$dbname = getenv('DB_NAME');
+// Verifica se a requisição é do tipo OPTIONS
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
+$servername = "sql200.infinityfree.com"; // Verifique as configurações no painel do InfinityFree
+$username = "if0_36752603";      // Seu usuário de banco de dados
+$password = "VSDUJFg2wUQtFR";            // Sua senha de banco de dados
+$dbname = "if0_36752603_comii";   // Nome do banco de dados
+
+// Conexão com o banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+// Verificar conexão
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
 
+// Receber dados do POST
 $data = json_decode(file_get_contents("php://input"), true);
 if (!$data) {
     http_response_code(400);
@@ -25,12 +34,14 @@ $produtos = $data['produtos'];
 $total = $data['total'];
 $mesa = isset($data['mesa']) ? $data['mesa'] : '';
 
+// Inserir pedido no banco de dados
 $stmt = $conn->prepare("INSERT INTO pedidos (data_pedido, total, numero_mesa) VALUES (NOW(), ?, ?)");
 $stmt->bind_param("ds", $total, $mesa);
 $stmt->execute();
 $pedido_id = $stmt->insert_id;
 $stmt->close();
 
+// Inserir produtos do pedido
 $stmt = $conn->prepare("INSERT INTO pedido_produtos (pedido_id, produto_id, quantidade) VALUES (?, ?, ?)");
 foreach ($produtos as $produto) {
     $stmt->bind_param("iii", $pedido_id, $produto['id'], $produto['quantidade']);
@@ -40,6 +51,7 @@ $stmt->close();
 
 $conn->close();
 
+// Retornar resposta em JSON
 $response = [
     'status' => 'success',
     'message' => 'Pedido salvo com sucesso.'

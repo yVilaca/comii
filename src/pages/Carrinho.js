@@ -41,16 +41,14 @@ const Carrinho = () => {
     console.log('Dados do pedido a serem enviados:', pedido);
 
     try {
-      const response = await fetch('https://comii-ba34ddb6b031.herokuapp.com/salvar_pedido.php', {
+      const response = await fetch('http://comii.000.pe/php/salvar_pedido.php', {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer seu-token-de-autorizacao'
         },
         body: JSON.stringify(pedido)
       });
-      
 
       if (!response.ok) {
         throw new Error('Erro ao finalizar pedido.');
@@ -70,8 +68,6 @@ const Carrinho = () => {
       alert('Erro ao finalizar pedido. Tente novamente.');
     }
   };
-
-
 
   return (
     <div style={{ marginBottom: "25vh" }}>
