@@ -1,19 +1,15 @@
 <?php
-header("Access-Control-Allow-Origin: *"); // Permitir acesso de qualquer origem
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Credentials: true");
-
 // Verifica se a requisição é do tipo OPTIONS
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-$servername = "sql200.infinityfree.com"; // Verifique as configurações no painel do InfinityFree
-$username = "if0_36752603";      // Seu usuário de banco de dados
-$password = "VSDUJFg2wUQtFR";            // Sua senha de banco de dados
-$dbname = "if0_36752603_comii";   // Nome do banco de dados
+$servername = "localhost"; // Verifique as configurações no painel do InfinityFree
+$username = "root";      // Seu usuário de banco de dados
+$password = "";            // Sua senha de banco de dados
+$dbname = "comii";   // Nome do banco de dados
+
 
 // Conexão com o banco de dados
 $conn = new mysqli($servername, $username, $password, $dbname);

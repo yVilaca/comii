@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/api/*"
-  to = "https://comii-ba34ddb6b031.herokuapp.com/:splat"
-  headers = {Access-Control-Allow-Origin = "https://comii.netlify.app"}
-  methods = ["POST", "GET", "OPTIONS"]

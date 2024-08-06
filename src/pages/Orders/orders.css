@@ -1,0 +1,9 @@
+.orders-page {
+    padding: 16px;
+}
+
+.orders-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
