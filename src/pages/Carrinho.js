@@ -11,7 +11,8 @@ const Carrinho = () => {
   const { cart, updateQuantity, removeFromCart, clearCart } =
     useContext(CartContext);
   const [total, setTotal] = useState(0);
-  const [observacoes, setObservacoes] = useState("");
+  const [observacoes, setObservacoes] = useState({});
+  const [editing, setEditing] = useState({}); // Controla se o campo de observação está em modo de edição
 
   useEffect(() => {
     const calculateTotal = () => {
@@ -38,15 +39,33 @@ const Carrinho = () => {
     updateQuantity(index, quantity);
   };
 
+  const handleObservationChange = (id, event) => {
+    setObservacoes((prevObservacoes) => ({
+      ...prevObservacoes,
+      [id]: event.target.value,
+    }));
+  };
+
+  const toggleEdit = (id) => {
+    setEditing((prevEditing) => ({
+      ...prevEditing,
+      [id]: !prevEditing[id],
+    }));
+  };
+
   const finalizarPedido = async () => {
     const pedido = {
       produtos: cart.map((item) => ({
         id: item.id,
         quantidade: item.quantidade,
+        observacao: observacoes[item.id] || "", // Observação vazia por padrão
       })),
       total: total.toFixed(2),
       mesa: mesa || "",
-      observacoes: observacoes, // Adiciona observações no pedido
+      observacoesProduto: cart.map((item) => ({
+        produto_id: item.id,
+        observacao: observacoes[item.id] || "",
+      })),
     };
 
     console.log("Dados do pedido a serem enviados:", pedido);
@@ -57,7 +76,7 @@ const Carrinho = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        mode: "cors", // Adicione esta linha para suporte a CORS
+        mode: "cors",
         body: JSON.stringify(pedido),
       });
 
@@ -73,7 +92,6 @@ const Carrinho = () => {
       if (data.status === "success") {
         alert("Pedido realizado com sucesso!");
         clearCart();
-        // Força a recarga de Orders após finalizar o pedido com sucesso
         window.location.reload();
       } else {
         alert("Erro ao finalizar pedido. Tente novamente.");
@@ -172,6 +190,30 @@ const Carrinho = () => {
                             Remover do Carrinho
                           </button>
                         </div>
+
+                        {/* Botão para abrir/fechar a área de observações */}
+                        <button
+                          className="obs-button"
+                          onClick={() => toggleEdit(item.id)}
+                        >
+                          {editing[item.id]
+                            ? "Salvar Observações"
+                            : observacoes[item.id]
+                            ? "Editar Observações"
+                            : "Adicionar Observações"}
+                        </button>
+
+                        {/* Campo de texto para observações */}
+                        {editing[item.id] && (
+                          <textarea
+                            value={observacoes[item.id] || ""}
+                            onChange={(e) =>
+                              handleObservationChange(item.id, e)
+                            }
+                            placeholder="Adicione observações para este produto"
+                            className="obs-textarea"
+                          />
+                        )}
                       </li>
                     </ul>
                   </div>
@@ -210,15 +252,6 @@ const Carrinho = () => {
           <button className="finapedido" onClick={finalizarPedido}>
             Finalizar Pedido
           </button>
-        </div>
-        <div className="obs" style={{ padding: "0 40px" }}>
-          <label htmlFor="observacoes">Observações/Preferências:</label>
-          <textarea
-            id="observacoes"
-            value={observacoes}
-            onChange={(e) => setObservacoes(e.target.value)}
-            style={{ width: "100%", height: "100px" }}
-          />
         </div>
       </div>
     </div>
