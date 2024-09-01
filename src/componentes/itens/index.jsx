@@ -45,7 +45,7 @@ function Itens(props) {
         </li>
         <li id="desc-item">{props.desc}</li>
         <li id="preco">R$ {props.preco.toFixed(2)}</li>
-        <button onClick={Adicionar}>Inncluir ao carrinho</button>
+        <button onClick={Adicionar}>Incluir ao carrinho</button>
       </ul>
       {mensagem && (
         <div className="mensagem-alerta">
