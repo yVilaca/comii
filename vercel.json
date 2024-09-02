@@ -8,6 +8,13 @@
       "dest": "/api/salvar_pedido.php"
     },
     {
+      "src": "/static/(.*)",
+      "dest": "/static/$1",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/"
     }

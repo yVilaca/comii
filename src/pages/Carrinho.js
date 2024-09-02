@@ -1,10 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import NavBar from "../componentes/topbar";
 import { Transition, TransitionGroup } from "react-transition-group";
+import Modal from "react-modal";
 import "./Carrinho.css";
 import Titulo from "../componentes/titulo";
+
+// Configuração do Modal
+Modal.setAppElement("#root"); // Para acessibilidade
 
 const Carrinho = () => {
   const { mesa } = useParams();
@@ -12,7 +16,27 @@ const Carrinho = () => {
     useContext(CartContext);
   const [total, setTotal] = useState(0);
   const [observacoes, setObservacoes] = useState({});
-  const [editing, setEditing] = useState({}); // Controla se o campo de observação está em modo de edição
+  const [editing, setEditing] = useState({});
+  const [mesaAtual, setMesaAtual] = useState(
+    mesa || localStorage.getItem("mesa") || ""
+  );
+  const [modalIsOpen, setModalIsOpen] = useState(
+    !mesa || !localStorage.getItem("mesa")
+  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (mesaAtual) {
+      localStorage.setItem("mesa", mesaAtual);
+      setModalIsOpen(false); // Fecha o modal quando a mesa é definida
+    }
+  }, [mesaAtual]);
+
+  useEffect(() => {
+    if (!mesaAtual) {
+      setModalIsOpen(true);
+    }
+  }, [mesaAtual]);
 
   useEffect(() => {
     const calculateTotal = () => {
@@ -54,14 +78,19 @@ const Carrinho = () => {
   };
 
   const finalizarPedido = async () => {
+    if (!mesaAtual) {
+      alert("Por favor, informe o número da mesa.");
+      return;
+    }
+
     const pedido = {
       produtos: cart.map((item) => ({
         id: item.id,
         quantidade: item.quantidade,
-        observacao: observacoes[item.id] || "", // Observação vazia por padrão
+        observacao: observacoes[item.id] || "",
       })),
       total: total.toFixed(2),
-      mesa: mesa || "",
+      mesa: mesaAtual || "",
       observacoesProduto: cart.map((item) => ({
         produto_id: item.id,
         observacao: observacoes[item.id] || "",
@@ -92,13 +121,21 @@ const Carrinho = () => {
       if (data.status === "success") {
         alert("Pedido realizado com sucesso!");
         clearCart();
-        window.location.reload();
+        localStorage.removeItem("mesa"); // Remove o número da mesa do localStorage
+        navigate("/home"); // Redireciona para a página inicial
       } else {
         alert("Erro ao finalizar pedido. Tente novamente.");
       }
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
       alert("Erro ao finalizar pedido. Tente novamente.");
+    }
+  };
+
+  const handleMesaSubmit = () => {
+    const numeroMesa = document.getElementById("numeroMesa").value;
+    if (numeroMesa) {
+      setMesaAtual(numeroMesa);
     }
   };
 
@@ -191,7 +228,6 @@ const Carrinho = () => {
                           </button>
                         </div>
 
-                        {/* Botão para abrir/fechar a área de observações */}
                         <button
                           className="obs-button"
                           onClick={() => toggleEdit(item.id)}
@@ -203,7 +239,6 @@ const Carrinho = () => {
                             : "Adicionar Observações"}
                         </button>
 
-                        {/* Campo de texto para observações */}
                         {editing[item.id] && (
                           <textarea
                             value={observacoes[item.id] || ""}
@@ -254,6 +289,68 @@ const Carrinho = () => {
           </button>
         </div>
       </div>
+
+      {/* Modal para solicitar o número da mesa */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Número da Mesa"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            padding: "30px",
+            borderRadius: "5px",
+            fontFamily: "Sarabun",
+            textAlign: "center",
+            width: "60vw",
+          },
+        }}
+      >
+        <h2>Informe o número da mesa</h2>
+        <input
+          id="numeroMesa"
+          type="text"
+          placeholder="Número da Mesa"
+          style={{
+            padding: "10px",
+            width: "100%",
+            margin: "10px 0px",
+            border: "none",
+            boxShadow: "1px 1px 10px #aaa",
+            borderRadius: "5px",
+          }}
+        />
+        <button
+          onClick={handleMesaSubmit}
+          style={{
+            padding: "10px",
+            backgroundColor: "#85120B",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          Confirmar
+        </button>
+        <button
+          onClick={() => setModalIsOpen(false)}
+          style={{
+            fontFamil: "Sarabun",
+            padding: "10px",
+            backgroundColor: "#aaa",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            marginLeft: "10px",
+          }}
+        >
+          Cancelar
+        </button>
+      </Modal>
     </div>
   );
 };

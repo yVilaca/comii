@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Banner from "../componentes/banner";
 import ItemD from "../componentes/item-deitado";
 import Itens from "../componentes/itens";
 import NavBar from "../componentes/topbar";
+import Modal from "react-modal";
 import "./home.css";
 
+Modal.setAppElement("#root"); // Para acessibilidade
+
 const Home = () => {
+  const [mesa, setMesa] = useState(localStorage.getItem("mesa") || "");
+  const [modalIsOpen, setModalIsOpen] = useState(!mesa);
+
   const items = [
     {
       id: 13,
@@ -32,6 +38,7 @@ const Home = () => {
       preco: 15.0,
     },
   ];
+
   const categoriasJuntasItems = [
     {
       id: 17,
@@ -59,10 +66,86 @@ const Home = () => {
     },
   ];
 
+  useEffect(() => {
+    if (mesa) {
+      localStorage.setItem("mesa", mesa);
+      setModalIsOpen(false);
+    }
+  }, [mesa]);
+
+  const handleMesaSubmit = () => {
+    const numeroMesa = document.getElementById("numeroMesa").value;
+    if (numeroMesa) {
+      setMesa(numeroMesa);
+    }
+  };
+
   return (
     <div>
       <NavBar />
       <Banner />
+
+      {/* Modal para solicitar o número da mesa */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        contentLabel="Número da Mesa"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            transform: "translate(-50%, -50%)",
+            padding: "30px",
+            borderRadius: "5px",
+            fontFamily: "Sarabun",
+            textAlign: "center",
+            width: "60vw",
+          },
+        }}
+      >
+        <h2>Informe o número da mesa</h2>
+        <input
+          id="numeroMesa"
+          type="text"
+          placeholder="Número da Mesa"
+          style={{
+            padding: "10px",
+            width: "100%",
+            margin: "10px 0px",
+            border: "none",
+            boxShadow: "1px 1px 10px #aaa",
+            borderRadius: "5px",
+          }}
+        />
+        <button
+          onClick={handleMesaSubmit}
+          style={{
+            padding: "10px",
+            backgroundColor: "#85120B",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          Confirmar
+        </button>
+        <button
+          onClick={() => setModalIsOpen(false)}
+          style={{
+            fontFamil: "Sarabun",
+            padding: "10px",
+            backgroundColor: "#aaa",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            marginLeft: "10px",
+          }}
+        >
+          Cancelar
+        </button>
+      </Modal>
 
       <section className="recomendados-text">
         <p className="recomendados-line">-----------------------------------</p>

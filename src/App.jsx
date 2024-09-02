@@ -1,42 +1,51 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import "./app.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./pages/CartContext";
+import Home from "./pages/Home"; // Importação direta, sem lazy loading
 
-import Home from "./pages/Home";
-import Carrinho from "./pages/Carrinho";
-import Produtos from "./pages/Produtos";
-import Bebidas from "./pages/produtos/subpages/Bebidas";
-import Sobremesas from "./pages/produtos/subpages/Sobremesas";
-import Entradas from "./pages/produtos/subpages/Entradas";
-import Orders from "./pages/Orders"; // Importe o componente Orders aqui
-import Rodape from "./componentes/rodape";
-import Ajuda from "./pages/Ajuda";
+const Carrinho = lazy(() => import("./pages/Carrinho"));
+const Produtos = lazy(() => import("./pages/Produtos"));
+const Bebidas = lazy(() =>
+  import(/* webpackPrefetch: true */ "./pages/produtos/subpages/Bebidas")
+);
+const Sobremesas = lazy(() =>
+  import(/* webpackPrefetch: true */ "./pages/produtos/subpages/Sobremesas")
+);
+const Entradas = lazy(() =>
+  import(/* webpackPrefetch: true */ "./pages/produtos/subpages/Entradas")
+);
+const Orders = lazy(() => import("./pages/Orders"));
+const Rodape = lazy(() => import("./componentes/rodape"));
+const Ajuda = lazy(() => import("./pages/Ajuda"));
 
 function App() {
   return (
     <div className="App">
-      <div className="conteudotodo">
-        <CartProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/ajuda" element={<Ajuda />} />
-              <Route path="/carrinho/:mesa" element={<Carrinho />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/produtos" element={<Produtos />}>
-                <Route path="bebidas" element={<Bebidas />} />
-                <Route path="sobremesas" element={<Sobremesas />} />
-                <Route path="entradas" element={<Entradas />} />
-              </Route>
-            </Routes>
+      <CartProvider>
+        <Router>
+          <div className="conteudotodo">
+            <Suspense fallback={<div>Carregando...</div>}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/ajuda" element={<Ajuda />} />
+                <Route path="/carrinho/:mesa?" element={<Carrinho />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/produtos" element={<Produtos />}>
+                  <Route path="bebidas" element={<Bebidas />} />
+                  <Route path="sobremesas" element={<Sobremesas />} />
+                  <Route path="entradas" element={<Entradas />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </div>
+          <Suspense fallback={<div>Carregando rodapé...</div>}>
             <Rodape />
-          </BrowserRouter>
-        </CartProvider>
-      </div>
-      {/* teste */}
-      <span className="msgmaxwidth" style={{ margin: "0 auto" }}>
+          </Suspense>
+        </Router>
+      </CartProvider>
+      <span className="msgmaxwidth">
         PAGINA INDISPONÍVEL PARA SEU DISPOSITIVO <br />
         [Por favor, utilize dispositivos móveis]
       </span>
