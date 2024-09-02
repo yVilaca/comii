@@ -84,8 +84,6 @@ const Home = () => {
     <div>
       <NavBar />
       <Banner />
-
-      {/* Modal para solicitar o número da mesa */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
