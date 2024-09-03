@@ -1,93 +1,93 @@
 #div-item2 {
-    margin: 2.5vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin: 2.5vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #deitado-flex {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 4%;
-    font-family: 'Sarabun';
-    flex: 1;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 4%;
+  font-family: "Sarabun";
+  flex: 1;
 }
 
-#deitado-flex>li>img {
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    object-fit: cover;
+#deitado-flex > li > img {
+  width: 120px;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 #flex-preco {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 #nome-item2 {
-    font-size: 130%;
+  font-size: 130%;
 }
 
 #desc-item2 {
-    color: #414141;
-    padding: 5px 0;
-    font-size: 70%;
+  color: #414141;
+  padding: 5px 0;
+  font-size: 70%;
 }
 
 #info-item2 {
-    width: 60%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  width: 60%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
 }
 
-#flex-preco>button {
-    background-color: #FEE14A;
-    border: none;
-    border-radius: 3px;
-    color: black;
-    padding: 0 15px;
-    font-size: 3vw;
+#flex-preco > button {
+  background-color: #fee14a;
+  border: none;
+  border-radius: 3px;
+  color: black;
+  padding: 0 15px;
+  font-size: 3vw;
 }
 
-#flex-preco>p {
-    font-size: 3.5vw;
+#flex-preco > p {
+  font-size: 3.5vw;
 }
 
 .mensagem-alerta {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #ffffff;
-    color: #181818;
-    display: flex;
-    justify-content: center;
-    padding: 10px 20px;
-    font-family: 'Sarabun';
-    border-radius: 5px;
-    animation: slideInFadeOut 3s ease forwards;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #ffffff;
+  color: #181818;
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  font-family: "Sarabun";
+  border-radius: 5px;
+  animation: slideInFadeOut 3s ease forwards;
 }
 
 @keyframes slideInFadeOut {
-    0% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 
-    10% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+  10% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 
-    90% {
-        transform: translateX(0);
-        opacity: 1;
-    }
+  90% {
+    transform: translateX(0);
+    opacity: 1;
+  }
 
-    100% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }

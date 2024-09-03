@@ -129,20 +129,6 @@ const Home = () => {
         >
           Confirmar
         </button>
-        <button
-          onClick={() => setModalIsOpen(false)}
-          style={{
-            fontFamil: "Sarabun",
-            padding: "10px",
-            backgroundColor: "#aaa",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            marginLeft: "10px",
-          }}
-        >
-          Cancelar
-        </button>
       </Modal>
 
       <section className="recomendados-text">
