@@ -56,36 +56,57 @@
   font-size: 3.5vw;
 }
 
-.mensagem-alerta {
+/* Adiciona estilo para o contêiner de notificações */
+.notifications-container {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #ffffff;
-  color: #181818;
   display: flex;
-  justify-content: center;
-  padding: 10px 20px;
-  font-family: "Sarabun";
-  border-radius: 5px;
-  animation: slideInFadeOut 3s ease forwards;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2025;
+  pointer-events: none;
 }
 
-@keyframes slideInFadeOut {
+.Toastify__toast-container {
+  pointer-events: auto;
+}
+
+.Toastify__toast--success {
+  background-color: #ffffff;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.9em;
+  width: 80vw;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideInOut 3s ease forwards;
+  position: relative;
+  pointer-events: auto;
+}
+
+.Toastify__close-button {
+  color: #333;
+  margin-left: 10px;
+}
+
+@keyframes slideInOut {
   0% {
     transform: translateX(100%);
     opacity: 0;
   }
-
   10% {
     transform: translateX(0);
     opacity: 1;
   }
-
   90% {
     transform: translateX(0);
     opacity: 1;
   }
-
   100% {
     transform: translateX(100%);
     opacity: 0;

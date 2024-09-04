@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "@vercel/postgres": "^0.8.0",
+    "clsx": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.23.1",
     "react-scripts": "^5.0.1",
+    "react-toastify": "^10.0.5",
     "react-transition-group": "^4.4.5",
     "socket.io-client": "^4.7.5",
     "swiper": "^11.1.3",

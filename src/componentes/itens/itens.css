@@ -146,3 +146,64 @@
   padding: 3% 5%;
   align-self: flex-end; /* Garante que o botão fique na parte inferior do bloco */
 }
+
+.notifications-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2025;
+  pointer-events: none; /* Permite que os cliques passem pelos elementos do contêiner */
+}
+
+.Toastify__toast-container {
+  pointer-events: auto; /* Permite que os cliques afetem os elementos dentro da notificação */
+}
+
+.Toastify__toast--success {
+  background-color: #ffffff;
+  color: #333;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 0.9em;
+  width: 80vw;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  animation: slideInOut 3s ease forwards;
+  position: relative; /* Garantir que a posição esteja correta para animações */
+  pointer-events: auto; /* Permite interações com a notificação */
+}
+
+.Toastify__close-button {
+  color: #333;
+  margin-left: 10px;
+}
+
+@keyframes slideInOut {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  90% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.Toastify__toast-container {
+  align-items: end;
+  pointer-events: none; /* Permite que os cliques passem pelos elementos do contêiner */
+}
