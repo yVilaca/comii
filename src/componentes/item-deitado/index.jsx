@@ -1,25 +1,51 @@
 import React, { useContext } from "react";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./deitado.css";
 import { CartContext } from "../../pages/CartContext";
-
+import { toast } from "react-toastify";
 function ItemD(props) {
   const { addToCart } = useContext(CartContext);
 
-  function Adicionar(item) {
-    addToCart({ ...item, quantidade: 1 });
-    toast.success(`${item.nome} foi incluído ao carrinho!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  }
+  function Adicionar() {
+    const item = {
+      id: props.id,
+      nome: props.nome,
+      preco: props.preco,
+      img: props.img,
+      desc: props.desc,
+      quantidade: 1,
+    };
 
+    // Adiciona o item ao carrinho e verifica o resultado
+    const result = addToCart(item);
+
+    // Se o item foi adicionado, exibe a notificação
+    if (result) {
+      toast.success(`${props.nome} adicionado ao carrinho!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      // Exibe uma notificação se o item não foi adicionado
+      toast.error(
+        `${props.nome} não pode ser adicionado ao carrinho porque já há 10 ou mais unidades.`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
+  }
   return (
     <div id="div-item2">
       <ul id="deitado-flex">
@@ -47,18 +73,6 @@ function ItemD(props) {
           </div>
         </li>
       </ul>
-      <ToastContainer
-        className="notifications-container"
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 }

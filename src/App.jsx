@@ -3,6 +3,8 @@ import "./app.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./pages/CartContext";
 import Home from "./pages/Home"; // Importação direta, sem lazy loading
+import { ToastContainer } from "react-toastify"; // Importar o ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Importar o CSS do react-toastify
 
 const Carrinho = lazy(() => import("./pages/Carrinho"));
 const Produtos = lazy(() => import("./pages/Produtos"));
@@ -49,6 +51,17 @@ function App() {
         PAGINA INDISPONÍVEL PARA SEU DISPOSITIVO <br />
         [Por favor, utilize dispositivos móveis]
       </span>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000} // Tempo de exibição das notificações em milissegundos
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

@@ -23,6 +23,7 @@ const Carrinho = () => {
   const [modalIsOpen, setModalIsOpen] = useState(
     !mesa || !localStorage.getItem("mesa")
   );
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagem de erro
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +46,9 @@ const Carrinho = () => {
           item &&
           item.preco &&
           !isNaN(item.preco) &&
-          !isNaN(item.quantidade)
+          item.quantidade &&
+          !isNaN(item.quantidade) &&
+          item.quantidade > 0
         ) {
           return sum + item.preco * item.quantidade;
         }
@@ -59,8 +62,10 @@ const Carrinho = () => {
   }, [cart]);
 
   const handleQuantityChange = (index, event) => {
-    const quantity = parseInt(event.target.value);
-    updateQuantity(index, quantity);
+    const quantity = parseInt(event.target.value, 10);
+    if (quantity > 0) {
+      updateQuantity(index, quantity);
+    }
   };
 
   const handleObservationChange = (id, event) => {
@@ -80,6 +85,11 @@ const Carrinho = () => {
   const finalizarPedido = async () => {
     if (!mesaAtual) {
       alert("Por favor, informe o número da mesa.");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Seu carrinho está vazio.");
       return;
     }
 
@@ -154,6 +164,11 @@ const Carrinho = () => {
       >
         CARRINHO DE COMPRAS
       </h1>
+      {errorMessage && (
+        <div style={{ color: "red", textAlign: "center", margin: "10px 0" }}>
+          {errorMessage}
+        </div>
+      )}
       <ul style={{ listStyle: "none" }}>
         <TransitionGroup component={null}>
           {cart.map((item, index) => (
@@ -269,10 +284,7 @@ const Carrinho = () => {
           boxShadow: "0px -2px 10px rgba(0,0,0,0.1)",
         }}
       >
-        <Titulo
-          titulo="SUBTOTAL"
-          linha="---------------------------------------"
-        />
+        <Titulo linha="---------------------------------------" />
         <div
           style={{
             display: "flex",

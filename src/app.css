@@ -7,7 +7,7 @@ body {
 .categorias-juntas,
 .categorias-juntas2 {
   display: flex;
-  margin: 1.5vh;
+  margin: 2.5vh;
   justify-content: space-around;
 }
 

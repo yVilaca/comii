@@ -1,23 +1,54 @@
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useContext } from "react";
 import "./itens.css";
+import { CartContext } from "../../pages/CartContext";
+import { toast } from "react-toastify";
 
 function Itens(props) {
+  const { addToCart } = useContext(CartContext);
+
   function Adicionar() {
-    toast.success(`${props.nome} foi incluído ao carrinho!`, {
-      position: "top-right",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    const item = {
+      id: props.id,
+      nome: props.nome,
+      preco: props.preco,
+      img: props.img,
+      desc: props.desc,
+      quantidade: 1,
+    };
+
+    // Adiciona o item ao carrinho e verifica o resultado
+    const result = addToCart(item);
+
+    // Se o item foi adicionado, exibe a notificação
+    if (result) {
+      toast.success(`${props.nome} adicionado ao carrinho!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else {
+      // Exibe uma notificação se o item não foi adicionado
+      toast.error(
+        `${props.nome} não pode ser adicionado ao carrinho porque já há 10 ou mais unidades.`,
+        {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        }
+      );
+    }
   }
 
   return (
-    <div>
+    <div className="item-container">
       <ul id="item-geral">
         <img src={props.img} alt={props.nome} />
         <li id="linha-1">
@@ -27,18 +58,6 @@ function Itens(props) {
         <li id="preco">R$ {props.preco.toFixed(2)}</li>
         <button onClick={Adicionar}>Incluir ao carrinho</button>
       </ul>
-      <ToastContainer
-        className="notifications-container"
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true} // Garante que novas notificações apareçam no topo
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </div>
   );
 }
