@@ -23,12 +23,13 @@ function Itens(props) {
     if (result) {
       toast.success(`${props.nome} adicionado ao carrinho!`, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        draggablePercent: 40,
       });
     } else {
       // Exibe uma notificação se o item não foi adicionado
@@ -36,12 +37,13 @@ function Itens(props) {
         `${props.nome} não pode ser adicionado ao carrinho porque já há 10 ou mais unidades.`,
         {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 1500,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
+          draggablePercent: 40,
         }
       );
     }
