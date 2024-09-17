@@ -5,7 +5,7 @@ import NavBar from "../componentes/topbar";
 import { Transition, TransitionGroup } from "react-transition-group";
 import Modal from "react-modal";
 import "./Carrinho.css";
-import Titulo from "../componentes/titulo";
+import { QRCodeSVG } from "qrcode.react"; // Alterado aqui
 
 // Configuração do Modal
 Modal.setAppElement("#root"); // Para acessibilidade
@@ -18,6 +18,9 @@ const Carrinho = () => {
   const [observacoes, setObservacoes] = useState({});
   const [editing, setEditing] = useState({});
   const [resumoExpandido, setResumoExpandido] = useState(false);
+  const [qrCodePix, setQrCodePix] = useState("");
+  const [pixCopiaECola, setPixCopiaECola] = useState("");
+  const [showPixModal, setShowPixModal] = useState(false);
 
   const [mesaAtual, setMesaAtual] = useState(
     mesa || localStorage.getItem("mesa") || ""
@@ -142,65 +145,63 @@ const Carrinho = () => {
   };
 
   const finalizarPedido = async () => {
-    if (!mesaAtual) {
-      alert("Por favor, informe o número da mesa.");
-      return;
-    }
-
-    if (cart.length === 0) {
-      alert("Seu carrinho está vazio.");
-      return;
-    }
-
-    const pedido = {
-      produtos: cart.map((item) => ({
-        id: item.id,
-        quantidade: item.quantidade,
-        observacao: observacoes[item.id] || "",
-      })),
-      total: total.toFixed(2),
-      mesa: mesaAtual || "",
-      observacoesProduto: cart.map((item) => ({
-        produto_id: item.id,
-        observacao: observacoes[item.id] || "",
-      })),
-    };
-
-    console.log("Dados do pedido a serem enviados:", pedido);
-
     try {
-      const response = await fetch("http://localhost/salvar_pedido.php", {
+      if (!mesaAtual) {
+        alert("Por favor, informe o número da mesa.");
+        return;
+      }
+      if (cart.length === 0) {
+        alert("Seu carrinho está vazio.");
+        return;
+      }
+      const totalComDesconto = total - desconto + gorjeta;
+      const pedido = {
+        produtos: cart.map((item) => ({
+          id: item.id,
+          nome: item.nome,
+          quantidade: item.quantidade,
+          preco: item.preco,
+          observacao: observacoes[item.id] || "",
+        })),
+        total: totalComDesconto.toFixed(2),
+        desconto: desconto.toFixed(2),
+        gorjeta: gorjeta.toFixed(2),
+        mesa: mesaAtual || "",
+      };
+
+      // Criar preferência de pagamento no Mercado Pago
+      const response = await fetch("http://localhost:5000/create_preference", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        mode: "cors",
         body: JSON.stringify(pedido),
       });
 
-      console.log("resposta do fetch: ", response);
-
       if (!response.ok) {
-        throw new Error("Erro ao finalizar pedido.");
+        throw new Error(
+          `Erro do servidor: ${response.status} ${response.statusText}`
+        );
       }
 
       const data = await response.json();
-      console.log("Resposta do servidor:", data);
-
-      if (data.status === "success") {
-        alert("Pedido realizado com sucesso!");
-        clearCart();
-        localStorage.removeItem("mesa"); // Remove o número da mesa do localStorage
-        navigate("/home"); // Redireciona para a página inicial
-      } else {
-        alert("Erro ao finalizar pedido. Tente novamente.");
+      if (!data.id || !data.init_point) {
+        throw new Error("Resposta inválida do servidor");
       }
+
+      // Armazenar o preferenceId no localStorage
+      localStorage.setItem("lastPreferenceId", data.id);
+      localStorage.setItem("lastMesa", mesaAtual);
+
+      console.log("Preference ID armazenado:", data.id);
+
+      // Redirecionar para a página de pagamento do Mercado Pago
+      window.location.href = data.init_point;
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
-      alert("Erro ao finalizar pedido. Tente novamente.");
+      alert(`Erro ao finalizar pedido: ${error.message}`);
     }
   };
-
   const handleMesaSubmit = () => {
     const numeroMesa = document.getElementById("numeroMesa").value;
     if (numeroMesa) {
@@ -425,7 +426,45 @@ const Carrinho = () => {
           </button>
         </div>
       </div>
-
+      <Modal
+        isOpen={showPixModal}
+        onRequestClose={() => setShowPixModal(false)}
+        contentLabel="QR Code PIX"
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            padding: "20px",
+            textAlign: "center",
+          },
+        }}
+      >
+        <h2>Pagamento PIX</h2>
+        <QRCodeSVG value={qrCodePix} size={256} /> {/* Alterado aqui */}
+        <p>Ou use o código PIX Copia e Cola:</p>
+        <textarea
+          readOnly
+          value={pixCopiaECola}
+          style={{ width: "100%", height: "60px", marginBottom: "10px" }}
+        />
+        <button
+          onClick={() => {
+            if (pixCopiaECola) {
+              navigator.clipboard.writeText(pixCopiaECola);
+              alert("Código PIX copiado para a área de transferência!");
+            } else {
+              alert("Código PIX não disponível");
+            }
+          }}
+        >
+          Copiar código PIX
+        </button>
+        <p>Aguardando confirmação de pagamento...</p>
+      </Modal>
       {/* Modal para solicitar o número da mesa */}
       <Modal
         isOpen={modalIsOpen}

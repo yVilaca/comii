@@ -17,7 +17,7 @@ const Home = () => {
       id: 13,
       nome: "Cheese Burguer",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 19.8,
+      preco: 0.01,
     },
     {
       id: 14,

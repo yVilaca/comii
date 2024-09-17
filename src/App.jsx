@@ -5,6 +5,9 @@ import { CartProvider } from "./pages/CartContext";
 import Home from "./pages/Home"; // Importação direta, sem lazy loading
 import { ToastContainer } from "react-toastify"; // Importar o ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Importar o CSS do react-toastify
+import Failure from "./componentes/Failure";
+import Pending from "./componentes/Pending";
+import Success from "./componentes/Success";
 
 const Carrinho = lazy(() => import("./pages/Carrinho"));
 const Produtos = lazy(() => import("./pages/Produtos"));
@@ -33,6 +36,9 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/ajuda" element={<Ajuda />} />
                 <Route path="/carrinho/:mesa?" element={<Carrinho />} />
+                <Route path="/success" element={<Success />} />
+                <Route path="/failure" element={<Failure />} />
+                <Route path="/pending" element={<Pending />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/produtos" element={<Produtos />}>
                   <Route path="bebidas" element={<Bebidas />} />
