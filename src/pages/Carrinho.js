@@ -154,7 +154,13 @@ const Carrinho = () => {
         alert("Seu carrinho está vazio.");
         return;
       }
+
       const totalComDesconto = total - desconto + gorjeta;
+      if (totalComDesconto <= 0) {
+        alert("O valor total deve ser positivo.");
+        return;
+      }
+
       const pedido = {
         produtos: cart.map((item) => ({
           id: item.id,
@@ -166,17 +172,20 @@ const Carrinho = () => {
         total: totalComDesconto.toFixed(2),
         desconto: desconto.toFixed(2),
         gorjeta: gorjeta.toFixed(2),
-        mesa: mesaAtual || "",
+        mesa: mesaAtual,
       };
 
       // Criar preferência de pagamento no Mercado Pago
-      const response = await fetch("http://localhost:5000/create_preference", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pedido),
-      });
+      const response = await fetch(
+        "https://comii-backend.onrender.com/create_preference",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pedido),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(
