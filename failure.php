@@ -1,3 +1,3 @@
 <?php
-header("Location: http://localhost:3000/failure");
+header("Location: http://comii.vercel.app/failure");
 exit();

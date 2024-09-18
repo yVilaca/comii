@@ -49,7 +49,7 @@ function App() {
             </Suspense>
           </div>
           <Suspense fallback={<div>Carregando rodapé...</div>}>
-            <Rodape />
+            <Rodape className="rodape" />
           </Suspense>
         </Router>
       </CartProvider>

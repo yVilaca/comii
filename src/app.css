@@ -32,6 +32,9 @@ hr {
   .conteudotodo {
     display: none;
   }
+  .rodape {
+    display: none !important;
+  }
   .msgmaxwidth {
     display: flex; /* Mover display: flex aqui para reduzir redundância */
     text-align: center;

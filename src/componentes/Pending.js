@@ -1,6 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CartContext } from "../pages/CartContext";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Container,
+  Paper,
+} from "@mui/material";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 const Pending = () => {
   const navigate = useNavigate();
@@ -15,7 +23,7 @@ const Pending = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/check-payment-status/${paymentId}`
+          `http://https://comii-backend.onrender.com/check-payment-status/${paymentId}`
         );
         const data = await response.json();
 
@@ -43,13 +51,40 @@ const Pending = () => {
   }, [location.search, clearCart, navigate]);
 
   return (
-    <div>
-      <h1>Status do Pagamento</h1>
-      <p>{status}</p>
-      {status === "Pagamento confirmado! Seu pedido foi registrado." && (
-        <p>Você será redirecionado para a página inicial em 5 segundos.</p>
-      )}
-    </div>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Paper
+          elevation={3}
+          sx={{ p: 4, borderRadius: 2, textAlign: "center" }}
+        >
+          <HourglassEmptyIcon
+            sx={{ fontSize: 64, color: "info.main", mb: 2 }}
+          />
+          <Typography variant="h4" component="h1" gutterBottom>
+            Status do Pagamento
+          </Typography>
+          <Typography variant="body1" paragraph>
+            {status}
+          </Typography>
+          {status === "Aguardando confirmação do pagamento..." && (
+            <CircularProgress size={24} sx={{ mt: 2 }} />
+          )}
+          {status === "Pagamento confirmado! Seu pedido foi registrado." && (
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              Você será redirecionado para a página inicial em 5 segundos.
+            </Typography>
+          )}
+        </Paper>
+      </Box>
+    </Container>
   );
 };
 
