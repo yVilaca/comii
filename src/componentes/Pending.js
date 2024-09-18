@@ -23,7 +23,7 @@ const Pending = () => {
 
       try {
         const response = await fetch(
-          `http://https://comii-backend.onrender.com/check-payment-status/${paymentId}`
+          `https://comii-backend.onrender.com/check-payment-status/${paymentId}`
         );
         const data = await response.json();
 
