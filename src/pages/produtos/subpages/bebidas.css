@@ -37,3 +37,15 @@
     background-color: #fff;
     border: 0 transparent;
 }
+
+.imgProduto img {
+    width: 100px;
+    height: 104px;
+    object-fit: cover;
+}
+
+.imgProduto img[src*="agua_gasosa.jpg"] {
+    width: 100px;
+    height: 104px;
+    object-fit: cover;
+}
