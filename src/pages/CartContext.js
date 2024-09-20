@@ -30,9 +30,9 @@ export const CartProvider = ({ children }) => {
 
     if (existingItemIndex !== -1) {
       // Verifica se a quantidade no carrinho já atingiu o limite de 10
-      if (cart[existingItemIndex].quantidade >= 10) {
+      /* if (cart[existingItemIndex].quantidade >= 10) {
         return false; // Não adiciona o item e retorna false
-      }
+      } */
 
       // Atualiza a quantidade do item existente no carrinho
       const updatedCart = [...cart];

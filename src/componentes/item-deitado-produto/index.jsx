@@ -23,7 +23,6 @@ function ItemDBebidas(props) {
     if (result) {
       toast.success(`${props.nome} adicionado ao carrinho!`, {
         draggablePercent: 40,
-
         position: "top-right",
         autoClose: 1500,
         hideProgressBar: false,
@@ -32,22 +31,7 @@ function ItemDBebidas(props) {
         draggable: true,
         progress: undefined,
       });
-    } else {
-      // Exibe uma notificação se o item não foi adicionado
-      toast.error(
-        `${props.nome} não pode ser adicionado ao carrinho porque já há 10 ou mais unidades.`,
-        {
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          draggablePercent: 40,
-        }
-      );
-    }
+    } 
   }
   return (
     <div>

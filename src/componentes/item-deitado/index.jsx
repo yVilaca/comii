@@ -3,6 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./deitado.css";
 import { CartContext } from "../../pages/CartContext";
 import { toast } from "react-toastify";
+
 function ItemD(props) {
   const { addToCart } = useContext(CartContext);
 
@@ -16,38 +17,22 @@ function ItemD(props) {
       quantidade: 1,
     };
 
-    // Adiciona o item ao carrinho e verifica o resultado
-    const result = addToCart(item);
+    // Adiciona o item ao carrinho
+    addToCart(item);
 
-    // Se o item foi adicionado, exibe a notificação
-    if (result) {
-      toast.success(`${props.nome} adicionado ao carrinho!`, {
-        position: "top-right",
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        draggablePercent: 40,
-      });
-    } else {
-      // Exibe uma notificação se o item não foi adicionado
-      toast.error(
-        `${props.nome} não pode ser adicionado ao carrinho porque já há 10 ou mais unidades.`,
-        {
-          draggablePercent: 40,
-          position: "top-right",
-          autoClose: 1500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        }
-      );
-    }
+    // Exibe a notificação sempre
+    toast.success(`${props.nome} adicionado ao carrinho!`, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      draggablePercent: 40,
+    });
   }
+
   return (
     <div id="div-item2">
       <ul id="deitado-flex">
@@ -59,17 +44,7 @@ function ItemD(props) {
           <p id="desc-item2">{props.desc}</p>
           <div id="flex-preco">
             <p>R$ {props.preco.toFixed(2)}</p>
-            <button
-              onClick={() =>
-                Adicionar({
-                  id: props.id,
-                  nome: props.nome,
-                  desc: props.desc,
-                  preco: props.preco,
-                  img: props.img,
-                })
-              }
-            >
+            <button onClick={Adicionar}>
               Incluir ao carrinho
             </button>
           </div>

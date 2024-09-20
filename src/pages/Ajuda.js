@@ -21,7 +21,7 @@ const Ajuda = () => {
                 <p className="recomendados-line">-----------------------------------</p>
             </section>
 
-            <div><img src='/imgs/tela-inicial4.png' alt='' id='imagem-inicio'/></div>
+            <div><img src='/imgs/produtos_todos.png' alt='' id='imagem-inicio'/></div>
             <div className='desc-ajuda'> Aqui está uma parte da nossa tela inicial, conhecida como 'Home', onde apresentamos algumas de nossas recomendações. Ao clicar no botão “Incluir ao Carrinho', o item será automaticamente incluído em sua lista de compras. </div>
             
             <div className='barra-pequena'></div>

@@ -121,12 +121,12 @@ const Carrinho = () => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-  const handleQuantityChange = (index, event) => {
+   const handleQuantityChange = (index, event) => {
     const quantity = parseInt(event.target.value, 10);
     if (quantity > 0) {
       updateQuantity(index, quantity);
     }
-  };
+  }; 
   const toggleResumoExpansao = () => {
     setResumoExpandido(!resumoExpandido);
   };
