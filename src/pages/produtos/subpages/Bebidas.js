@@ -22,7 +22,7 @@ function Bebidas() {
         nome="Água com gás"
         desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         preco={0.01}
-        img="/imgs/Água.png"
+        img="/imgs/agua_gasosa.jpg"
       />
 
       <Titulo titulo="BEBIDAS ALCOÓLICAS" />
@@ -31,14 +31,14 @@ function Bebidas() {
         nome="Heineken"
         desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         preco={0.01}
-        img="/imgs/cerveja.svg"
+        img="/imgs/heinneken.jpg"
       />
       <ItemDBebidas
         id="4"
-        nome="Kaiser"
+        nome="Corona"
         desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         preco={0.01}
-        img="/imgs/cerveja.svg"
+        img="/imgs/corona.png"
       />
     </div>
   );
