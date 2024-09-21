@@ -43,6 +43,9 @@ const Carrinho = () => {
   const [currentY, setCurrentY] = useState(0);
   const resumoRef = useRef(null);
 
+  const [usuario, setUsuario] = useState(null);
+  const [showCadastroModal, setShowCadastroModal] = useState(false);
+
   useEffect(() => {
     if (mesaAtual) {
       localStorage.setItem("mesa", mesaAtual);
@@ -121,12 +124,12 @@ const Carrinho = () => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
-   const handleQuantityChange = (index, event) => {
+  const handleQuantityChange = (index, event) => {
     const quantity = parseInt(event.target.value, 10);
     if (quantity > 0) {
       updateQuantity(index, quantity);
     }
-  }; 
+  };
   const toggleResumoExpansao = () => {
     setResumoExpandido(!resumoExpandido);
   };
@@ -173,6 +176,9 @@ const Carrinho = () => {
         desconto: desconto.toFixed(2),
         gorjeta: gorjeta.toFixed(2),
         mesa: mesaAtual,
+        status: "pendente",
+        tempo_preparo: tempoPreparo,
+        cliente_id: usuario ? usuario.id : null,
       };
 
       // Criar preferência de pagamento no Mercado Pago
@@ -211,6 +217,33 @@ const Carrinho = () => {
       alert(`Erro ao finalizar pedido: ${error.message}`);
     }
   };
+
+  const handleCadastroUsuario = async (dadosUsuario) => {
+    try {
+      const response = await fetch(
+        "https://comii-backend.onrender.com/cadastrar_usuario",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dadosUsuario),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar usuário");
+      }
+
+      const usuarioCadastrado = await response.json();
+      setUsuario(usuarioCadastrado);
+      setShowCadastroModal(false);
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      alert("Erro ao cadastrar usuário. Por favor, tente novamente.");
+    }
+  };
+
   const handleMesaSubmit = () => {
     const numeroMesa = document.getElementById("numeroMesa").value;
     if (numeroMesa) {
