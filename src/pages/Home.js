@@ -23,19 +23,19 @@ const Home = () => {
       id: 14,
       nome: "X-Bacon",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 13.99,
+      preco: 0.01,
     },
     {
       id: 15,
       nome: "X-Tudo",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 17.5,
+      preco: 0.01,
     },
     {
       id: 16,
       nome: "X-Vegetariano",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 15.0,
+      preco: 0.01,
     },
   ];
 
@@ -43,25 +43,25 @@ const Home = () => {
     {
       id: 17,
       nome: "Burrito",
-      preco: 19.8,
+      preco: 0.01,
       desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados.",
     },
     {
       id: 18,
       nome: "Macarrão",
-      preco: 13.99,
+      preco: 0.01,
       desc: "Macarrão com queijos especiais e temperos italianos selecionados.",
     },
     {
       id: 19,
       nome: "Fritas",
-      preco: 25.8,
+      preco: 0.01,
       desc: "Deliciosa porção de batatas fritas palito com sal.",
     },
     {
       id: 20,
       nome: "Espetinho",
-      preco: 7.5,
+      preco: 0.01,
       desc: "Maça de peito em cubinhos assada na grelha e tempero do chefe.",
     },
   ];
