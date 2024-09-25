@@ -25,7 +25,6 @@ function Bebidas() {
         img="/imgs/agua_gasosa.jpg"
       />
 
-      {/* aaaa */}
       <Titulo titulo="BEBIDAS ALCOÓLICAS" />
       <ItemDBebidas
         id="3"
