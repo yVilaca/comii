@@ -1,49 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 #lista-fundo {
-    align-items: center;
-    padding: 10px 30px;
-    list-style: none;
-    background-color: #85120B;
-    display: flex;
-    justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  list-style: none;
+  background-color: #85120b;
+  display: flex;
+  justify-content: space-between;
 }
 
 #ajuda-fundo a {
-    font-family: 'Noto Serif';
-    font-weight: 300;
-    font-size: 3.5vw;
-    text-decoration: none;
-    color: white;
+  font-family: "Noto Serif";
+  font-weight: 300;
+  font-size: 3.5vw;
+  text-decoration: none;
+  color: white;
 }
 
 #ajuda-fundo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 2vw;
-    width: 15%;
-    background-color: rgba(255, 255, 255, 17%);
-    border-radius: 10px;
-    height: 5vh;
-    padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2vw;
+  background-color: rgba(255, 255, 255, 17%);
+  border-radius: 10px;
+  height: 5vh;
+  padding: 0 1.25rem;
 }
 
 #logo {
-    width: 80px;
+  width: 80px;
 }
 
 #topbar {
-    position: sticky;
-    top: 0;
-    z-index: 2024;
+  position: sticky;
+  top: 0;
+  z-index: 2024;
 }
 
 #seta-ajuda {
-    height: 30%;
+  height: 30%;
+}
+
+.login-button {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  height: 5vh;
+}
+
+.login-button:hover {
+  background-color: #fdd017;
+}
+.ajuda-login {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 5vh;
 }
