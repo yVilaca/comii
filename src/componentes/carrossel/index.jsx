@@ -9,7 +9,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
 function Carrossel() {
-    <h1>a</h1>
     const data = [
         { id: "1", image: "/imgs/597575.jpg" },
         { id: "2", image: "/imgs/597575.jpg" },
