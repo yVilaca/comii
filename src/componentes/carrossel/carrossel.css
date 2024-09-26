@@ -11,6 +11,17 @@
     margin-top: 15px;
 }
 
+.swiper {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 0;
+    display: block;
+}
+
 .swiper-wrapper {
     position: relative;
     width: 100%;
@@ -18,7 +29,6 @@
     z-index: 1;
     display: flex;
     transition-property: transform;
-    transition-timing-function: var(--swiper-wrapper-transition-timing-function, initial);
     box-sizing: content-box;
 }
 
@@ -47,17 +57,22 @@
     justify-content: center;
 }
 
-.swiper-pagination-bullet-active {
-    background-color: #fff;
+.swiper-pagination-bullet {
+    background-color: #85120B;
+    opacity: 0.5;
 }
 
-.swiper {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    overflow: hidden;
-    list-style: none;
-    padding: 0;
-    z-index: 0;
-    display: block;
+.swiper-pagination-bullet-active {
+    background-color: #85120B;
+    opacity: 1;
+}
+
+/* Estilos para o efeito fade */
+.swiper-fade .swiper-slide {
+    transition-property: opacity;
+    transition-duration: 300ms;
+}
+
+.swiper-fade .swiper-slide:not(.swiper-slide-active) {
+    opacity: 0;
 }
