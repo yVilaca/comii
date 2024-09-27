@@ -7,7 +7,7 @@ import { Autoplay, Pagination, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
-//asdasdaasdas
+
 function Carrossel() {
     const data = [
         { id: "1", image: "/imgs/597575.jpg" },
