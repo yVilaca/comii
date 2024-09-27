@@ -1,78 +1,80 @@
 #maisPedidos {
-    font-family: 'Sarabun';
-    color: #85120B;
-    align-items: center;
-    text-align: center;
-    margin-top: 30px;
-    font-weight: normal;
+  font-family: "Sarabun";
+  color: #85120b;
+  align-items: center;
+  text-align: center;
+  margin-top: 30px;
+  font-weight: normal;
 }
 
 .container {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .swiper {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    overflow: hidden;
-    list-style: none;
-    padding: 0;
-    z-index: 0;
-    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  list-style: none;
+  padding: 0;
+  z-index: 0;
+  display: block;
 }
 
 .swiper-wrapper {
-    position: relative;
-    width: 100%;
-    height: 20vh;
-    z-index: 1;
-    display: flex;
-    transition-property: transform;
-    box-sizing: content-box;
+  position: relative;
+  width: 100%;
+  height: 20vh;
+  z-index: 1;
+  display: flex;
+  transition: transform 0.5s ease; /* Adicionada transição suave */
+  transform: translate3d(0, 0, 0);
+
+  box-sizing: content-box;
 }
 
 .swiper-slide {
-    flex-shrink: 0;
-    width: 100%;
-    height: 20vh;
-    position: relative;
-    transition-property: transform;
-    display: block;
+  flex-shrink: 0;
+  width: 100%;
+  height: 20vh;
+  position: relative;
+  transition: transform 0.5s ease; /* Adicionada transição suave */
+  display: block;
 }
 
 .slide-item {
-    width: 90%;
-    height: 20vh;
-    object-fit: cover;
-    align-items: center;
-    border-radius: 8px;
-    margin-bottom: 1px;
+  width: 90%;
+  height: 20vh;
+  object-fit: cover;
+  align-items: center;
+  border-radius: 8px;
+  margin-bottom: 1px;
 }
 
 .slide-img {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }
 
 .swiper-pagination-bullet {
-    background-color: #85120B;
-    opacity: 0.5;
+  background-color: #85120b;
+  opacity: 0.5;
 }
 
 .swiper-pagination-bullet-active {
-    background-color: #85120B;
-    opacity: 1;
+  background-color: #85120b;
+  opacity: 1;
 }
 
 /* Estilos para o efeito fade */
 .swiper-fade .swiper-slide {
-    transition-property: opacity;
-    transition-duration: 300ms;
+  transition-property: opacity;
+  transition-duration: 300ms;
 }
 
 .swiper-fade .swiper-slide:not(.swiper-slide-active) {
-    opacity: 0;
+  opacity: 0;
 }
