@@ -262,7 +262,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         mesa: mesaAtual,
         status: "pendente",
         tempo_preparo: tempoPreparo,
-        cliente_id: session ? session.user.id : null,
+        cliente_id: session?.user?.id || null,
         cliente_nome: session
           ? session.user.user_metadata.full_name
           : "Anônimo",
