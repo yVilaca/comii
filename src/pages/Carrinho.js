@@ -168,7 +168,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
             data_pedido,
             total,
             status,
-            mesa,
+            numero_mesa,
             pedido_produtos (
               quantidade,
               produtos (
