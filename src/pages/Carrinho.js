@@ -137,22 +137,27 @@ const Carrinho = () => {
   useEffect(() => {
     const fetchPedidosAnteriores = async () => {
       try {
+        // Certifique-se de que o usuário está autenticado e tem um ID
+        if (!usuario?.id) {
+          console.log("Usuário não autenticado");
+          return;
+        }
+
         const response = await fetch(
-          `https://comii-backend.onrender.com/pedidos-usuario/${usuario?.id}`
+          `https://comii-backend.onrender.com/pedidos-usuario/${usuario.id}`
         );
         if (!response.ok) {
           throw new Error("Falha ao buscar pedidos anteriores");
         }
         const data = await response.json();
+        console.log("Pedidos anteriores:", data); // Para depuração
         setPedidosAnteriores(data);
       } catch (error) {
         console.error("Erro ao buscar pedidos anteriores:", error);
       }
     };
 
-    if (usuario) {
-      fetchPedidosAnteriores();
-    }
+    fetchPedidosAnteriores();
   }, [usuario]);
 
   const formatTime = (time) => {
@@ -531,6 +536,7 @@ const Carrinho = () => {
         // Nova seção para exibir pedidos anteriores
         <div className="pedidos-anteriores">
           <h1 className="pedidos-titulo">Seus Pedidos Anteriores</h1>
+          {console.log("Renderizando pedidos:", pedidosAnteriores)}
           {pedidosAnteriores.length > 0 ? (
             pedidosAnteriores.map((pedido) => (
               <div key={pedido.id} className="pedido-item">
@@ -552,7 +558,10 @@ const Carrinho = () => {
               </div>
             ))
           ) : (
-            <p>Você ainda não fez nenhum pedido.</p>
+            <p>
+              Você ainda não fez nenhum pedido. (Total de pedidos:{" "}
+              {pedidosAnteriores.length})
+            </p>
           )}
         </div>
       )}
