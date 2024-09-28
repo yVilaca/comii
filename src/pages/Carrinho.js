@@ -150,6 +150,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         data: { session },
       } = await supabase.auth.getSession();
       setUsuario(session?.user);
+      console.log("Usuário definido:", session?.user); // Adicione este log
     };
     fetchSession();
   }, []);
@@ -157,7 +158,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
   useEffect(() => {
     const fetchPedidosAnteriores = async () => {
       if (!usuario?.id) return;
-
+      console.log("Buscando pedidos para o usuário:", usuario.id); // Adicione este log
       try {
         const { data, error } = await supabase
           .from("pedidos")
@@ -180,6 +181,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
           .order("data_pedido", { ascending: false });
 
         if (error) throw error;
+        console.log("Pedidos recuperados:", data); // Adicione este log
         setPedidosAnteriores(data);
       } catch (error) {
         console.error("Erro ao buscar pedidos anteriores:", error);
