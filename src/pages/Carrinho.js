@@ -600,7 +600,10 @@ const Carrinho = ({ session, setShowAuthModal }) => {
                 <p>Data: {new Date(pedido.data_pedido).toLocaleString()}</p>
                 <p>Total: R$ {pedido.total.toFixed(2)}</p>
                 <p>Status: {pedido.status}</p>
-                <OrderStatusTracker orderId={pedido.id} mesa={pedido.mesa} />
+                <OrderStatusTracker
+                  orderId={pedido.id}
+                  mesa={pedido.numero_mesa}
+                />
                 <details>
                   <summary>Ver itens</summary>
                   <ul>
