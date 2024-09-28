@@ -55,6 +55,7 @@ const Success = () => {
         if (data.isPaid) {
           setStatus("Pagamento confirmado! Seu pedido foi registrado.");
           localStorage.removeItem("lastMesa");
+          localStorage.removeItem("lastPreferenceId");
           // Redirecionar para a página principal após 3 segundos
           setTimeout(() => {
             navigate("/");
