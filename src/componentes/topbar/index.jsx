@@ -1,42 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./topbar.css";
 import AuthModal from "../login/AuthModal";
-import { supabase } from "../../supabaseClient";
+import { useAuth } from "../../componentes/AuthContext/AuthContext";
 import { FaUser } from "react-icons/fa";
+import { supabase } from "../../supabaseClient";
 
 function NavBar() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user, login, signOut } = useAuth();
 
-  useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user ?? null);
+  const handleLogin = useCallback(
+    async (email, password) => {
+      try {
+        await login(email, password);
+        console.log("Login successful");
+        setIsAuthModalOpen(false);
+      } catch (error) {
+        console.error("Error logging in:", error.message);
+        throw error; // Propagate the error to be handled in AuthModal
       }
-    );
+    },
+    [login]
+  );
 
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
-
-  const handleLogin = async (email, password) => {
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) throw error;
-      console.log("Login successful", data);
-      setIsAuthModalOpen(false);
-    } catch (error) {
-      console.error("Error logging in:", error.message);
-      alert("Erro ao fazer login: " + error.message);
-    }
-  };
-
-  const handleRegister = async (name, email, password) => {
+  const handleRegister = useCallback(async (name, email, password) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -53,19 +41,25 @@ function NavBar() {
       );
     } catch (error) {
       console.error("Error registering:", error.message);
-      alert("Erro ao registrar: " + error.message);
+      throw error; // Propagate the error to be handled in AuthModal
     }
-  };
+  }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await signOut();
       console.log("Logout successful");
     } catch (error) {
       console.error("Error logging out:", error.message);
       alert("Erro ao fazer logout: " + error.message);
     }
+  }, [signOut]);
+
+  const getUserDisplayName = () => {
+    if (user && user.user_metadata && user.user_metadata.name) {
+      return user.user_metadata.name.split(" ")[0]; // Pega apenas o primeiro nome
+    }
+    return user?.email?.split("@")[0] || "Usuário"; // Fallback para o início do email ou 'Usuário'
   };
 
   return (
@@ -78,7 +72,7 @@ function NavBar() {
           <li>
             {user ? (
               <button onClick={handleLogout} className="login-button">
-                <FaUser /> Sair
+                <FaUser /> Sair ( {getUserDisplayName()} )
               </button>
             ) : (
               <button
@@ -106,4 +100,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default React.memo(NavBar);

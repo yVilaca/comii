@@ -1,26 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import "./itens.css";
 import { CartContext } from "../../pages/CartContext";
 import { toast } from "react-toastify";
 
-function Itens(props) {
+const Itens = React.memo(({ id, nome, preco, img, desc }) => {
   const { addToCart } = useContext(CartContext);
 
-  function Adicionar() {
-    const item = {
-      id: props.id,
-      nome: props.nome,
-      preco: props.preco,
-      img: props.img,
-      desc: props.desc,
-      quantidade: 1,
-    };
-
-    // Adiciona o item ao carrinho
+  const handleAdicionar = useCallback(() => {
+    const item = { id, nome, preco, img, desc, quantidade: 1 };
     addToCart(item);
-
-    // Exibe a notificação sempre
-    toast.success(`${props.nome} adicionado ao carrinho!`, {
+    toast.success(`${nome} adicionado ao carrinho!`, {
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
@@ -30,21 +19,21 @@ function Itens(props) {
       progress: undefined,
       draggablePercent: 40,
     });
-  }
+  }, [id, nome, preco, img, desc, addToCart]);
 
   return (
     <div className="item-container">
       <ul id="item-geral">
-        <img src={props.img} alt={props.nome} />
+        <img src={img} alt={nome} />
         <li id="linha-1">
-          <p>{props.nome}</p>
+          <p>{nome}</p>
         </li>
-        <li id="desc-item">{props.desc}</li>
-        <li id="preco">R$ {props.preco.toFixed(2)}</li>
-        <button onClick={Adicionar}>Incluir ao carrinho</button>
+        <li id="desc-item">{desc}</li>
+        <li id="preco">R$ {preco.toFixed(2)}</li>
+        <button onClick={handleAdicionar}>Incluir ao carrinho</button>
       </ul>
     </div>
   );
-}
+});
 
 export default Itens;

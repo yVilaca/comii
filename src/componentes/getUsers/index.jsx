@@ -1,4 +1,4 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 export async function getUserProfile(userId) {
   const { data, error } = await supabase
@@ -7,7 +7,7 @@ export async function getUserProfile(userId) {
     .eq("id", userId)
     .single();
 
-  if (error) {
+  if (error && error.code !== "PGRST116") {
     console.error("Error fetching user profile:", error);
     return null;
   }

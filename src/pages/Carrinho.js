@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect, useRef, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import NavBar from "../componentes/topbar";
@@ -9,8 +9,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { io } from "socket.io-client";
 import OrderStatusTracker from "../componentes/OrderTracker";
 import { supabase } from "../supabaseClient";
-import { getUserProfile } from "../utils/user";
 
+import { getUserProfile } from "../componentes/getUsers";
 // Configuração do Modal
 Modal.setAppElement("#root"); // Para acessibilidade
 
@@ -53,6 +53,13 @@ const Carrinho = ({ session, setShowAuthModal }) => {
   const [activeTab, setActiveTab] = useState("carrinho");
   const [pedidosAnteriores, setPedidosAnteriores] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
+
+  const [isAnonymous, setIsAnonymous] = useState(!session);
+
+  // Sugestão: Use useMemo para cálculos complexos
+  const totalComDesconto = useMemo(() => {
+    return total - desconto + gorjeta;
+  }, [total, desconto, gorjeta]);
 
   useEffect(() => {
     if (mesaAtual) {
@@ -219,7 +226,13 @@ const Carrinho = ({ session, setShowAuthModal }) => {
     }));
   };
 
-  const finalizarPedido = async () => {
+  // Sugestão: Extraia a lógica de finalização do pedido para uma função separada
+  const handleFinalizarPedido = async () => {
+    if (!session && !isAnonymous) {
+      setShowAuthModal(true);
+      return;
+    }
+
     try {
       if (!mesaAtual) {
         alert("Por favor, informe o número da mesa.");
@@ -230,7 +243,6 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         return;
       }
 
-      const totalComDesconto = total - desconto + gorjeta;
       if (totalComDesconto <= 0) {
         alert("O valor total deve ser positivo.");
         return;
@@ -250,7 +262,11 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         mesa: mesaAtual,
         status: "pendente",
         tempo_preparo: tempoPreparo,
-        cliente_id: usuario ? usuario.id : null,
+        cliente_id: session ? session.user.id : null,
+        cliente_nome: session
+          ? session.user.user_metadata.full_name
+          : "Anônimo",
+        cliente_email: session ? session.user.email : null, // Adicionando o email do cliente
       };
 
       // Criar preferência de pagamento no Mercado Pago
@@ -365,6 +381,11 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         ? "translateY(0)"
         : "translateY(calc(100% - 60px))";
     }
+  };
+
+  const handleContinueAsGuest = () => {
+    setIsAnonymous(true);
+    setShowAuthModal(false);
   };
 
   return (
@@ -556,7 +577,10 @@ const Carrinho = ({ session, setShowAuthModal }) => {
                   <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
                 </div>
               </div>
-              <button className="finalizar-pedido" onClick={finalizarPedido}>
+              <button
+                className="finalizar-pedido"
+                onClick={handleFinalizarPedido}
+              >
                 Finalizar Pedido
               </button>
             </div>

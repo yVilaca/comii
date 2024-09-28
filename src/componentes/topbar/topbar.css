@@ -48,20 +48,27 @@
 }
 
 .login-button {
-  background-color: transparent;
-  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  color: #fff; /* Ajuste a cor conforme necessário */
   cursor: pointer;
-  font-weight: bold;
+  font-size: 14px; /* Ajuste o tamanho da fonte conforme necessário */
+  padding: 5px 10px;
+  border-radius: 5px;
   transition: background-color 0.3s ease;
-  height: 5vh;
 }
 
 .login-button:hover {
-  background-color: #fdd017;
+  background-color: rgba(0, 0, 0, 0.1); /* Efeito hover sutil */
 }
+
+.login-button svg {
+  font-size: 16px; /* Ajuste o tamanho do ícone conforme necessário */
+}
+
 .ajuda-login {
   display: flex;
   align-items: center;

@@ -32,7 +32,6 @@ body {
 
 .carrinho-content {
   position: relative;
-  min-height: calc(100vh - 180px); /* Ajuste conforme necessário */
 }
 
 .carrinho-lista {

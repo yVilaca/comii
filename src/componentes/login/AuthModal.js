@@ -1,60 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { supabase } from "../../supabaseClient"; // Certifique-se de que este caminho está correto
 import "./AuthModal.css";
 
-const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
+const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    try {
-      if (isLoginMode) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password,
-        });
-        if (error) throw error;
-        onAuthSuccess(data.user);
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email: email,
-          password: password,
-          options: {
-            data: {
-              full_name: name,
-            },
-          },
-        });
-        if (error) throw error;
-        if (data.user) {
-          // Inserir o novo usuário na tabela profiles
-          const { error: profileError } = await supabase
-            .from("profiles")
-            .insert({
-              id: data.user.id,
-              full_name: name,
-              username: email.split("@")[0], // Usando a parte do email antes do @ como username
-              avatar_url: null,
-              website: null,
-            });
-
-          if (profileError) throw profileError;
-
-          onAuthSuccess(data.user);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setError("");
+      try {
+        if (isLoginMode) {
+          await onLogin(email, password);
         } else {
-          setError(
-            "Por favor, verifique seu e-mail para confirmar o cadastro."
-          );
+          await onRegister(name, email, password);
         }
+      } catch (err) {
+        setError(err.message);
       }
-    } catch (err) {
-      setError(err.message);
-    }
+    },
+    [email, password, name, isLoginMode, onLogin, onRegister]
+  );
+
+  const handleContinueAsGuest = () => {
+    onClose(); // Simplesmente fecha o modal
   };
 
   if (!isOpen) return null;
@@ -103,6 +76,9 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             </button>
           </p>
         </div>
+        <button className="continue-as-guest" onClick={handleContinueAsGuest}>
+          Continuar como convidado
+        </button>
         <div className="auth-benefits">
           <h3>Benefícios exclusivos para membros:</h3>
           <ul>

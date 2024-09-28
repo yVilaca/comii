@@ -1,4 +1,4 @@
-import React, { Suspense, memo } from "react";
+import React, { Suspense, memo, useEffect } from "react";
 import NavBar from "../componentes/topbar";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -13,6 +13,10 @@ import { Outlet } from "react-router-dom";
 register();
 
 const Produtos = memo(() => {
+  useEffect(() => {
+    register(); // Move Swiper registration to useEffect
+  }, []);
+
   return (
     <div>
       <NavBar />

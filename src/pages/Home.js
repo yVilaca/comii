@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Banner from "../componentes/banner";
 import ItemD from "../componentes/item-deitado";
 import Itens from "../componentes/itens";
@@ -73,12 +73,12 @@ const Home = () => {
     }
   }, [mesa]);
 
-  const handleMesaSubmit = () => {
+  const handleMesaSubmit = useCallback(() => {
     const numeroMesa = document.getElementById("numeroMesa").value;
     if (numeroMesa) {
       setMesa(numeroMesa);
     }
-  };
+  }, []);
 
   return (
     <div>
@@ -168,4 +168,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default React.memo(Home);
