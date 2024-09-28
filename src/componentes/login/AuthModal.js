@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import { supabase } from "../../supabaseClient"; // Certifique-se de que este caminho está correto
 import "./AuthModal.css";
 
-const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
+const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,9 +14,43 @@ const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
     setError("");
     try {
       if (isLoginMode) {
-        await onLogin(email, password);
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+        if (error) throw error;
+        onAuthSuccess(data.user);
       } else {
-        await onRegister(name, email, password);
+        const { data, error } = await supabase.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: name,
+            },
+          },
+        });
+        if (error) throw error;
+        if (data.user) {
+          // Inserir o novo usuário na tabela profiles
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .insert({
+              id: data.user.id,
+              full_name: name,
+              username: email.split("@")[0], // Usando a parte do email antes do @ como username
+              avatar_url: null,
+              website: null,
+            });
+
+          if (profileError) throw profileError;
+
+          onAuthSuccess(data.user);
+        } else {
+          setError(
+            "Por favor, verifique seu e-mail para confirmar o cadastro."
+          );
+        }
       }
     } catch (err) {
       setError(err.message);

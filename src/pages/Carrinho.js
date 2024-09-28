@@ -8,11 +8,13 @@ import "./Carrinho.css";
 import { QRCodeSVG } from "qrcode.react";
 import { io } from "socket.io-client";
 import OrderStatusTracker from "../componentes/OrderTracker";
+import { supabase } from "../supabaseClient";
+import { getUserProfile } from "../utils/user";
 
 // Configuração do Modal
 Modal.setAppElement("#root"); // Para acessibilidade
 
-const Carrinho = () => {
+const Carrinho = ({ session, setShowAuthModal }) => {
   const { mesa } = useParams();
   const { cart, updateQuantity, removeFromCart, clearCart } =
     useContext(CartContext);
@@ -50,6 +52,7 @@ const Carrinho = () => {
 
   const [activeTab, setActiveTab] = useState("carrinho");
   const [pedidosAnteriores, setPedidosAnteriores] = useState([]);
+  const [userProfile, setUserProfile] = useState(null);
 
   useEffect(() => {
     if (mesaAtual) {
@@ -135,22 +138,41 @@ const Carrinho = () => {
   }, [mesaAtual]);
 
   useEffect(() => {
-    const fetchPedidosAnteriores = async () => {
-      try {
-        // Certifique-se de que o usuário está autenticado e tem um ID
-        if (!usuario?.id) {
-          console.log("Usuário não autenticado");
-          return;
-        }
+    const fetchSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setUsuario(session?.user);
+    };
+    fetchSession();
+  }, []);
 
-        const response = await fetch(
-          `https://comii-backend.onrender.com/pedidos-usuario/${usuario.id}`
-        );
-        if (!response.ok) {
-          throw new Error("Falha ao buscar pedidos anteriores");
-        }
-        const data = await response.json();
-        console.log("Pedidos anteriores:", data); // Para depuração
+  useEffect(() => {
+    const fetchPedidosAnteriores = async () => {
+      if (!usuario?.id) return;
+
+      try {
+        const { data, error } = await supabase
+          .from("pedidos")
+          .select(
+            `
+            id,
+            data_pedido,
+            total,
+            status,
+            mesa,
+            pedido_produtos (
+              quantidade,
+              produtos (
+                nome
+              )
+            )
+          `
+          )
+          .eq("cliente_id", usuario.id)
+          .order("data_pedido", { ascending: false });
+
+        if (error) throw error;
         setPedidosAnteriores(data);
       } catch (error) {
         console.error("Erro ao buscar pedidos anteriores:", error);
@@ -159,6 +181,14 @@ const Carrinho = () => {
 
     fetchPedidosAnteriores();
   }, [usuario]);
+
+  useEffect(() => {
+    if (session?.user) {
+      getUserProfile(session.user.id).then((profile) => {
+        setUserProfile(profile);
+      });
+    }
+  }, [session]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -548,9 +578,10 @@ const Carrinho = () => {
                 <details>
                   <summary>Ver itens</summary>
                   <ul>
-                    {pedido.produtos.map((produto, index) => (
+                    {pedido.pedido_produtos.map((produto, index) => (
                       <li key={index}>
-                        {produto.nome} - Quantidade: {produto.quantidade}
+                        {produto.produtos.nome} - Quantidade:{" "}
+                        {produto.quantidade}
                       </li>
                     ))}
                   </ul>
