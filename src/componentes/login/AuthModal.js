@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { supabase } from "../../supabaseClient"; // Certifique-se de que este caminho está correto
 import "./AuthModal.css";
 
-const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
+const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,20 +15,64 @@ const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
       setError("");
       try {
         if (isLoginMode) {
-          await onLogin(email, password);
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+          if (error) throw error;
+          onAuthSuccess(data.user);
         } else {
-          await onRegister(name, email, password);
+          const { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+              data: {
+                full_name: name,
+              },
+            },
+          });
+          if (error) throw error;
+          if (data.user) {
+            // Aguarde a sessão ser estabelecida
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            // Verifique se o usuário está autenticado
+            const { data: sessionData, error: sessionError } =
+              await supabase.auth.getSession();
+            if (sessionError) throw sessionError;
+
+            if (sessionData.session) {
+              // Agora insira o perfil
+              const { error: profileError } = await supabase
+                .from("profiles")
+                .insert({
+                  id: data.user.id,
+                  full_name: name,
+                  username: email.split("@")[0], // Usando a parte do email antes do @ como username
+                  avatar_url: null,
+                  website: null,
+                });
+
+              if (profileError) throw profileError;
+
+              onAuthSuccess(data.user);
+            } else {
+              setError(
+                "Falha ao autenticar após o registro. Por favor, faça login manualmente."
+              );
+            }
+          } else {
+            setError(
+              "Por favor, verifique seu e-mail para confirmar o cadastro."
+            );
+          }
         }
       } catch (err) {
         setError(err.message);
       }
     },
-    [email, password, name, isLoginMode, onLogin, onRegister]
+    [email, password, name, isLoginMode, onAuthSuccess]
   );
-
-  const handleContinueAsGuest = () => {
-    onClose(); // Simplesmente fecha o modal
-  };
 
   if (!isOpen) return null;
 
@@ -76,7 +120,7 @@ const AuthModal = ({ isOpen, onClose, onLogin, onRegister }) => {
             </button>
           </p>
         </div>
-        <button className="continue-as-guest" onClick={handleContinueAsGuest}>
+        <button className="continue-as-guest" onClick={onContinueAsGuest}>
           Continuar como convidado
         </button>
         <div className="auth-benefits">

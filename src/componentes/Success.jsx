@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -28,6 +28,7 @@ const theme = createTheme({
 const Success = () => {
   const [status, setStatus] = useState("Verificando status do pagamento...");
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
@@ -45,7 +46,7 @@ const Success = () => {
 
       try {
         const response = await fetch(
-          `http://https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${
+          `https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${
             mesa || ""
           }`
         );
@@ -54,8 +55,14 @@ const Success = () => {
         if (data.isPaid) {
           setStatus("Pagamento confirmado! Seu pedido foi registrado.");
           localStorage.removeItem("lastMesa");
+          // Redirecionar para a página principal após 3 segundos
+          setTimeout(() => {
+            navigate("/");
+          }, 3000);
         } else if (data.status === "pending") {
           setStatus("Aguardando confirmação do pagamento...");
+          // Verificar novamente após 5 segundos
+          setTimeout(checkPaymentStatus, 5000);
         } else {
           setStatus("Erro no pagamento. Por favor, tente novamente.");
         }
@@ -68,7 +75,7 @@ const Success = () => {
     };
 
     checkPaymentStatus();
-  }, [location.search]);
+  }, [location.search, navigate]);
 
   return (
     <ThemeProvider theme={theme}>
