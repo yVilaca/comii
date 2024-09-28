@@ -5,7 +5,9 @@ import NavBar from "../componentes/topbar";
 import { Transition, TransitionGroup } from "react-transition-group";
 import Modal from "react-modal";
 import "./Carrinho.css";
-import { QRCodeSVG } from "qrcode.react"; // Alterado aqui
+import { QRCodeSVG } from "qrcode.react";
+import { io } from "socket.io-client";
+import OrderStatusTracker from "../componentes/OrderTracker";
 
 // Configuração do Modal
 Modal.setAppElement("#root"); // Para acessibilidade
@@ -45,6 +47,9 @@ const Carrinho = () => {
 
   const [usuario, setUsuario] = useState(null);
   const [showCadastroModal, setShowCadastroModal] = useState(false);
+
+  const [activeTab, setActiveTab] = useState("carrinho");
+  const [pedidosAnteriores, setPedidosAnteriores] = useState([]);
 
   useEffect(() => {
     if (mesaAtual) {
@@ -117,6 +122,38 @@ const Carrinho = () => {
     );
     setTempoPreparo(tempoTotal);
   }, [cart]);
+
+  useEffect(() => {
+    const socket = io("https://comii-backend.onrender.com");
+    socket.on("orderStatusUpdate", (data) => {
+      if (data.mesa === mesaAtual) {
+        // Atualizar o status do pedido na interface
+        setOrderStatus(data.status);
+      }
+    });
+    return () => socket.disconnect();
+  }, [mesaAtual]);
+
+  useEffect(() => {
+    const fetchPedidosAnteriores = async () => {
+      try {
+        const response = await fetch(
+          `https://comii-backend.onrender.com/pedidos-usuario/${usuario?.id}`
+        );
+        if (!response.ok) {
+          throw new Error("Falha ao buscar pedidos anteriores");
+        }
+        const data = await response.json();
+        setPedidosAnteriores(data);
+      } catch (error) {
+        console.error("Erro ao buscar pedidos anteriores:", error);
+      }
+    };
+
+    if (usuario) {
+      fetchPedidosAnteriores();
+    }
+  }, [usuario]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
@@ -298,176 +335,228 @@ const Carrinho = () => {
   return (
     <div className="carrinho-container">
       <NavBar />
-      <h1 className="carrinho-titulo">Seu Carrinho</h1>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      <div className="carrinho-content">
-        <ul className="carrinho-lista">
-          <TransitionGroup component={null}>
-            {cart.map((item, index) => (
-              <Transition
-                key={item.id}
-                timeout={500}
-                onEnter={(node) => {
-                  node.style.opacity = 0;
-                  node.style.transform = "scale(0.5)";
-                  requestAnimationFrame(() => {
-                    node.style.transition = "opacity 500ms, transform 500ms";
-                    node.style.opacity = 1;
-                    node.style.transform = "scale(1)";
-                  });
-                }}
-                onExit={(node) => {
-                  node.style.transition = "opacity 500ms, transform 500ms";
-                  node.style.opacity = 0;
-                  node.style.transform = "scale(0.5)";
-                }}
-              >
-                <li className="carrinho-item">
-                  {item && item.preco && (
-                    <div className="item-card">
-                      <div className="item-imagem-container">
-                        <img
-                          src={item.img}
-                          alt={item.nome}
-                          className="item-imagem"
-                        />
-                      </div>
-                      <div className="item-detalhes">
-                        <div className="item-header">
-                          <h3 className="item-nome">{item.nome}</h3>
-                          <span className="item-preco">
-                            R$ {item.preco.toFixed(2)}
-                          </span>
-                        </div>
-                        <p className="item-descricao">{item.desc}</p>
-                        <div className="item-acoes">
-                          <div className="quantidade-controle">
-                            <button
-                              onClick={() =>
-                                updateQuantity(index, item.quantidade - 1)
-                              }
-                              disabled={item.quantidade <= 1}
-                            >
-                              -
-                            </button>
-                            <span>{item.quantidade}</span>
-                            <button
-                              onClick={() =>
-                                updateQuantity(index, item.quantidade + 1)
-                              }
-                            >
-                              +
-                            </button>
-                          </div>
-                          <button
-                            className="remover-button"
-                            onClick={() => removeFromCart(item.id)}
-                          >
-                            Remover
-                          </button>
-                        </div>
-                        <div className="observacoes-container">
-                          <button
-                            className="obs-button"
-                            onClick={() => toggleEdit(item.id)}
-                          >
-                            {editing[item.id]
-                              ? "Salvar"
-                              : observacoes[item.id]
-                              ? "Editar Observações"
-                              : "Adicionar Observações"}
-                          </button>
-                          {editing[item.id] && (
-                            <textarea
-                              value={observacoes[item.id] || ""}
-                              onChange={(e) =>
-                                handleObservationChange(item.id, e)
-                              }
-                              placeholder="Adicione observações para este produto"
-                              className="obs-textarea"
-                            />
-                          )}
-                          {!editing[item.id] && observacoes[item.id] && (
-                            <p className="observacao-texto">
-                              {observacoes[item.id]}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </li>
-              </Transition>
-            ))}
-          </TransitionGroup>
-        </ul>
-
-        <div
-          ref={resumoRef}
-          className={`carrinho-resumo ${resumoExpandido ? "expandido" : ""}`}
+      <div className="tabs">
+        <button
+          className={`tab ${activeTab === "carrinho" ? "active" : ""}`}
+          onClick={() => setActiveTab("carrinho")}
         >
-          <div
-            className="resumo-handle"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div className="handle-line"></div>
-          </div>
-          <h2 className="resumo-titulo">Resumo do Pedido</h2>
-          <div className="resumo-detalhes">
-            <div className="resumo-linha subtotal">
-              <span>Subtotal:</span>
-              <span>R$ {total.toFixed(2)}</span>
-            </div>
-            {desconto > 0 && (
-              <div className="resumo-linha desconto">
-                <span>Desconto:</span>
-                <span>- R$ {desconto.toFixed(2)}</span>
-              </div>
-            )}
-            <div className="cupom-container">
-              <input
-                type="text"
-                value={cupom}
-                onChange={(e) => setCupom(e.target.value)}
-                placeholder="Código do cupom"
-              />
-              <button onClick={aplicarCupom}>Aplicar</button>
-            </div>
-            <div className="gorjeta-container">
-              <span>Gorjeta:</span>
-              <div className="gorjeta-opcoes">
-                {[0, 5, 10, 15].map((percentual) => (
-                  <button
-                    key={percentual}
-                    onClick={() => calcularGorjeta(percentual)}
-                    className={
-                      gorjeta === (total - desconto) * (percentual / 100)
-                        ? "active"
-                        : ""
-                    }
-                  >
-                    {percentual}%
-                  </button>
-                ))}
-              </div>
-              <span>R$ {gorjeta.toFixed(2)}</span>
-            </div>
-            <div className="resumo-linha total">
-              <span>Total:</span>
-              <span>R$ {(total - desconto + gorjeta).toFixed(2)}</span>
-            </div>
-            <div className="tempo-preparo">
-              <i className="fas fa-clock"></i>
-              <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
-            </div>
-          </div>
-          <button className="finalizar-pedido" onClick={finalizarPedido}>
-            Finalizar Pedido
-          </button>
-        </div>
+          Carrinho
+        </button>
+        <button
+          className={`tab ${activeTab === "pedidos" ? "active" : ""}`}
+          onClick={() => setActiveTab("pedidos")}
+        >
+          Meus Pedidos
+        </button>
       </div>
+
+      {activeTab === "carrinho" ? (
+        // Conteúdo existente do carrinho
+        <div>
+          <h1 className="carrinho-titulo">Seu Carrinho</h1>
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          <div className="carrinho-content">
+            <ul className="carrinho-lista">
+              <TransitionGroup component={null}>
+                {cart.map((item, index) => (
+                  <Transition
+                    key={item.id}
+                    timeout={500}
+                    onEnter={(node) => {
+                      node.style.opacity = 0;
+                      node.style.transform = "scale(0.5)";
+                      requestAnimationFrame(() => {
+                        node.style.transition =
+                          "opacity 500ms, transform 500ms";
+                        node.style.opacity = 1;
+                        node.style.transform = "scale(1)";
+                      });
+                    }}
+                    onExit={(node) => {
+                      node.style.transition = "opacity 500ms, transform 500ms";
+                      node.style.opacity = 0;
+                      node.style.transform = "scale(0.5)";
+                    }}
+                  >
+                    <li className="carrinho-item">
+                      {item && item.preco && (
+                        <div className="item-card">
+                          <div className="item-imagem-container">
+                            <img
+                              src={item.img}
+                              alt={item.nome}
+                              className="item-imagem"
+                            />
+                          </div>
+                          <div className="item-detalhes">
+                            <div className="item-header">
+                              <h3 className="item-nome">{item.nome}</h3>
+                              <span className="item-preco">
+                                R$ {item.preco.toFixed(2)}
+                              </span>
+                            </div>
+                            <p className="item-descricao">{item.desc}</p>
+                            <div className="item-acoes">
+                              <div className="quantidade-controle">
+                                <button
+                                  onClick={() =>
+                                    updateQuantity(index, item.quantidade - 1)
+                                  }
+                                  disabled={item.quantidade <= 1}
+                                >
+                                  -
+                                </button>
+                                <span>{item.quantidade}</span>
+                                <button
+                                  onClick={() =>
+                                    updateQuantity(index, item.quantidade + 1)
+                                  }
+                                >
+                                  +
+                                </button>
+                              </div>
+                              <button
+                                className="remover-button"
+                                onClick={() => removeFromCart(item.id)}
+                              >
+                                Remover
+                              </button>
+                            </div>
+                            <div className="observacoes-container">
+                              <button
+                                className="obs-button"
+                                onClick={() => toggleEdit(item.id)}
+                              >
+                                {editing[item.id]
+                                  ? "Salvar"
+                                  : observacoes[item.id]
+                                  ? "Editar Observações"
+                                  : "Adicionar Observações"}
+                              </button>
+                              {editing[item.id] && (
+                                <textarea
+                                  value={observacoes[item.id] || ""}
+                                  onChange={(e) =>
+                                    handleObservationChange(item.id, e)
+                                  }
+                                  placeholder="Adicione observações para este produto"
+                                  className="obs-textarea"
+                                />
+                              )}
+                              {!editing[item.id] && observacoes[item.id] && (
+                                <p className="observacao-texto">
+                                  {observacoes[item.id]}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </li>
+                  </Transition>
+                ))}
+              </TransitionGroup>
+            </ul>
+
+            <div
+              ref={resumoRef}
+              className={`carrinho-resumo ${
+                resumoExpandido ? "expandido" : ""
+              }`}
+            >
+              <div
+                className="resumo-handle"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
+                <div className="handle-line"></div>
+              </div>
+              <h2 className="resumo-titulo">Resumo do Pedido</h2>
+              <div className="resumo-detalhes">
+                <div className="resumo-linha subtotal">
+                  <span>Subtotal:</span>
+                  <span>R$ {total.toFixed(2)}</span>
+                </div>
+                {desconto > 0 && (
+                  <div className="resumo-linha desconto">
+                    <span>Desconto:</span>
+                    <span>- R$ {desconto.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="cupom-container">
+                  <input
+                    type="text"
+                    value={cupom}
+                    onChange={(e) => setCupom(e.target.value)}
+                    placeholder="Código do cupom"
+                  />
+                  <button onClick={aplicarCupom}>Aplicar</button>
+                </div>
+                <div className="gorjeta-container">
+                  <span>Gorjeta:</span>
+                  <div className="gorjeta-opcoes">
+                    {[0, 5, 10, 15].map((percentual) => (
+                      <button
+                        key={percentual}
+                        onClick={() => calcularGorjeta(percentual)}
+                        className={
+                          gorjeta === (total - desconto) * (percentual / 100)
+                            ? "active"
+                            : ""
+                        }
+                      >
+                        {percentual}%
+                      </button>
+                    ))}
+                  </div>
+                  <span>R$ {gorjeta.toFixed(2)}</span>
+                </div>
+                <div className="resumo-linha total">
+                  <span>Total:</span>
+                  <span>R$ {(total - desconto + gorjeta).toFixed(2)}</span>
+                </div>
+                <div className="tempo-preparo">
+                  <i className="fas fa-clock"></i>
+                  <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
+                </div>
+              </div>
+              <button className="finalizar-pedido" onClick={finalizarPedido}>
+                Finalizar Pedido
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Nova seção para exibir pedidos anteriores
+        <div className="pedidos-anteriores">
+          <h1 className="pedidos-titulo">Seus Pedidos Anteriores</h1>
+          {pedidosAnteriores.length > 0 ? (
+            pedidosAnteriores.map((pedido) => (
+              <div key={pedido.id} className="pedido-item">
+                <h3>Pedido #{pedido.id}</h3>
+                <p>Data: {new Date(pedido.data_pedido).toLocaleString()}</p>
+                <p>Total: R$ {pedido.total.toFixed(2)}</p>
+                <p>Status: {pedido.status}</p>
+                <OrderStatusTracker orderId={pedido.id} mesa={pedido.mesa} />
+                <details>
+                  <summary>Ver itens</summary>
+                  <ul>
+                    {pedido.produtos.map((produto, index) => (
+                      <li key={index}>
+                        {produto.nome} - Quantidade: {produto.quantidade}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </div>
+            ))
+          ) : (
+            <p>Você ainda não fez nenhum pedido.</p>
+          )}
+        </div>
+      )}
+
       <Modal
         isOpen={showPixModal}
         onRequestClose={() => setShowPixModal(false)}
