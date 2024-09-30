@@ -49,6 +49,7 @@ function NavBar() {
     try {
       await signOut();
       console.log("Logout successful");
+      window.location.reload();
     } catch (error) {
       console.error("Error logging out:", error.message);
       alert("Erro ao fazer logout: " + error.message);

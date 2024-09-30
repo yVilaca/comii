@@ -3,11 +3,28 @@ import { supabase } from "../../supabaseClient"; // Certifique-se de que este ca
 import "./AuthModal.css";
 
 const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
+  console.log("AuthModal props:", {
+    isOpen,
+    onClose,
+    onAuthSuccess,
+    onContinueAsGuest,
+  });
+
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+
+  const handleSuccessfulAuth = (user) => {
+    console.log("Autenticação bem-sucedida, fechando modal");
+    if (typeof onAuthSuccess === "function") {
+      onAuthSuccess(user);
+    }
+    if (typeof onClose === "function") {
+      onClose();
+    }
+  };
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -20,7 +37,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
             password: password,
           });
           if (error) throw error;
-          onAuthSuccess(data.user);
+          handleSuccessfulAuth(data.user);
         } else {
           const { data, error } = await supabase.auth.signUp({
             email: email,
@@ -68,10 +85,11 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
           }
         }
       } catch (err) {
+        console.error("Erro durante autenticação:", err);
         setError(err.message);
       }
     },
-    [email, password, name, isLoginMode, onAuthSuccess]
+    [email, password, name, isLoginMode, onAuthSuccess, onClose]
   );
 
   if (!isOpen) return null;

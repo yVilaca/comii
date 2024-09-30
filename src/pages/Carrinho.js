@@ -1,4 +1,11 @@
-import React, { useContext, useState, useEffect, useRef, useMemo } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import NavBar from "../componentes/topbar";
@@ -9,12 +16,13 @@ import { QRCodeSVG } from "qrcode.react";
 import { io } from "socket.io-client";
 import OrderStatusTracker from "../componentes/OrderTracker";
 import { supabase } from "../supabaseClient";
+import AuthModal from "../componentes/login/AuthModal";
 
 import { getUserProfile } from "../componentes/getUsers";
 // Configuração do Modal
 Modal.setAppElement("#root"); // Para acessibilidade
 
-const Carrinho = ({ session, setShowAuthModal }) => {
+const Carrinho = ({ session }) => {
   const { mesa } = useParams();
   const { cart, updateQuantity, removeFromCart, clearCart } =
     useContext(CartContext);
@@ -32,7 +40,7 @@ const Carrinho = ({ session, setShowAuthModal }) => {
   const [modalIsOpen, setModalIsOpen] = useState(
     !mesa || !localStorage.getItem("mesa")
   );
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagem de erro
+  const [errorMessage] = useState(""); // Estado para mensagem de erro
   const navigate = useNavigate();
   const [satisfactionLevel, setSatisfactionLevel] = useState(0);
   const [countdown, setCountdown] = useState(300); // 5 minutos em segundos
@@ -54,7 +62,20 @@ const Carrinho = ({ session, setShowAuthModal }) => {
   const [pedidosAnteriores, setPedidosAnteriores] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
 
-  const [isAnonymous, setIsAnonymous] = useState(!session);
+  const [isAnonymous] = useState(!session);
+
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const handleAuthSuccess = useCallback((user) => {
+    console.log("Usuário autenticado:", user);
+    setShowAuthModal(false);
+    // Outras ações necessárias após o login bem-sucedido
+  }, []);
+
+  const handleContinueAsGuest = useCallback(() => {
+    setShowAuthModal(false);
+    // Lógica para continuar como convidado
+  }, []);
 
   // Sugestão: Use useMemo para cálculos complexos
   const totalComDesconto = useMemo(() => {
@@ -265,10 +286,8 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         status: "pendente",
         tempo_preparo: tempoPreparo,
         cliente_id: session?.user?.id || null,
-        cliente_nome: session
-          ? session.user.user_metadata.full_name
-          : "Anônimo",
-        cliente_email: session ? session.user.email : null,
+        cliente_nome: session?.user?.user_metadata?.full_name,
+        cliente_email: session?.user?.email,
       };
 
       // Armazene o pedido completo no localStorage
@@ -389,11 +408,6 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         ? "translateY(0)"
         : "translateY(calc(100% - 60px))";
     }
-  };
-
-  const handleContinueAsGuest = () => {
-    setIsAnonymous(true);
-    setShowAuthModal(false);
   };
 
   return (
@@ -718,6 +732,14 @@ const Carrinho = ({ session, setShowAuthModal }) => {
           Confirmar
         </button>
       </Modal>
+      {showAuthModal && (
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess}
+          onContinueAsGuest={handleContinueAsGuest}
+        />
+      )}
     </div>
   );
 };
