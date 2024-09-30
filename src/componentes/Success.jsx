@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+import { CartContext } from "../pages/CartContext";
 
 const theme = createTheme({
   palette: {
