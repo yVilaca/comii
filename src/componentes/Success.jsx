@@ -10,6 +10,8 @@ import {
   createTheme,
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const theme = createTheme({
   palette: {
@@ -29,6 +31,7 @@ const Success = () => {
   const [status, setStatus] = useState("Verificando status do pagamento...");
   const location = useLocation();
   const navigate = useNavigate();
+  const { clearCart } = useContext(CartContext);
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
@@ -46,37 +49,43 @@ const Success = () => {
 
       try {
         const response = await fetch(
-          `https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${
-            mesa || ""
-          }`
+          `https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${mesa}`
         );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
+        console.log("Resposta do servidor:", data);
 
         if (data.isPaid) {
           setStatus("Pagamento confirmado! Seu pedido foi registrado.");
-          localStorage.removeItem("lastMesa");
+          clearCart();
+          // Limpar informações relevantes
           localStorage.removeItem("lastPreferenceId");
-          // Redirecionar para a página principal após 3 segundos
-          setTimeout(() => {
-            navigate("/");
-          }, 3000);
+          localStorage.removeItem("lastMesa");
+          // Redirecionar para a página inicial após 5 segundos
+          setTimeout(() => navigate("/"), 5000);
         } else if (data.status === "pending") {
           setStatus("Aguardando confirmação do pagamento...");
           // Verificar novamente após 5 segundos
           setTimeout(checkPaymentStatus, 5000);
         } else {
           setStatus("Erro no pagamento. Por favor, tente novamente.");
+          // Redirecionar para o carrinho após 5 segundos
+          setTimeout(() => navigate("/carrinho"), 5000);
         }
       } catch (error) {
         console.error("Erro ao verificar status do pagamento:", error);
         setStatus(
           "Erro ao verificar status do pagamento. Tente novamente mais tarde."
         );
+        // Redirecionar para o carrinho após 5 segundos
+        setTimeout(() => navigate("/carrinho"), 5000);
       }
     };
 
     checkPaymentStatus();
-  }, [location.search, navigate]);
+  }, [location.search, navigate, clearCart]);
 
   return (
     <ThemeProvider theme={theme}>

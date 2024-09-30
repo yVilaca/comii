@@ -2,16 +2,22 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, CircularProgress, Container } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const Failure = () => {
   const navigate = useNavigate();
+  const { clearCart } = useContext(CartContext);
 
   useEffect(() => {
+    clearCart();
+    localStorage.removeItem("lastPreferenceId");
+    localStorage.removeItem("lastMesa");
     const timer = setTimeout(() => {
       navigate("/carrinho");
     }, 5000);
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, clearCart]);
 
   return (
     <Container maxWidth="sm">

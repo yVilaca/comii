@@ -268,8 +268,11 @@ const Carrinho = ({ session, setShowAuthModal }) => {
         cliente_nome: session
           ? session.user.user_metadata.full_name
           : "Anônimo",
-        cliente_email: session ? session.user.email : null, // Adicionando o email do cliente
+        cliente_email: session ? session.user.email : null,
       };
+
+      // Armazene o pedido completo no localStorage
+      localStorage.setItem(`pedido_${mesaAtual}`, JSON.stringify(pedido));
 
       // Criar preferência de pagamento no Mercado Pago
       const response = await fetch(
@@ -293,6 +296,9 @@ const Carrinho = ({ session, setShowAuthModal }) => {
       if (!data.id || !data.init_point) {
         throw new Error("Resposta inválida do servidor");
       }
+
+      // Adicione o preferenceId ao pedido
+      pedido.preferenceId = data.id;
 
       // Armazenar o preferenceId no localStorage
       localStorage.setItem("lastPreferenceId", data.id);
