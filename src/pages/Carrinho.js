@@ -255,8 +255,8 @@ const Carrinho = ({ session }) => {
   // Sugestão: Extraia a lógica de finalização do pedido para uma função separada
   const finalizarPedido = async () => {
     try {
-      const pedido = new Pedido({
-        total: total - desconto + gorjeta,
+      const pedidoData = {
+        total: totalComDesconto,
         desconto,
         gorjeta,
         numero_mesa: mesaAtual,
@@ -264,28 +264,43 @@ const Carrinho = ({ session }) => {
         cliente_email: session?.user?.email,
         cliente_nome: session?.user?.user_metadata?.full_name,
         tempo_preparo: tempoPreparo,
-      });
+        status: "pendente",
+        produtos: cart.map((item) => ({
+          produto_id: item.id,
+          quantidade: item.quantidade,
+          observacao: observacoes[item.id] || "",
+        })),
+      };
 
-      cart.forEach((item) => {
-        const pedidoProduto = new PedidoProduto(
-          null,
-          item.id,
-          item.quantidade,
-          item.observacao
-        );
-        pedido.adicionarProduto(pedidoProduto);
-      });
+      console.log("Dados do pedido a serem enviados:", pedidoData);
 
-      const novoPedido = await PedidoService.criarPedido(pedido);
+      // Enviar pedido para o backend para criar preferência de pagamento
+      const response = await fetch(
+        "https://comii-backend.onrender.com/criar-preferencia",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pedidoData),
+        }
+      );
 
-      // Aqui você pode adicionar a lógica para criar a preferência no Mercado Pago
-      // e atualizar o pedido com o preferenceid
+      if (!response.ok) {
+        throw new Error("Falha ao criar preferência de pagamento");
+      }
 
-      clearCart();
-      navigate(`/success?pedido_id=${novoPedido.id}`);
+      const { id: preferenceId, init_point } = await response.json();
+
+      // Armazenar informações relevantes no localStorage
+      localStorage.setItem("lastPreferenceId", preferenceId);
+      localStorage.setItem("lastMesa", mesaAtual);
+
+      // Redirecionar para a página de pagamento do Mercado Pago
+      window.location.href = init_point;
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
-      // Adicione aqui a lógica para lidar com o erro
+      // Adicione aqui a lógica para lidar com o erro, como exibir uma mensagem para o usuário
     }
   };
 
