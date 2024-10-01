@@ -8,6 +8,9 @@ import React, {
 } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
+import { Pedido } from "../models/Pedido";
+import { PedidoProduto } from "../models/PedidoProduto";
+import { PedidoService } from "../services/PedidoService";
 import NavBar from "../componentes/topbar";
 import { Transition, TransitionGroup } from "react-transition-group";
 import Modal from "react-modal";
@@ -250,86 +253,39 @@ const Carrinho = ({ session }) => {
   };
 
   // Sugestão: Extraia a lógica de finalização do pedido para uma função separada
-  const handleFinalizarPedido = async () => {
-    if (!session && !isAnonymous) {
-      setShowAuthModal(true);
-      return;
-    }
-
+  const finalizarPedido = async () => {
     try {
-      if (!mesaAtual) {
-        alert("Por favor, informe o número da mesa.");
-        return;
-      }
-      if (cart.length === 0) {
-        alert("Seu carrinho está vazio.");
-        return;
-      }
-
-      if (totalComDesconto <= 0) {
-        alert("O valor total deve ser positivo.");
-        return;
-      }
-
-      const pedido = {
-        produtos: cart.map((item) => ({
-          id: item.id,
-          nome: item.nome,
-          quantidade: item.quantidade,
-          preco: item.preco,
-          observacao: observacoes[item.id] || "",
-        })),
-        total: totalComDesconto.toFixed(2),
-        desconto: desconto.toFixed(2),
-        gorjeta: gorjeta.toFixed(2),
-        mesa: mesaAtual,
-        status: "pendente",
-        tempo_preparo: tempoPreparo,
-        cliente_id: session?.user?.id || null,
-        cliente_nome: session?.user?.user_metadata?.full_name,
+      const pedido = new Pedido({
+        total: total - desconto + gorjeta,
+        desconto,
+        gorjeta,
+        numero_mesa: mesaAtual,
+        cliente_id: session?.user?.id,
         cliente_email: session?.user?.email,
-      };
+        cliente_nome: session?.user?.user_metadata?.full_name,
+        tempo_preparo: tempoPreparo,
+      });
 
-      // Armazene o pedido completo no localStorage
-      localStorage.setItem(`pedido_${mesaAtual}`, JSON.stringify(pedido));
-
-      // Criar preferência de pagamento no Mercado Pago
-      const response = await fetch(
-        "https://comii-backend.onrender.com/create_preference",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(pedido),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          `Erro do servidor: ${response.status} ${response.statusText}`
+      cart.forEach((item) => {
+        const pedidoProduto = new PedidoProduto(
+          null,
+          item.id,
+          item.quantidade,
+          item.observacao
         );
-      }
+        pedido.adicionarProduto(pedidoProduto);
+      });
 
-      const data = await response.json();
-      if (!data.id || !data.init_point) {
-        throw new Error("Resposta inválida do servidor");
-      }
+      const novoPedido = await PedidoService.criarPedido(pedido);
 
-      // Adicione o preferenceId ao pedido
-      pedido.preferenceId = data.id;
+      // Aqui você pode adicionar a lógica para criar a preferência no Mercado Pago
+      // e atualizar o pedido com o preferenceid
 
-      // Armazenar o preferenceId no localStorage
-      localStorage.setItem("lastPreferenceId", data.id);
-      localStorage.setItem("lastMesa", mesaAtual);
-
-      console.log("Preference ID armazenado:", data.id);
-
-      // Redirecionar para a página de pagamento do Mercado Pago
-      window.location.href = data.init_point;
+      clearCart();
+      navigate(`/success?pedido_id=${novoPedido.id}`);
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
-      alert(`Erro ao finalizar pedido: ${error.message}`);
+      // Adicione aqui a lógica para lidar com o erro
     }
   };
 
@@ -599,10 +555,7 @@ const Carrinho = ({ session }) => {
                   <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
                 </div>
               </div>
-              <button
-                className="finalizar-pedido"
-                onClick={handleFinalizarPedido}
-              >
+              <button className="finalizar-pedido" onClick={finalizarPedido}>
                 Finalizar Pedido
               </button>
             </div>
