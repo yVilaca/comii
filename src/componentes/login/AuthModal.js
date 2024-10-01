@@ -24,6 +24,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
     if (typeof onClose === "function") {
       onClose();
     }
+    window.location.reload();
   };
 
   const handleSubmit = useCallback(
