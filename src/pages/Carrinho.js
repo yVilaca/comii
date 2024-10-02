@@ -274,7 +274,6 @@ const Carrinho = ({ session }) => {
 
       console.log("Dados do pedido a serem enviados:", pedidoData);
 
-      // Enviar pedido para o backend para criar preferência de pagamento
       const response = await fetch(
         "https://comii-backend.onrender.com/criar-preferencia",
         {
@@ -287,20 +286,21 @@ const Carrinho = ({ session }) => {
       );
 
       if (!response.ok) {
-        throw new Error("Falha ao criar preferência de pagamento");
+        const errorData = await response.json();
+        throw new Error(
+          `Falha ao criar preferência de pagamento: ${errorData.error}`
+        );
       }
 
       const { id: preferenceId, init_point } = await response.json();
 
-      // Armazenar informações relevantes no localStorage
       localStorage.setItem("lastPreferenceId", preferenceId);
       localStorage.setItem("lastMesa", mesaAtual);
 
-      // Redirecionar para a página de pagamento do Mercado Pago
       window.location.href = init_point;
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
-      // Adicione aqui a lógica para lidar com o erro, como exibir uma mensagem para o usuário
+      alert(`Erro ao finalizar pedido: ${error.message}`);
     }
   };
 
