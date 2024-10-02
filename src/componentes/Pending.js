@@ -9,6 +9,7 @@ import {
   Paper,
 } from "@mui/material";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+import io from "socket.io-client";
 
 const Pending = () => {
   const navigate = useNavigate();
@@ -17,6 +18,14 @@ const Pending = () => {
   const [status, setStatus] = useState("Verificando status do pagamento...");
 
   useEffect(() => {
+    const socket = io("https://comii-backend.onrender.com");
+
+    socket.on("pedidoAprovado", (data) => {
+      if (data.mesa === localStorage.getItem("lastMesa")) {
+        navigate(`/success?pedido_id=${data.pedidoId}`);
+      }
+    });
+
     const checkPaymentStatus = async () => {
       try {
         const preferenceId = localStorage.getItem("lastPreferenceId");
@@ -35,14 +44,23 @@ const Pending = () => {
           navigate(`/success?pedido_id=${data.pedidoId}`);
         } else if (data.status === "rejected") {
           navigate("/failure");
+        } else {
+          setStatus(`Status do pagamento: ${data.status}`);
         }
       } catch (error) {
         console.error("Erro ao verificar status do pagamento:", error);
+        setStatus(
+          "Erro ao verificar status do pagamento. Tente novamente mais tarde."
+        );
       }
     };
 
     const interval = setInterval(checkPaymentStatus, 5000);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+      socket.disconnect();
+    };
   }, [navigate]);
 
   return (
