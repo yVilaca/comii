@@ -259,7 +259,7 @@ const Carrinho = ({ session }) => {
         total: totalComDesconto,
         desconto,
         gorjeta,
-        numero_mesa: mesaAtual,
+        numero_mesa: mesaAtual, // Certifique-se de que está usando 'numero_mesa' aqui
         cliente_id: session?.user?.id,
         cliente_email: session?.user?.email,
         cliente_nome: session?.user?.user_metadata?.full_name,
