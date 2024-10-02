@@ -23,7 +23,7 @@ import AuthModal from "../componentes/login/AuthModal";
 
 import { getUserProfile } from "../componentes/getUsers";
 // Configuração do Modal
-Modal.setAppElement("#root"); // Para acessibilidade
+Modal.setAppElement("#root");
 
 const Carrinho = ({ session }) => {
   const { mesa } = useParams();
