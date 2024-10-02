@@ -18,42 +18,32 @@ const Pending = () => {
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
-      const searchParams = new URLSearchParams(location.search);
-      const paymentId = searchParams.get("payment_id");
-      const mesa = localStorage.getItem("lastMesa");
-
       try {
+        const preferenceId = localStorage.getItem("lastPreferenceId");
+        const mesa = localStorage.getItem("lastMesa");
         const response = await fetch(
-          `https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${mesa}`
+          `https://comii-backend.onrender.com/check-payment-status/${preferenceId}?mesa=${mesa}`
         );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
 
-        if (data.isPaid) {
-          setStatus("Pagamento confirmado! Seu pedido foi registrado.");
-          clearCart();
-          localStorage.removeItem("lastPreferenceId");
-          localStorage.removeItem("lastMesa");
-          setTimeout(() => navigate("/"), 5000);
-        } else if (data.status === "pending") {
-          setStatus("Aguardando confirmação do pagamento...");
-        } else {
-          setStatus("Erro no pagamento. Por favor, tente novamente.");
-          setTimeout(() => navigate("/carrinho"), 5000);
+        if (data.status === "approved") {
+          navigate(`/success?pedido_id=${data.pedidoId}`);
+        } else if (data.status === "rejected") {
+          navigate("/failure");
         }
       } catch (error) {
         console.error("Erro ao verificar status do pagamento:", error);
-        setStatus(
-          "Erro ao verificar status do pagamento. Tente novamente mais tarde."
-        );
-        setTimeout(() => navigate("/carrinho"), 5000);
       }
     };
 
-    checkPaymentStatus();
-    const interval = setInterval(checkPaymentStatus, 5000); // Verifica a cada 5 segundos
-
+    const interval = setInterval(checkPaymentStatus, 5000);
     return () => clearInterval(interval);
-  }, [location.search, clearCart, navigate]);
+  }, [navigate]);
 
   return (
     <Container maxWidth="sm">
