@@ -30,6 +30,12 @@ const Pending = () => {
       try {
         const preferenceId = localStorage.getItem("lastPreferenceId");
         const mesa = localStorage.getItem("lastMesa");
+
+        console.log("Verificando status do pagamento com:", {
+          preferenceId,
+          mesa,
+        }); // Log para depuração
+
         const response = await fetch(
           `https://comii-backend.onrender.com/check-payment-status/${preferenceId}?mesa=${mesa}`
         );
@@ -39,6 +45,7 @@ const Pending = () => {
         }
 
         const data = await response.json();
+        console.log("Resposta da API:", data); // Log para depuração
 
         if (data.status === "approved") {
           navigate(`/success?pedido_id=${data.pedidoId}`);
