@@ -293,9 +293,9 @@ const Carrinho = ({ session }) => {
         );
       }
 
-      const { id: preferenceId, init_point } = await response.json();
+      const { id: preferenceid, init_point } = await response.json();
 
-      localStorage.setItem("lastPreferenceId", preferenceId);
+      localStorage.setItem("lastPreferenceId", preferenceid);
       localStorage.setItem("lastMesa", mesaAtual);
 
       window.location.href = init_point;
