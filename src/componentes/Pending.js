@@ -21,6 +21,7 @@ const Pending = () => {
     const socket = io("https://comii-backend.onrender.com");
 
     socket.on("pedidoAprovado", (data) => {
+      console.log("Evento 'pedidoAprovado' recebido:", data); // Adicione este log
       if (data.mesa === localStorage.getItem("lastMesa")) {
         navigate(`/success?pedido_id=${data.pedidoId}`);
       }
