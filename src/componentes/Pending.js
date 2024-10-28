@@ -38,9 +38,6 @@ const Pending = () => {
           mesa,
         });
 
-        // Adicione um log para verificar o preferenceId
-        console.log("Preference ID recuperado do localStorage:", preferenceId);
-
         const response = await fetch(
           `https://comii-backend.onrender.com/check-payment-status/${preferenceId}?mesa=${mesa}`
         );
