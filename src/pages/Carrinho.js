@@ -256,7 +256,7 @@ const Carrinho = ({ session }) => {
   const finalizarPedido = async () => {
     try {
       const pedidoData = {
-        total: totalComDesconto,
+        total: totalComDesconto > 0 ? totalComDesconto : 0.01,
         desconto,
         gorjeta,
         numero_mesa: mesaAtual,
