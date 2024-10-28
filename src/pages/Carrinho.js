@@ -275,6 +275,11 @@ const Carrinho = ({ session }) => {
 
       console.log("Dados do pedido a serem enviados:", pedidoData);
 
+      if (pedidoData.total <= 0) {
+        alert("O total do pedido deve ser maior que zero.");
+        return;
+      }
+
       const response = await fetch(
         "https://comii-backend.onrender.com/criar-preferencia",
         {
