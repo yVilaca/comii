@@ -253,7 +253,9 @@ const Carrinho = ({ session }) => {
   };
 
   // Sugestão: Extraia a lógica de finalização do pedido para uma função separada
-  const finalizarPedido = async () => {
+  const finalizarPedido = async (event) => {
+    event.preventDefault(); // Previne o recarregamento da página
+
     try {
       const pedidoData = {
         total: totalComDesconto > 0 ? totalComDesconto : 0.01,
@@ -576,9 +578,9 @@ const Carrinho = ({ session }) => {
                   <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
                 </div>
               </div>
-              <button className="finalizar-pedido" onClick={finalizarPedido}>
-                Finalizar Pedido
-              </button>
+              <form onSubmit={finalizarPedido}>
+                <button type="submit">Finalizar Pedido</button>
+              </form>
             </div>
           </div>
         </div>
