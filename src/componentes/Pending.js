@@ -63,7 +63,6 @@ const Pending = () => {
         );
       }
     };
-
     const interval = setInterval(checkPaymentStatus, 5000);
 
     return () => {

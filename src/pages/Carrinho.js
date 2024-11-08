@@ -313,7 +313,6 @@ const Carrinho = ({ session }) => {
       alert(`Erro ao finalizar pedido: ${error.message}`);
     }
   };
-
   const handleCadastroUsuario = async (dadosUsuario) => {
     try {
       const response = await fetch(
