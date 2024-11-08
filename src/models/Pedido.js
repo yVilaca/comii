@@ -9,7 +9,7 @@ export class Pedido {
     this.cliente_id = data.cliente_id || null;
     this.cliente_nome = data.cliente_nome || "";
     this.cliente_email = data.cliente_email || "";
-    this.preferenceid = data.preferenceid || null;
+    this.preferenceid = data.preferenceid; // Aqui está correto
     this.tempo_preparo = data.tempo_preparo || 0;
     this.data_pedido = data.data_pedido
       ? new Date(data.data_pedido)

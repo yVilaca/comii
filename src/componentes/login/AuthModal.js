@@ -1,15 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { supabase } from "../../supabaseClient"; // Certifique-se de que este caminho está correto
+import { supabase } from "../../supabaseClient";
 import "./AuthModal.css";
 
 const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
-  console.log("AuthModal props:", {
-    isOpen,
-    onClose,
-    onAuthSuccess,
-    onContinueAsGuest,
-  });
-
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

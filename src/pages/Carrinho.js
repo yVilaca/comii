@@ -23,7 +23,7 @@ import AuthModal from "../componentes/login/AuthModal";
 
 import { getUserProfile } from "../componentes/getUsers";
 // Configuração do Modal
-Modal.setAppElement("#root"); // Para acessibilidade
+Modal.setAppElement("#root");
 
 const Carrinho = ({ session }) => {
   const { mesa } = useParams();
@@ -253,42 +253,66 @@ const Carrinho = ({ session }) => {
   };
 
   // Sugestão: Extraia a lógica de finalização do pedido para uma função separada
-  const finalizarPedido = async () => {
+  const finalizarPedido = async (event) => {
+    event.preventDefault(); // Previne o recarregamento da página
+
     try {
-      const pedido = new Pedido({
-        total: total - desconto + gorjeta,
+      const pedidoData = {
+        total: totalComDesconto > 0 ? totalComDesconto : 0.01,
         desconto,
         gorjeta,
         numero_mesa: mesaAtual,
-        cliente_id: session?.user?.id,
-        cliente_email: session?.user?.email,
-        cliente_nome: session?.user?.user_metadata?.full_name,
+        cliente_id: session?.user?.id || null,
+        cliente_email: session?.user?.email || null,
+        cliente_nome:
+          session?.user?.user_metadata?.full_name || "Cliente Anônimo",
         tempo_preparo: tempoPreparo,
-      });
+        status: "pendente",
+        produtos: cart.map((item) => ({
+          produto_id: item.id,
+          quantidade: item.quantidade,
+          observacao: observacoes[item.id] || "",
+        })),
+      };
 
-      cart.forEach((item) => {
-        const pedidoProduto = new PedidoProduto(
-          null,
-          item.id,
-          item.quantidade,
-          item.observacao
+      console.log("Dados do pedido a serem enviados:", pedidoData);
+
+      if (pedidoData.total <= 0) {
+        alert("O total do pedido deve ser maior que zero.");
+        return;
+      }
+
+      const response = await fetch(
+        "https://comii-backend.onrender.com/criar-preferencia",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pedidoData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `Falha ao criar preferência de pagamento: ${errorData.error}`
         );
-        pedido.adicionarProduto(pedidoProduto);
-      });
+      }
 
-      const novoPedido = await PedidoService.criarPedido(pedido);
+      const { id: preferenceid, init_point } = await response.json();
 
-      // Aqui você pode adicionar a lógica para criar a preferência no Mercado Pago
-      // e atualizar o pedido com o preferenceid
+      // Salvar o preferenceId correto no localStorage
+      localStorage.setItem("lastPreferenceId", preferenceid);
+      localStorage.setItem("lastMesa", mesaAtual);
 
-      clearCart();
-      navigate(`/success?pedido_id=${novoPedido.id}`);
+      // Redirecionar para o ponto inicial do pagamento
+      window.location.href = init_point;
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
-      // Adicione aqui a lógica para lidar com o erro
+      alert(`Erro ao finalizar pedido: ${error.message}`);
     }
   };
-
   const handleCadastroUsuario = async (dadosUsuario) => {
     try {
       const response = await fetch(
@@ -555,9 +579,9 @@ const Carrinho = ({ session }) => {
                   <span>Tempo estimado de preparo: {tempoPreparo} minutos</span>
                 </div>
               </div>
-              <button className="finalizar-pedido" onClick={finalizarPedido}>
-                Finalizar Pedido
-              </button>
+              <form onSubmit={finalizarPedido}>
+                <button type="submit">Finalizar Pedido</button>
+              </form>
             </div>
           </div>
         </div>
