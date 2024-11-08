@@ -302,9 +302,11 @@ const Carrinho = ({ session }) => {
 
       const { id: preferenceid, init_point } = await response.json();
 
+      // Salvar o preferenceId correto no localStorage
       localStorage.setItem("lastPreferenceId", preferenceid);
       localStorage.setItem("lastMesa", mesaAtual);
 
+      // Redirecionar para o ponto inicial do pagamento
       window.location.href = init_point;
     } catch (error) {
       console.error("Erro ao finalizar pedido:", error);
