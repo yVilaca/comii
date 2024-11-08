@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+    background-color: white;
+}
 .deitado {
     margin: 2.5vh;
     display: flex;
@@ -48,4 +52,18 @@
     width: 100px;
     height: 104px;
     object-fit: cover;
+}
+
+.bebidas-principais {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 2rem;
+}
+
+.produtos-adicionais {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 2rem;
 }

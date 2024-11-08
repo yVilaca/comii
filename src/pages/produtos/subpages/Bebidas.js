@@ -1,45 +1,83 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./bebidas.css";
-import ItemDBebidas from "../../../componentes/item-deitado-produto";
+import Itens from "../../../componentes/itens";
 import Titulo from "../../../componentes/titulo";
+import { ProdutoService } from "../../../services/ProdutoService";
 
 function Bebidas() {
+  const [bebidasPrincipais, setBebidasPrincipais] = useState([]);
+  const [bebidasAdicionais, setBebidasAdicionais] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const carregarBebidas = async () => {
+      try {
+        console.log("Iniciando carregamento de bebidas...");
+        const bebidas = await ProdutoService.buscarProdutosPorCategoria("Bebidas");
+        console.log("Bebidas recebidas:", bebidas);
+        
+        if (bebidas && bebidas.length > 0) {
+          setBebidasPrincipais(bebidas.slice(0, 4));
+          if (bebidas.length > 4) {
+            setBebidasAdicionais(bebidas.slice(4));
+          }
+        } else {
+          console.log("Nenhuma bebida encontrada");
+        }
+      } catch (error) {
+        console.error("Erro ao carregar bebidas:", error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    carregarBebidas();
+  }, []);
+
+  console.log("Estado atual - Principais:", bebidasPrincipais);
+  console.log("Estado atual - Adicionais:", bebidasAdicionais);
+
+  if (carregando) {
+    return <div>Carregando bebidas...</div>;
+  }
+
   return (
     <div style={{ marginBottom: "8vh" }}>
       <Titulo
         titulo="BEBIDAS"
         linha="-------------------------------------------"
       />
-      <ItemDBebidas
-        id="1"
-        nome="Água sem gás"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={3.0}
-        img="/imgs/agua_sem_gas.jpg"
-      />
-      <ItemDBebidas
-        id="2"
-        nome="Água com gás"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={3.99}
-        img="/imgs/agua_gasosa.jpg"
-      />
+      
+      {/* Bebidas Principais */}
+      <div className="bebidas-principais">
+        {bebidasPrincipais.map((bebida) => (
+          <Itens
+            key={bebida.id}
+            id={bebida.id}
+            nome={bebida.nome}
+            desc={bebida.descricao}
+            preco={bebida.preco}
+            img={bebida.img}
+          />
+        ))}
+      </div>
 
-      <Titulo titulo="BEBIDAS ALCOÓLICAS" />
-      <ItemDBebidas
-        id="3"
-        nome="Heineken"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-        img="/imgs/heinneken.jpg"
-      />
-      <ItemDBebidas
-        id="4"
-        nome="Corona"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-        img="/imgs/corona.png"
-      />
+      {/* Outros Produtos */}
+      {bebidasAdicionais.length > 0 && (
+        <div className="produtos-adicionais">
+          <Titulo titulo="OUTRAS BEBIDAS" />
+          {bebidasAdicionais.map((bebida) => (
+            <Itens
+              key={bebida.id}
+              id={bebida.id}
+              nome={bebida.nome}
+              desc={bebida.descricao}
+              preco={bebida.preco}
+              img={bebida.img}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

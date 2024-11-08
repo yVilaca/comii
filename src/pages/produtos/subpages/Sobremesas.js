@@ -1,43 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./sobremesas.css";
-import ItemDBebidas from "../../../componentes/item-deitado-produto";
+import Itens from "../../../componentes/itens";
 import Titulo from "../../../componentes/titulo";
+import { ProdutoService } from "../../../services/ProdutoService";
 
 function Sobremesas() {
+  const [sobremesasPrincipais, setSobremesasPrincipais] = useState([]);
+  const [sobremesasAdicionais, setSobremesasAdicionais] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const carregarSobremesas = async () => {
+      try {
+        const sobremesas = await ProdutoService.buscarProdutosPorCategoria("Sobremesa");
+        setSobremesasPrincipais(sobremesas);
+      } catch (error) {
+        console.error("Erro ao carregar sobremesas:", error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    carregarSobremesas();
+  }, []);
+
+  if (carregando) {
+    return <div>Carregando sobremesas...</div>;
+  }
+
   return (
     <div style={{ marginBottom: "8vh" }}>
       <Titulo
         titulo="SOBREMESAS"
-        linha="-------------------------------------"
+        linha="----------------------------------------"
       />
-      <ItemDBebidas
-        img="/imgs/pudim2.svg"
-        id="9"
-        nome="Pudim"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/torta2.svg"
-        id="10"
-        nome="Torta"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/sorvete2.svg"
-        id="11"
-        nome="Sorvete"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/pave2.svg"
-        id="12"
-        nome="Pavê"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
+      
+      {/* Sobremesas Principais */}
+      <div className="sobremesas-principais">
+        {sobremesasPrincipais.map((sobremesa) => (
+          <Itens
+            key={sobremesa.id}
+            id={sobremesa.id}
+            nome={sobremesa.nome}
+            desc={sobremesa.descricao}
+            preco={sobremesa.preco}
+            img={sobremesa.img}
+          />
+        ))}
+      </div>
+
+      {/* Outros Produtos */}
+      <div className="produtos-adicionais">
+        {sobremesasAdicionais.map((sobremesa) => (
+          <Itens
+            key={sobremesa.id}
+            id={sobremesa.id}
+            nome={sobremesa.nome}
+            desc={sobremesa.descricao}
+            preco={sobremesa.preco}
+            img={sobremesa.img}
+          />
+        ))}
+      </div>
     </div>
   );
 }

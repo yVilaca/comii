@@ -1,70 +1,36 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Banner from "../componentes/banner";
-import ItemD from "../componentes/item-deitado";
-import Itens from "../componentes/itens";
 import NavBar from "../componentes/topbar";
 import Modal from "react-modal";
 import "./home.css";
+import { ProdutoService } from "../services/ProdutoService";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-Modal.setAppElement("#root"); // Para acessibilidade
+Modal.setAppElement("#root");
 
 const Home = () => {
   const [mesa, setMesa] = useState(localStorage.getItem("mesa") || "");
   const [modalIsOpen, setModalIsOpen] = useState(!mesa);
+  const [produtosCarrossel, setProdutosCarrossel] = useState([]);
+  const [produtosAdicionais, setProdutosAdicionais] = useState([]);
+  const [carrinho, setCarrinho] = useState([]);
 
-  const items = [
-    {
-      id: 13,
-      nome: "Cheese Burguer",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 0.01,
-    },
-    {
-      id: 14,
-      nome: "X-Bacon",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 0.01,
-    },
-    {
-      id: 15,
-      nome: "X-Tudo",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 0.01,
-    },
-    {
-      id: 16,
-      nome: "X-Vegetariano",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      preco: 0.01,
-    },
-  ];
+  useEffect(() => {
+    const carregarProdutos = async () => {
+      try {
+        const todosOsProdutos = await ProdutoService.buscarProdutos();
+        // Garantir que temos 4 produtos para o carrossel
+        setProdutosCarrossel(todosOsProdutos.slice(16, 20));
+        // Ajustar os produtos adicionais para começar após os do carrossel
+        setProdutosAdicionais(todosOsProdutos.slice(12, 16));
+      } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+      }
+    };
 
-  const categoriasJuntasItems = [
-    {
-      id: 17,
-      nome: "Burrito",
-      preco: 0.01,
-      desc: "Burrito do chefe com queijos especiais e temperos italianos selecionados.",
-    },
-    {
-      id: 18,
-      nome: "Macarrão",
-      preco: 0.01,
-      desc: "Macarrão com queijos especiais e temperos italianos selecionados.",
-    },
-    {
-      id: 19,
-      nome: "Fritas",
-      preco: 0.01,
-      desc: "Deliciosa porção de batatas fritas palito com sal.",
-    },
-    {
-      id: 20,
-      nome: "Espetinho",
-      preco: 0.01,
-      desc: "Maça de peito em cubinhos assada na grelha e tempero do chefe.",
-    },
-  ];
+    carregarProdutos();
+  }, []);
 
   useEffect(() => {
     if (mesa) {
@@ -79,6 +45,40 @@ const Home = () => {
       setMesa(numeroMesa);
     }
   }, []);
+
+  const adicionarAoCarrinho = useCallback((produto) => {
+    setCarrinho(carrinhoAtual => [...carrinhoAtual, produto]);
+    toast.success(`${produto.nome} adicionado ao carrinho!`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+  }, []);
+
+
+  const renderProdutoCarrossel = (produto) => (
+    <div key={produto.id} className="produto-item">
+      <div id="item-geral">
+        <img 
+          src={produto.img || "/imgs/default.png"} 
+          alt={produto.nome}
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "/imgs/default.png";
+          }}
+        />
+        <div className="item-content">
+          <h3 className="item-nome">{produto.nome}</h3>
+          <p id="desc-item">{produto.descricao}</p>
+          <p className="item-preco">R$ {produto.preco.toFixed(2)}</p>
+        </div>
+        <button onClick={() => adicionarAoCarrinho(produto)}>Incluir ao carrinho</button>
+      </div>
+    </div>
+  );
 
   return (
     <div>
@@ -132,37 +132,19 @@ const Home = () => {
       </Modal>
 
       <section className="recomendados-text">
-        <p className="recomendados-line">-----------------------------------</p>
+        <p className="recomendados-line">--------------------------------</p>
         <h1 id="recomendados">RECOMENDADOS</h1>
-        <p className="recomendados-line">-----------------------------------</p>
+        <p className="recomendados-line">--------------------------------</p>
       </section>
 
-      <div className="categorias-juntas2">
-        {categoriasJuntasItems.map((item) => (
-          <div key={item.id} className="item-container">
-            <Itens
-              id={item.id}
-              nome={item.nome}
-              preco={item.preco}
-              desc={item.desc}
-              img={"/imgs/" + item.nome + ".png"}
-            />
-          </div>
-        ))}
+      <div className="carrossel-container">
+        <div className="produtos-carrossel">
+          {produtosCarrossel.map(renderProdutoCarrossel)}
+        </div>
       </div>
 
-      <div className="itens" style={{ marginBottom: "15%" }}>
-        {items.map((item) => (
-          <div key={item.id} style={{ marginBottom: "15px" }}>
-            <ItemD
-              id={item.id}
-              nome={item.nome}
-              desc={item.desc}
-              preco={item.preco}
-              img={"/imgs/" + item.nome + ".png"}
-            />
-          </div>
-        ))}
+      <div className="produtos-adicionais">
+        {produtosAdicionais.map(renderProdutoCarrossel)}
       </div>
     </div>
   );

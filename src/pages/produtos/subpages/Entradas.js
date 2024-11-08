@@ -1,43 +1,67 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./entradas.css";
-import ItemDBebidas from "../../../componentes/item-deitado-produto";
+import Itens from "../../../componentes/itens";
 import Titulo from "../../../componentes/titulo";
+import { ProdutoService } from "../../../services/ProdutoService";
 
 function Entradas() {
+  const [entradasPrincipais, setEntradasPrincipais] = useState([]);
+  const [entradasAdicionais, setEntradasAdicionais] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+
+  useEffect(() => {
+    const carregarEntradas = async () => {
+      try {
+        const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
+        setEntradasPrincipais(entradas);
+      } catch (error) {
+        console.error("Erro ao carregar entradas:", error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    carregarEntradas();
+  }, []);
+
+  if (carregando) {
+    return <div>Carregando entradas...</div>;
+  }
+
   return (
     <div style={{ marginBottom: "8vh" }}>
       <Titulo
         titulo="ENTRADAS"
         linha="----------------------------------------"
       />
-      <ItemDBebidas
-        img="/imgs/bruschettas2.svg"
-        id="5"
-        nome="Bruschettas"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/carpaccio2.svg"
-        id="6"
-        nome="Carpaccio"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/espetinho2.svg"
-        id="7"
-        nome="Espetinho caprese ao molho pesto"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
-      <ItemDBebidas
-        img="/imgs/cestinha2.svg"
-        id="8"
-        nome="Cestinha de massa de pastel"
-        desc="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        preco={0.01}
-      />
+      
+      {/* Entradas Principais */}
+      <div className="entradas-principais">
+        {entradasPrincipais.map((entrada) => (
+          <Itens
+            key={entrada.id}
+            id={entrada.id}
+            nome={entrada.nome}
+            desc={entrada.descricao}
+            preco={entrada.preco}
+            img={entrada.img}
+          />
+        ))}
+      </div>
+
+      {/* Outros Produtos */}
+      <div className="produtos-adicionais">
+        {entradasAdicionais.map((entrada) => (
+          <Itens
+            key={entrada.id}
+            id={entrada.id}
+            nome={entrada.nome}
+            desc={entrada.descricao}
+            preco={entrada.preco}
+            img={entrada.img}
+          />
+        ))}
+      </div>
     </div>
   );
 }
