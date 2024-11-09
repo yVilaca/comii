@@ -238,7 +238,10 @@ const Carrinho = ({ session }) => {
             alert("Pagamento não realizado.");
           }
         } else {
-          console.error("Erro ao verificar status do pagamento.");
+          console.error(
+            "Erro ao verificar status do pagamento:",
+            response.status
+          );
         }
       }
     };
