@@ -16,6 +16,7 @@ const Pending = () => {
   const location = useLocation();
   const { clearCart } = useContext(CartContext);
   const [status, setStatus] = useState("Verificando status do pagamento...");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const socket = io("https://comii-backend.onrender.com");
@@ -28,18 +29,16 @@ const Pending = () => {
     });
 
     const checkPaymentStatus = async () => {
+      const mesa = localStorage.getItem("lastMesa");
+
+      if (!mesa) {
+        setError("Mesa não encontrada");
+        return;
+      }
+
       try {
-        const preferenceId = localStorage.getItem("lastPreferenceId");
-        const mesa = localStorage.getItem("lastMesa");
-
-        // Log para depuração
-        console.log("Verificando status do pagamento com:", {
-          preferenceId,
-          mesa,
-        });
-
         const response = await fetch(
-          `https://comii-backend.onrender.com/check-payment-status/${preferenceId}?mesa=${mesa}`
+          `https://comii-backend.onrender.com/check-payment-status/null?mesa=${mesa}`
         );
 
         if (!response.ok) {
@@ -47,28 +46,32 @@ const Pending = () => {
         }
 
         const data = await response.json();
-        console.log("Resposta da API:", data); // Log para depuração
+        console.log("Resposta da API:", data);
 
-        if (data.status === "approved") {
-          navigate(`/success?pedido_id=${data.pedidoId}`);
-        } else if (data.status === "rejected") {
-          navigate("/failure");
+        if (data.status === "aprovado" || data.status === "approved") {
+          navigate("/success");
+          return;
+        }
+
+        if (data.status === "rejeitado" || data.status === "rejected") {
+          setStatus("Pagamento rejeitado. Redirecionando ao carrinho...");
+          setTimeout(() => navigate("/carrinho"), 2000);
+        } else if (data.status === null) {
+          setStatus("Aguardando confirmação do pagamento...");
         } else {
-          setStatus(`Status do pagamento: ${data.status}`);
+          setStatus("Aguardando pagamento...");
         }
       } catch (error) {
         console.error("Erro ao verificar status do pagamento:", error);
-        setStatus(
-          "Erro ao verificar status do pagamento. Tente novamente mais tarde."
-        );
+        setError("Erro ao verificar status do pagamento");
       }
     };
-    const interval = setInterval(checkPaymentStatus, 5000);
 
-    return () => {
-      clearInterval(interval);
-      socket.disconnect();
-    };
+    // Verifica a cada 2 segundos
+    const interval = setInterval(checkPaymentStatus, 2000);
+
+    // Limpa o intervalo quando o componente é desmontado
+    return () => clearInterval(interval);
   }, [navigate]);
 
   return (

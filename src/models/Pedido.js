@@ -5,11 +5,12 @@ export class Pedido {
     this.desconto = data.desconto || 0;
     this.gorjeta = data.gorjeta || 0;
     this.numero_mesa = data.numero_mesa || null;
-    this.status = data.status || "pendente";
+    this.status_pagamento = data.status_pagamento || "pendente";
+    this.status_preparo = data.status_preparo || "pendente";
     this.cliente_id = data.cliente_id || null;
     this.cliente_nome = data.cliente_nome || "";
     this.cliente_email = data.cliente_email || "";
-    this.preferenceid = data.preferenceid; // Aqui está correto
+    this.preferenceid = data.preferenceid;
     this.tempo_preparo = data.tempo_preparo || 0;
     this.data_pedido = data.data_pedido
       ? new Date(data.data_pedido)
@@ -36,7 +37,8 @@ export class Pedido {
       desconto: this.desconto,
       gorjeta: this.gorjeta,
       numero_mesa: this.numero_mesa,
-      status: this.status,
+      status_pagamento: this.status_pagamento,
+      status_preparo: this.status_preparo,
       cliente_id: this.cliente_id,
       cliente_nome: this.cliente_nome,
       cliente_email: this.cliente_email,

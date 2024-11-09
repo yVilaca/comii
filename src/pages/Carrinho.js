@@ -622,7 +622,10 @@ const Carrinho = ({ session }) => {
                 <h3>Pedido #{pedido.id}</h3>
                 <p>Data: {new Date(pedido.data_pedido).toLocaleString()}</p>
                 <p>Total: R$ {pedido.total.toFixed(2)}</p>
-                <p>Status: {pedido.status}</p>
+                <div className="status-container">
+                  <p>Status do Pagamento: {pedido.status_pagamento}</p>
+                  <p>Status do Preparo: {pedido.status_preparo}</p>
+                </div>
                 <OrderStatusTracker
                   orderId={pedido.id}
                   mesa={pedido.numero_mesa}

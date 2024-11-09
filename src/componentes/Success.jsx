@@ -29,63 +29,62 @@ const theme = createTheme({
 
 const Success = () => {
   const [status, setStatus] = useState("Verificando status do pagamento...");
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const navigate = useNavigate();
   const { clearCart } = useContext(CartContext);
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
-      console.log("Verificando status do pagamento");
       const searchParams = new URLSearchParams(location.search);
       const paymentId = searchParams.get("payment_id");
       const mesa = localStorage.getItem("lastMesa");
-      console.log("Payment ID:", paymentId);
-      console.log("Mesa:", mesa);
 
-      if (!paymentId) {
-        setStatus("Erro: ID de pagamento não encontrado.");
+      if (!paymentId && !mesa) {
+        setStatus("Erro: Informações do pagamento não encontradas");
+        setIsLoading(false);
         return;
       }
 
       try {
         const response = await fetch(
-          `https://comii-backend.onrender.com/check-payment-status/${paymentId}?mesa=${mesa}`
+          `https://comii-backend.onrender.com/check-payment-status/${
+            paymentId || "null"
+          }?mesa=${mesa}`
         );
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        console.log("Resposta do servidor:", data);
 
-        if (data.isPaid) {
-          setStatus("Pagamento confirmado! Seu pedido foi registrado.");
-          clearCart();
-          // Limpar informações relevantes
-          localStorage.removeItem("lastPreferenceId");
+        if (!response.ok) {
+          throw new Error("Erro ao verificar status");
+        }
+
+        const data = await response.json();
+
+        if (data.status === "approved" || data.status === "aprovado") {
+          setStatus("Pagamento aprovado!");
+          // Limpar carrinho e redirecionar
+          localStorage.removeItem("carrinho");
           localStorage.removeItem("lastMesa");
-          // Redirecionar para a página inicial após 5 segundos
-          setTimeout(() => navigate("/"), 5000);
-        } else if (data.status === "pending") {
-          setStatus("Aguardando confirmação do pagamento...");
-          // Verificar novamente após 5 segundos
+          setTimeout(() => navigate("/"), 3000);
+        } else if (data.status === "pending" || data.status === "pendente") {
+          setStatus("Aguardando pagamento...");
+          // Verificar novamente em 5 segundos
           setTimeout(checkPaymentStatus, 5000);
         } else {
-          setStatus("Erro no pagamento. Por favor, tente novamente.");
-          // Redirecionar para o carrinho após 5 segundos
-          setTimeout(() => navigate("/carrinho"), 5000);
+          setStatus("Erro no pagamento. Redirecionando ao carrinho...");
+          setTimeout(() => navigate("/carrinho"), 3000);
         }
       } catch (error) {
-        console.error("Erro ao verificar status do pagamento:", error);
-        setStatus(
-          "Erro ao verificar status do pagamento. Tente novamente mais tarde."
-        );
-        // Redirecionar para o carrinho após 5 segundos
-        setTimeout(() => navigate("/carrinho"), 5000);
+        console.error("Erro ao verificar status:", error);
+        setStatus("Erro ao verificar pagamento. Tentando novamente...");
+        // Tentar novamente em 5 segundos
+        setTimeout(checkPaymentStatus, 5000);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     checkPaymentStatus();
-  }, [location.search, navigate, clearCart]);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -135,7 +134,7 @@ const Success = () => {
             <Typography variant="body1" sx={{ mb: 3, fontSize: "1.1rem" }}>
               {status}
             </Typography>
-            {status === "Verificando status do pagamento..." && (
+            {isLoading && (
               <CircularProgress size={32} thickness={4} sx={{ mt: 2 }} />
             )}
           </Paper>
