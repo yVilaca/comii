@@ -223,6 +223,29 @@ const Carrinho = ({ session }) => {
     }
   }, [session]);
 
+  useEffect(() => {
+    const fetchPaymentStatus = async () => {
+      const lastPreferenceId = localStorage.getItem("lastPreferenceId");
+      if (lastPreferenceId) {
+        const response = await fetch(
+          `https://comii-backend.onrender.com/check-payment-status/${lastPreferenceId}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          if (data.status === "aprovado") {
+            alert("Pagamento confirmado!");
+          } else {
+            alert("Pagamento não realizado.");
+          }
+        } else {
+          console.error("Erro ao verificar status do pagamento.");
+        }
+      }
+    };
+
+    fetchPaymentStatus();
+  }, []);
+
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
