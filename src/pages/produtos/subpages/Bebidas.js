@@ -13,9 +13,11 @@ function Bebidas() {
     const carregarBebidas = async () => {
       try {
         console.log("Iniciando carregamento de bebidas...");
-        const bebidas = await ProdutoService.buscarProdutosPorCategoria("Bebidas");
+        const bebidas = await ProdutoService.buscarProdutosPorCategoria(
+          "Bebidas"
+        );
         console.log("Bebidas recebidas:", bebidas);
-        
+
         if (bebidas && bebidas.length > 0) {
           setBebidasPrincipais(bebidas.slice(0, 4));
           if (bebidas.length > 4) {
@@ -34,9 +36,6 @@ function Bebidas() {
     carregarBebidas();
   }, []);
 
-  console.log("Estado atual - Principais:", bebidasPrincipais);
-  console.log("Estado atual - Adicionais:", bebidasAdicionais);
-
   if (carregando) {
     return <div>Carregando bebidas...</div>;
   }
@@ -47,7 +46,7 @@ function Bebidas() {
         titulo="BEBIDAS"
         linha="-------------------------------------------"
       />
-      
+
       {/* Bebidas Principais */}
       <div className="bebidas-principais">
         {bebidasPrincipais.map((bebida) => (

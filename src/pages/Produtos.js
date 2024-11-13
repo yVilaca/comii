@@ -1,4 +1,4 @@
-import React, { Suspense, memo, useState } from "react";
+import React, { Suspense, memo, useState, useEffect } from "react";
 import NavBar from "../componentes/topbar";
 import { Outlet, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -13,6 +13,13 @@ const categories = [
 const Produtos = memo(() => {
   const [activeTab, setActiveTab] = useState("entradas");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      // Cleanup ao desmontar o componente
+      document.body.classList.remove("produtos-page-active");
+    };
+  }, []);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);

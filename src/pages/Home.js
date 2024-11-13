@@ -13,21 +13,42 @@ const Home = () => {
   const { addToCart } = useContext(CartContext);
   const [mesa, setMesa] = useState(localStorage.getItem("mesa") || "");
   const [modalIsOpen, setModalIsOpen] = useState(!mesa);
+  const [produtos, setProdutos] = useState([]);
   const [produtosDestaque, setProdutosDestaque] = useState([]);
   const [produtosRecomendados, setProdutosRecomendados] = useState([]);
 
   useEffect(() => {
     const carregarProdutos = async () => {
       try {
-        const todosOsProdutos = await ProdutoService.buscarProdutos();
-        setProdutosDestaque(todosOsProdutos.slice(16, 20));
-        setProdutosRecomendados(todosOsProdutos.slice(12, 16));
+        const data = await ProdutoService.buscarProdutos();
+        setProdutos(data);
+
+        // Ordena os produtos pelo número de compras (decrescente)
+        const produtosOrdenados = [...data].sort(
+          (a, b) => b.compras - a.compras
+        );
+
+        // Pega os 4 produtos mais vendidos para destaque
+        const destaques = produtosOrdenados.slice(0, 4);
+        // Pega os próximos 4 produtos mais vendidos para recomendados
+        const recomendados = produtosOrdenados.slice(4, 8);
+
+        console.log("Produtos em destaque (mais vendidos):", destaques);
+        console.log("Produtos recomendados:", recomendados);
+
+        setProdutosDestaque(destaques);
+        setProdutosRecomendados(recomendados);
       } catch (error) {
         console.error("Erro ao carregar produtos:", error);
       }
     };
 
     carregarProdutos();
+
+    return () => {
+      // Cleanup ao desmontar
+      document.body.classList.remove("home-page-active");
+    };
   }, []);
 
   const handleAddToCart = useCallback(
@@ -74,23 +95,33 @@ const Home = () => {
         <h2>Destaques</h2>
       </section>
 
-      <DestaqueCarousel
-        produtos={produtosDestaque}
-        onAddToCart={handleAddToCart}
-      />
+      {produtosDestaque && produtosDestaque.length > 0 ? (
+        <DestaqueCarousel
+          produtos={produtosDestaque}
+          onAddToCart={handleAddToCart}
+        />
+      ) : (
+        <p>Nenhum produto em destaque disponível</p>
+      )}
 
       <section className="section-title">
         <h2>Recomendados</h2>
       </section>
 
-      <div className="produtos-recomendados">
-        {produtosRecomendados.map((produto) => (
-          <ProductCard
-            key={produto.id}
-            {...produto}
-            onAddToCart={() => handleAddToCart(produto)}
-          />
-        ))}
+      <div className="produtos-recomendados home-products">
+        {produtosRecomendados && produtosRecomendados.length > 0 ? (
+          produtosRecomendados.map((produto) => (
+            <ProductCard
+              key={produto.id}
+              {...produto}
+              className="home-product-card"
+              viewType="home"
+              onAddToCart={() => handleAddToCart(produto)}
+            />
+          ))
+        ) : (
+          <p>Nenhum produto recomendado disponível</p>
+        )}
       </div>
     </div>
   );
