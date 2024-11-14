@@ -29,9 +29,11 @@ const Home = () => {
         );
 
         // Pega os 4 produtos mais vendidos para destaque
-        const destaques = produtosOrdenados.slice(0, 4);
+        const destaques = produtosOrdenados.filter(produto => 
+          [18, 19, 20, 21, 17].includes(produto.id)
+        );
         // Pega os próximos 4 produtos mais vendidos para recomendados
-        const recomendados = produtosOrdenados.slice(4, 8);
+        const recomendados = produtosOrdenados.slice(14, 18);
 
         console.log("Produtos em destaque (mais vendidos):", destaques);
         console.log("Produtos recomendados:", recomendados);
