@@ -12,8 +12,18 @@ function Entradas() {
   useEffect(() => {
     const carregarEntradas = async () => {
       try {
+        console.log("Iniciando carregamento de entradas...");
         const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
-        setEntradasPrincipais(entradas);
+        console.log("Entradas recebidas:", entradas);
+
+        if (entradas && entradas.length > 0) {
+          setEntradasPrincipais(entradas.slice(0, 5));
+          if (entradas.length > 5) {
+            setEntradasAdicionais(entradas.slice(5));
+          }
+        } else {
+          console.log("Nenhuma entrada encontrada");
+        }
       } catch (error) {
         console.error("Erro ao carregar entradas:", error);
       } finally {
@@ -50,18 +60,21 @@ function Entradas() {
       </div>
 
       {/* Outros Produtos */}
-      <div className="produtos-adicionais">
-        {entradasAdicionais.map((entrada) => (
-          <Itens
-            key={entrada.id}
-            id={entrada.id}
-            nome={entrada.nome}
-            desc={entrada.descricao}
-            preco={entrada.preco}
-            img={entrada.img}
-          />
-        ))}
-      </div>
+      {entradasAdicionais.length > 0 && (
+        <div className="produtos-adicionais">
+          <Titulo titulo="OUTRAS ENTRADAS" />
+          {entradasAdicionais.map((entrada) => (
+            <Itens
+              key={entrada.id}
+              id={entrada.id}
+              nome={entrada.nome}
+              desc={entrada.descricao}
+              preco={entrada.preco}
+              img={entrada.img}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
