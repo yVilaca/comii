@@ -74,6 +74,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
       username: email.split("@")[0],
       avatar_url: null,
       website: null,
+      email: email, // Adicionando o email aqui
     });
     if (profileError) throw profileError;
   };
