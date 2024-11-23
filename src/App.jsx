@@ -1,6 +1,11 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import "./app.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { CartProvider } from "./pages/CartContext";
 import Home from "./pages/Home";
 import { ToastContainer } from "react-toastify";
@@ -112,10 +117,17 @@ function App() {
                         />
                       }
                     />
+                    <Route
+                      path="/produtos"
+                      element={<Navigate to="/produtos/entradas" />}
+                    />
                     <Route path="/produtos" element={<Produtos />}>
                       <Route path="bebidas" element={<Bebidas />} />
                       <Route path="sobremesas" element={<Sobremesas />} />
-                      <Route path="entradas" element={<Entradas />} />
+                      <Route
+                        path="entradas"
+                        element={<Entradas isActive={true} />}
+                      />
                     </Route>
                   </Routes>
                 </Suspense>

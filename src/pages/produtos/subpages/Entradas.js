@@ -4,15 +4,17 @@ import Itens from "../../../componentes/itens";
 import Titulo from "../../../componentes/titulo";
 import { ProdutoService } from "../../../services/ProdutoService";
 
-function Entradas() {
+function Entradas({ isActive }) {
   const [entradasPrincipais, setEntradasPrincipais] = useState([]);
   const [entradasAdicionais, setEntradasAdicionais] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
   const atualizarEntradas = async () => {
     try {
-      const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
-      
+      const entradas = await ProdutoService.buscarProdutosPorCategoria(
+        "Entrada"
+      );
+
       if (entradas && entradas.length > 0) {
         setEntradasPrincipais(entradas.slice(0, 5));
         setEntradasAdicionais(entradas.length > 5 ? entradas.slice(5) : []);
@@ -23,17 +25,11 @@ function Entradas() {
   };
 
   useEffect(() => {
-    const iniciarAtualizacaoAutomatica = async () => {
-      await atualizarEntradas();
+    if (isActive) {
+      atualizarEntradas();
       setCarregando(false);
-      
-      // Atualiza a cada 10 segundos
-      const intervalo = setInterval(atualizarEntradas, 10000);
-      return () => clearInterval(intervalo);
-    };
-
-    iniciarAtualizacaoAutomatica();
-  }, []);
+    }
+  }, [isActive]);
 
   if (carregando) {
     return <div>Carregando entradas...</div>;
@@ -45,7 +41,7 @@ function Entradas() {
         titulo="ENTRADAS"
         linha="----------------------------------------"
       />
-      
+
       {/* Entradas Principais */}
       <div className="entradas-principais">
         {entradasPrincipais.map((entrada) => (
