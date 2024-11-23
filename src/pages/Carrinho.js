@@ -181,8 +181,8 @@ const Carrinho = ({ session }) => {
 
   useEffect(() => {
     const fetchPedidosAnteriores = async () => {
-      if (!usuario?.id) return;
-      console.log("Buscando pedidos para o usuário:", usuario.id); // Adicione este log
+      if (!usuario?.email) return;
+      console.log("Buscando pedidos para o usuário:", usuario.email);
       try {
         const { data, error } = await supabase
           .from("pedidos")
@@ -191,7 +191,7 @@ const Carrinho = ({ session }) => {
             id,
             data_pedido,
             total,
-            status,
+            status_preparo,
             numero_mesa,
             pedido_produtos (
               quantidade,
@@ -201,11 +201,11 @@ const Carrinho = ({ session }) => {
             )
           `
           )
-          .eq("cliente_id", usuario.id)
+          .eq("cliente_email", usuario.email)
           .order("data_pedido", { ascending: false });
 
         if (error) throw error;
-        console.log("Pedidos recuperados:", data); // Adicione este log
+        console.log("Pedidos recuperados:", data);
         setPedidosAnteriores(data);
       } catch (error) {
         console.error("Erro ao buscar pedidos anteriores:", error);
@@ -606,7 +606,9 @@ const Carrinho = ({ session }) => {
                 </div>
               </div>
               <form onSubmit={finalizarPedido}>
-                <button type="submit">Finalizar Pedido</button>
+                <button type="submit" className="finalizar-pedido">
+                  Finalizar Pedido
+                </button>
               </form>
             </div>
           </div>

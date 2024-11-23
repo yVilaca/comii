@@ -84,4 +84,19 @@ export class PedidoService {
 
     if (error) throw error;
   }
+
+  static async listarPedidosPorEmail(email) {
+    console.log("Buscando pedidos para o email:", email);
+    const { data, error } = await supabase
+      .from("pedidos")
+      .select("*")
+      .eq("cliente_email", email);
+
+    if (error) {
+      console.error("Erro ao buscar pedidos:", error);
+      throw new Error(error.message);
+    }
+    console.log("Pedidos recuperados:", data);
+    return data;
+  }
 }

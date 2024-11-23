@@ -10,7 +10,7 @@ const UserPanel = ({ user, onClose }) => {
   const [username, setUsername] = useState(user.user_metadata.username || "");
   const [email, setEmail] = useState(user.email || "");
   const [phone, setPhone] = useState(user.user_metadata.phone || "");
-  const [address, setAddress] = useState(user.user_metadata.address || "");
+  const [cep, setCep] = useState(user.user_metadata.cep || "");
   const [preferences, setPreferences] = useState(
     user.user_metadata.preferences || ""
   );
@@ -23,6 +23,39 @@ const UserPanel = ({ user, onClose }) => {
     fetchOrders();
     fetchCoupons();
   }, [email]); // Dependência de email para atualizar os pedidos e cupons quando o email mudar
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: userData, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.error("Erro ao buscar dados do usuário:", error);
+      } else {
+        // Atualiza o estado com os dados mais recentes
+        setFullName(userData.full_name || "");
+        setUsername(userData.username || "");
+        setEmail(userData.email || "");
+        setPhone(userData.phone || ""); // Aqui você deve garantir que o telefone seja atualizado
+        setCep(userData.cep || "");
+        setPreferences(userData.preferences || "");
+      }
+    };
+
+    fetchUserData();
+  }, [user.id]); // Dependência para buscar dados quando o ID do usuário mudar
+
+  useEffect(() => {
+    // Adiciona a classe modal-open ao body quando o painel é aberto
+    document.body.classList.add("modal-open");
+
+    // Remove a classe modal-open do body quando o painel é fechado
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, []); // Executa apenas uma vez quando o componente é montado
 
   const fetchOrders = async () => {
     const { data, error } = await supabase
@@ -65,18 +98,32 @@ const UserPanel = ({ user, onClose }) => {
         username: username,
         email: email,
         phone: phone,
-        address: address,
+        cep: cep,
         preferences: preferences,
       })
       .eq("id", user.id);
+
     if (error) {
       console.error("Erro ao atualizar perfil:", error);
     } else {
       alert("Perfil atualizado com sucesso!");
+      // Recarregar os dados do usuário após a atualização
+      const { data: updatedUser, error: fetchError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (fetchError) {
+        console.error("Erro ao buscar dados atualizados:", fetchError);
+      } else {
+        // Atualiza o estado com os dados mais recentes
+        setPhone(updatedUser.phone || "");
+        // Atualize outros estados conforme necessário
+      }
       onClose(); // Fecha o painel após a atualização
     }
   };
-
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
@@ -89,10 +136,13 @@ const UserPanel = ({ user, onClose }) => {
 
   return (
     <div className="user-panel">
-      <h2>Perfil do Usuário</h2>
+      <div>
+        <h2 className="titulo-profile">
+          Perfil do Usuário <span onClick={onClose}>X</span>
+        </h2>
+      </div>
       {error && <p className="error-message">{error}</p>}
-
-      <div className="tabs">
+      <div className="tabsUser">
         <button
           className={activeTab === "profile" ? "active" : ""}
           onClick={() => setActiveTab("profile")}
@@ -112,7 +162,6 @@ const UserPanel = ({ user, onClose }) => {
           Meus Cupons
         </button>
       </div>
-
       {activeTab === "profile" && (
         <div className="profile-section card">
           <h3>Informações Pessoais</h3>
@@ -144,8 +193,8 @@ const UserPanel = ({ user, onClose }) => {
           />
           <InputMask
             mask="99999-999"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={cep}
+            onChange={(e) => setCep(e.target.value)}
             placeholder="CEP"
           />
           <textarea
@@ -154,13 +203,12 @@ const UserPanel = ({ user, onClose }) => {
             onChange={(e) => setPreferences(e.target.value)}
           />
           <button onClick={handleUpdateProfile}>Atualizar Perfil</button>
-          <button onClick={onClose}>Fechar</button>
+
           <Button variant="danger" onClick={handleLogout}>
             <i className="bi bi-box-arrow-right"></i> Logout
           </Button>
         </div>
       )}
-
       {activeTab === "orders" && (
         <div className="orders-section card">
           <h3>Histórico de Pedidos</h3>
@@ -184,7 +232,6 @@ const UserPanel = ({ user, onClose }) => {
           </ul>
         </div>
       )}
-
       {activeTab === "coupons" && (
         <div className="coupons-section card">
           <h3>Meus Cupons</h3>

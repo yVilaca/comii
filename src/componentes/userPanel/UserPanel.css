@@ -8,8 +8,10 @@
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-  width: 90%;
-  max-width: 600px; /* Largura máxima do painel */
+  width: 90%; /* Largura fixa do painel */
+  height: 70vh; /* Altura fixa do painel */
+  overflow-y: auto; /* Permite scroll vertical quando necessário */
+  overflow-x: hidden; /* Esconde scroll horizontal */
 }
 
 .user-panel h2 {
@@ -19,13 +21,13 @@
   color: #333;
 }
 
-.tabs {
+.tabsUser {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
 }
 
-.tabs button {
+.tabsUser button {
   flex: 1;
   padding: 12px;
   border: none;
@@ -37,12 +39,12 @@
   margin: 0 5px; /* Espaçamento entre os botões */
 }
 
-.tabs button:hover {
+.tabsUser button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
 
-.tabs button.active {
+.tabsUser button.active {
   background-color: #0056b3;
 }
 
@@ -122,4 +124,29 @@
   background-color: #f9f9f9;
   padding: 10px;
   border-radius: 4px;
+}
+
+/* Adicione um estilo para o body quando o modal estiver aberto para bloquear a interação */
+body.modal-open {
+  overflow: hidden; /* Impede o scroll do body */
+  pointer-events: none; /* Bloqueia a interação com o conteúdo por trás */
+}
+
+body.modal-open .user-panel {
+  pointer-events: auto; /* Permite interação apenas com o modal */
+}
+.titulo-profile {
+  display: flex;
+  justify-content: center;
+}
+.titulo-profile > span {
+  position: relative;
+  color: #007bff;
+  font-weight: 900;
+  font-size: 14px;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  left: 40px;
 }
