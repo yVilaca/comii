@@ -2,12 +2,14 @@ import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./topbar.css";
 import AuthModal from "../login/AuthModal";
+import UserPanel from "../userPanel/UserPanel";
 import { useAuth } from "../../componentes/AuthContext/AuthContext";
 import { FaUser } from "react-icons/fa";
 import { supabase } from "../../supabaseClient";
 
 function NavBar() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
   const { user, login, signOut } = useAuth();
 
   const handleLogin = useCallback(
@@ -57,10 +59,14 @@ function NavBar() {
   }, [signOut]);
 
   const getUserDisplayName = () => {
-    if (user && user.user_metadata && user.user_metadata.name) {
-      return user.user_metadata.name.split(" ")[0]; // Pega apenas o primeiro nome
+    if (user && user.user_metadata && user.user_metadata.full_name) {
+      return user.user_metadata.full_name.split(" ")[0]; // Pega apenas o primeiro nome
     }
     return user?.email?.split("@")[0] || "Usuário"; // Fallback para o início do email ou 'Usuário'
+  };
+
+  const handleUserPanelOpen = () => {
+    setIsUserPanelOpen(true);
   };
 
   return (
@@ -72,8 +78,8 @@ function NavBar() {
         <div className="ajuda-login">
           <li>
             {user ? (
-              <button onClick={handleLogout} className="login-button">
-                <FaUser /> Sair ( {getUserDisplayName()} )
+              <button onClick={handleUserPanelOpen} className="login-button">
+                <FaUser /> {getUserDisplayName()}
               </button>
             ) : (
               <button
@@ -97,6 +103,9 @@ function NavBar() {
         onLogin={handleLogin}
         onRegister={handleRegister}
       />
+      {isUserPanelOpen && (
+        <UserPanel user={user} onClose={() => setIsUserPanelOpen(false)} />
+      )}
     </div>
   );
 }
