@@ -9,29 +9,30 @@ function Entradas() {
   const [entradasAdicionais, setEntradasAdicionais] = useState([]);
   const [carregando, setCarregando] = useState(true);
 
-  useEffect(() => {
-    const carregarEntradas = async () => {
-      try {
-        console.log("Iniciando carregamento de entradas...");
-        const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
-        console.log("Entradas recebidas:", entradas);
-
-        if (entradas && entradas.length > 0) {
-          setEntradasPrincipais(entradas.slice(0, 5));
-          if (entradas.length > 5) {
-            setEntradasAdicionais(entradas.slice(5));
-          }
-        } else {
-          console.log("Nenhuma entrada encontrada");
-        }
-      } catch (error) {
-        console.error("Erro ao carregar entradas:", error);
-      } finally {
-        setCarregando(false);
+  const atualizarEntradas = async () => {
+    try {
+      const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
+      
+      if (entradas && entradas.length > 0) {
+        setEntradasPrincipais(entradas.slice(0, 5));
+        setEntradasAdicionais(entradas.length > 5 ? entradas.slice(5) : []);
       }
+    } catch (error) {
+      console.error("Erro ao atualizar entradas:", error);
+    }
+  };
+
+  useEffect(() => {
+    const iniciarAtualizacaoAutomatica = async () => {
+      await atualizarEntradas();
+      setCarregando(false);
+      
+      // Atualiza a cada 10 segundos
+      const intervalo = setInterval(atualizarEntradas, 10000);
+      return () => clearInterval(intervalo);
     };
 
-    carregarEntradas();
+    iniciarAtualizacaoAutomatica();
   }, []);
 
   if (carregando) {

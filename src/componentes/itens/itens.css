@@ -90,8 +90,8 @@
 }
 
 .Toastify__toast--success {
-  background: #85120b;
-  color: white;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
 }
 
 /* Grid Layout */
