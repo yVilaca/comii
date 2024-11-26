@@ -47,7 +47,7 @@ body {
   margin-bottom: 20px;
 }
 
-.item-card {
+.item-card-cart {
   display: flex;
   background-color: #fff;
   border-radius: 8px;
@@ -56,7 +56,7 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
-.item-card:hover {
+.item-card-cart:hover {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
@@ -355,7 +355,7 @@ body {
     font-size: 1.5rem;
   }
 
-  .item-card {
+  .item-card-cart {
     flex-direction: row;
     align-items: center;
   }

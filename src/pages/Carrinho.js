@@ -464,7 +464,7 @@ const Carrinho = ({ session }) => {
                   >
                     <li className="carrinho-item">
                       {item && item.preco && (
-                        <div className="item-card">
+                        <div className="item-card-cart">
                           <div className="item-imagem-container">
                             <img
                               src={item.img}
