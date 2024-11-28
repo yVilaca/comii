@@ -13,14 +13,13 @@ function Sobremesas() {
     const carregarSobremesas = async () => {
       try {
         console.log("Iniciando carregamento de sobremesas...");
-        const sobremesas = await ProdutoService.buscarProdutosPorCategoria("Sobremesa");
+        const sobremesas = await ProdutoService.buscarProdutosPorCategoria(
+          "Sobremesa"
+        );
         console.log("Sobremesas recebidas:", sobremesas);
 
         if (sobremesas && sobremesas.length > 0) {
-          setSobremesasPrincipais(sobremesas.slice(0, 5));
-          if (sobremesas.length > 5) {
-            setSobremesasAdicionais(sobremesas.slice(5));
-          }
+          setSobremesasPrincipais(sobremesas);
         } else {
           console.log("Nenhuma sobremesa encontrada");
         }
@@ -44,7 +43,7 @@ function Sobremesas() {
         titulo="SOBREMESAS"
         linha="----------------------------------------"
       />
-      
+
       {/* Sobremesas Principais */}
       <div className="sobremesas-principais">
         {sobremesasPrincipais.map((sobremesa) => (

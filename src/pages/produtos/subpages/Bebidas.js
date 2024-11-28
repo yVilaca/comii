@@ -19,10 +19,7 @@ function Bebidas() {
         console.log("Bebidas recebidas:", bebidas);
 
         if (bebidas && bebidas.length > 0) {
-          setBebidasPrincipais(bebidas.slice(0, 5));
-          if (bebidas.length > 5) {
-            setBebidasAdicionais(bebidas.slice(5));
-          }
+          setBebidasPrincipais(bebidas);
         } else {
           console.log("Nenhuma bebida encontrada");
         }

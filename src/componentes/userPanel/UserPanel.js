@@ -90,6 +90,10 @@ const UserPanel = ({ user, onClose }) => {
       setError("Telefone inválido.");
       return;
     }
+    if (!validator.isPostalCode(cep, "BR")) {
+      setError("CEP inválido.");
+      return;
+    }
 
     const { error } = await supabase
       .from("profiles")

@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./categorias.css";
+import { ProdutoService } from "../../services/ProdutoService";
+import { supabase } from "../../lib/supabase";
 
 const Categorias = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("");
+  const [produtos, setProdutos] = useState([]);
 
   useEffect(() => {
     if (
@@ -23,6 +26,30 @@ const Categorias = () => {
       navigate("/produtos/bebidas", { replace: true });
     }
   }, [location.pathname, navigate]);
+
+  useEffect(() => {
+    const fetchProdutos = async () => {
+      const data = await ProdutoService.buscarProdutosPorCategoria(
+        activeLink.split("/").pop()
+      );
+      setProdutos(data);
+    };
+
+    fetchProdutos();
+  }, [activeLink]);
+
+  useEffect(() => {
+    const subscription = supabase
+      .from("produtos")
+      .on("INSERT", (payload) => {
+        fetchProdutos();
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeSubscription(subscription);
+    };
+  }, []);
 
   const renderLink = useCallback(
     (to, label) => (
