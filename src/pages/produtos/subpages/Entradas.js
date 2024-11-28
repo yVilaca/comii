@@ -11,13 +11,12 @@ function Entradas({ isActive }) {
 
   const atualizarEntradas = async () => {
     try {
-      const entradas = await ProdutoService.buscarProdutosPorCategoria(
-        "Entrada"
-      );
-
+      const entradas = await ProdutoService.buscarProdutosPorCategoria("Entrada");
+      console.log("IDs das entradas:", entradas.map(entrada => entrada.id));
+      
       if (entradas && entradas.length > 0) {
-        setEntradasPrincipais(entradas.slice(0, 5));
-        setEntradasAdicionais(entradas.length > 5 ? entradas.slice(5) : []);
+        setEntradasPrincipais(entradas.slice(0, 10));
+        setEntradasAdicionais(entradas.length > 10 ? entradas.slice(10) : []);
       }
     } catch (error) {
       console.error("Erro ao atualizar entradas:", error);
