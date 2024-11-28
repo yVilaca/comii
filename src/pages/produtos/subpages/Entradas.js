@@ -15,12 +15,7 @@ function Entradas({ isActive }) {
       console.log("IDs das entradas:", entradas.map(entrada => entrada.id));
       
       if (entradas && entradas.length > 0) {
-<<<<<<< HEAD
-        setEntradasPrincipais(entradas.slice(0, 10));
-        setEntradasAdicionais(entradas.length > 10 ? entradas.slice(10) : []);
-=======
         setEntradasPrincipais(entradas);
->>>>>>> a94571cc2551e9709f3eb85f5fcce694b007ba50
       }
     } catch (error) {
       console.error("Erro ao atualizar entradas:", error);
