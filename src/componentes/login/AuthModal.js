@@ -198,7 +198,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess, onContinueAsGuest }) => {
             </button>
           </p>
         </div>
-        <button className="continue-as-guest" onClick={onContinueAsGuest}>
+        <button className="continue-as-guest" onClick={onClose}>
           Continuar como convidado
         </button>
         <div className="auth-benefits">

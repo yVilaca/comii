@@ -29,11 +29,11 @@ const Home = () => {
         );
 
         // Pega os 4 produtos mais vendidos para destaque
-        const destaques = produtosOrdenados.filter(produto => 
+        const destaques = produtosOrdenados.filter((produto) =>
           [18, 19, 20, 21, 17].includes(produto.id)
         );
         // Pega os próximos 4 produtos mais vendidos para recomendados
-        const recomendados = produtosOrdenados.slice(14, 18);
+        const recomendados = produtosOrdenados.slice(0, 4);
 
         console.log("Produtos em destaque (mais vendidos):", destaques);
         console.log("Produtos recomendados:", recomendados);
@@ -55,7 +55,11 @@ const Home = () => {
 
   const handleAddToCart = useCallback(
     (produto) => {
-      addToCart({ ...produto, quantidade: 1 });
+      addToCart({
+        ...produto,
+        desc: produto.descricao,
+        quantidade: 1,
+      });
       toast.success(`${produto.nome} adicionado ao carrinho!`);
     },
     [addToCart]
@@ -116,6 +120,7 @@ const Home = () => {
             <ProductCard
               key={produto.id}
               {...produto}
+              desc={produto.descricao}
               className="home-product-card"
               viewType="home"
               onAddToCart={() => handleAddToCart(produto)}
