@@ -16,8 +16,7 @@ function Entradas({ isActive }) {
       );
 
       if (entradas && entradas.length > 0) {
-        setEntradasPrincipais(entradas.slice(0, 5));
-        setEntradasAdicionais(entradas.length > 5 ? entradas.slice(5) : []);
+        setEntradasPrincipais(entradas);
       }
     } catch (error) {
       console.error("Erro ao atualizar entradas:", error);
